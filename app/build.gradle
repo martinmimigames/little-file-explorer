@@ -1,0 +1,49 @@
+plugins {
+  id 'com.android.application'
+}
+
+android {
+
+  compileSdk 32
+
+  defaultConfig {
+    applicationId "com.martinmimigames.simplefileexplorer"
+    minSdk 1
+    //noinspection ExpiredTargetSdkVersion
+    targetSdk 29
+  }
+
+  lint {
+    baseline = file("lint-baseline.xml")
+  }
+
+  signingConfigs {
+    def keystorePropertiesFiles = rootProject.file("keystore.properties")
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFiles))
+    basic {
+      storeFile file(keystoreProperties['storeFile'])
+      storePassword keystoreProperties['storePassword']
+      keyAlias keystoreProperties['keyAlias']
+      keyPassword keystoreProperties['keyPassword']
+    }
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled true
+      shrinkResources true
+      crunchPngs true
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.basic
+    }
+    debug {
+      signingConfig signingConfigs.basic
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_10
+    targetCompatibility JavaVersion.VERSION_1_10
+  }
+}
