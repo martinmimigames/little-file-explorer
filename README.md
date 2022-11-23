@@ -14,7 +14,7 @@ Previous known as Simple File Explorer (but from martinmimigames).
 
 For more information about the app,
 you can visit 
-[the website](https://martinmimigames.github.io/projects/simple-file-explorer/index.html).
+[the website](https://martinmimigames.github.io/projects/little-file-explorer/index.html).
 
 ## "Important features":
 
