@@ -1,0 +1,1 @@
+a small, simple android file explorer, supports Android 1.0+
