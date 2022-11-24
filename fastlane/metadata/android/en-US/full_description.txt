@@ -1,0 +1,3 @@
+<i>Little File Explorer</i> is a simple file explorer, designed with compatibility in mind. It allows browsing in the file system, and let you do simple things like copy and pasting files.
+
+<i>Little File Explorer</i> supports Android 1.0+ – so you can even use it on your oldest Android device!
