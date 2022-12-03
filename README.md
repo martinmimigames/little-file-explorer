@@ -16,6 +16,12 @@ For more information about the app,
 you can visit 
 [the website](https://martinmimigames.github.io/projects/little-file-explorer/index.html).
 
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/com.gyorog.polycal/)
+
+or get the APK from the [Releases Section](https://github.com/martinmimigames/little-file-explorer/releases/latest).
+
 ## "Important features":
 
 - Free
