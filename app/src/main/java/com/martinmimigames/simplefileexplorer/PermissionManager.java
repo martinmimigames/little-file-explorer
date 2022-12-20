@@ -85,6 +85,7 @@ public class PermissionManager {
   }
 
   public boolean havePermission(String permission) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
     boolean permissionAllowed = activity.getPackageManager().checkPermission(permission, activity.getPackageName()) == PackageManager.PERMISSION_GRANTED;
     if (!permissionAllowed) {
       switch (permission) {

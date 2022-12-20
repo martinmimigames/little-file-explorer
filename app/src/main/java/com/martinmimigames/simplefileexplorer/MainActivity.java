@@ -647,6 +647,7 @@ public class MainActivity extends Activity {
       textView.setWidth(width - (width / 8));
       textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16); //material list title
 
+      this.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
       runOnUiThread(() -> {
         this.addView(imageView);
         this.addView(textView);
