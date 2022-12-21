@@ -271,7 +271,7 @@ public class MainActivity extends Activity {
   }
 
   private void addItem(final ImageView imageView, final File file) {
-    new Item(imageView, file, this);
+    new Item(imageView, file);
   }
 
   private ImageView getImageView(final Bitmap bitmap) {
@@ -618,15 +618,15 @@ public class MainActivity extends Activity {
   private class Item extends LinearLayout {
     final File file;
 
-    private Item(final ImageView imageView, final File file, final Context context) {
-      super(context);
+    private Item(final ImageView imageView, final File file) {
+      super(MainActivity.this);
 
       this.file = file;
       this.setClickable(true);
       this.setOnClickListener(shortTabOnButton);
       this.setOnLongClickListener(longPressOnButton);
 
-      final TextView textView = new TextView(context);
+      final TextView textView = new TextView(MainActivity.this);
       textView.setText(file.getName());
       textView.setTextColor(Color.WHITE);
       textView.setBackgroundColor(Color.TRANSPARENT);
