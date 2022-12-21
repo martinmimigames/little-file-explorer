@@ -350,10 +350,10 @@ public class MainActivity extends Activity {
       });
   }
 
-  private void setupDriveList(final File[] rootDirectories){
+  private void setupDriveList(final File[] rootDirectories) {
     final LinearLayout list = findViewById(R.id.drive_list);
     list.removeAllViews();
-    for (File file: rootDirectories){
+    for (File file : rootDirectories) {
       final Button entry = new Button(this);
       entry.setLayoutParams(
         new LinearLayout.LayoutParams(
@@ -455,7 +455,7 @@ public class MainActivity extends Activity {
       fopen.open(currentSelectedFiles.get(0));
       userStatus.change(idleState);
     });
-    if (fopen.isRequestDocument){
+    if (fopen.isRequestDocument) {
       openListDialog.findViewById(R.id.open_list_share).setVisibility(View.GONE);
     } else {
       openListDialog.findViewById(R.id.open_list_share).setOnClickListener(v -> {
@@ -574,7 +574,6 @@ public class MainActivity extends Activity {
 
   private interface ForEachItemFunction {
     void forEachItem(Item item);
-
   }
 
   private class Status {
