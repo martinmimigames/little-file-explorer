@@ -466,11 +466,15 @@ public class MainActivity extends Activity {
       fopen.open(currentSelectedFiles.get(0), FileOpener.VIEW);
       userStatus.change(idleState);
     });
-    openListDialog.findViewById(R.id.open_list_share).setOnClickListener((v) -> {
-      openListDialog.dismiss();
-      fopen.open(currentSelectedFiles.get(0), FileOpener.SHARE);
-      userStatus.change(idleState);
-    });
+    if (fopen.isRequestDocument){
+      openListDialog.findViewById(R.id.open_list_share).setVisibility(View.GONE);
+    } else {
+      openListDialog.findViewById(R.id.open_list_share).setOnClickListener((v) -> {
+        openListDialog.dismiss();
+        fopen.open(currentSelectedFiles.get(0), FileOpener.SHARE);
+        userStatus.change(idleState);
+      });
+    }
     openListDialog.findViewById(R.id.open_list_cancel).setOnClickListener((v) -> {
       openListDialog.dismiss();
       userStatus.change(idleState);
@@ -672,10 +676,7 @@ public class MainActivity extends Activity {
       }
 
       if (folder.isFile()) {
-        if (fopen.isRequestDocument) {
-          fopen.open(folder, FileOpener.VIEW);
-          userStatus.change(idleState);
-        } else if (userStatus == idleState) {
+        if (userStatus == idleState) {
           userStatus.change(openFileState);
 
           currentSelectedFiles.clear();
