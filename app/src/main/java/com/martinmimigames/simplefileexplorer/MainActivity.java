@@ -312,13 +312,19 @@ public class MainActivity extends Activity {
 
   @Override
   public void onBackPressed() {
-    super.onBackPressed();
-    returnToParent();
+    if (!returnToParent())
+      super.onBackPressed();
   }
 
-  void returnToParent() {
-    if (parent != null && folderAccessible(parent))
-      executor.execute(() -> listItem(parent));
+  /**
+   * tries to go back to a parent folder
+   * @return false if failed, else true
+   */
+  boolean returnToParent() {
+    if (parent == null || !folderAccessible(parent))
+      return false;
+    executor.execute(() -> listItem(parent));
+    return true;
   }
 
   private void setupTopBar() {
