@@ -1,0 +1,5 @@
+- smaller apk
+- fixed quick selection overlap with menu list
+- opening file request by other app now have open prompt
+- changed audio png
+- back button now go back to parent folder if available
