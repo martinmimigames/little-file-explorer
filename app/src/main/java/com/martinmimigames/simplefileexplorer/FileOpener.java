@@ -10,33 +10,18 @@ import android.os.Build;
 
 import java.io.File;
 
-public class FileOpener {
+class FileOpener {
 
-
-  public static final int VIEW = 1;
-  public static final int SHARE = 2;
   private static final String OPEN_FILE_WITH = "open file with :";
   private static final String SHARE_FILE_WITH = "share file with :";
   private final Activity activity;
   boolean isRequestDocument;
 
-
-  public FileOpener(Activity activity) {
+  FileOpener(Activity activity) {
     this.activity = activity;
   }
 
-  public void open(final File file, final int operationId) {
-    switch (operationId) {
-      case VIEW:
-        openFile(file);
-        break;
-      case SHARE:
-        shareFile(file);
-        break;
-    }
-  }
-
-  private void openFile(final File file) {
+  void open(final File file) {
     final Intent intent = new Intent(Intent.ACTION_VIEW);
     final Uri uri = getUriFromFile(file);
     intent.setDataAndType(uri, FileProvider.getFileType(file));
@@ -54,9 +39,9 @@ public class FileOpener {
     activity.startActivity(Intent.createChooser(intent, OPEN_FILE_WITH));
   }
 
-  private void shareFile(final File file) {
+  void share(final File file) {
     if (isRequestDocument) {
-      openFile(file);
+      open(file);
       return;
     }
     final Intent intent = new Intent(Intent.ACTION_SEND);
@@ -69,7 +54,7 @@ public class FileOpener {
   }
 
   private Uri getUriFromFile(File file) {
-    if (Build.VERSION.SDK_INT >= 24)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
       return FileProvider.fileToUri(file);
     else
       return Uri.fromFile(file);

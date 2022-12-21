@@ -463,7 +463,7 @@ public class MainActivity extends Activity {
     openListDialog.setContentView(R.layout.open_list);
     openListDialog.findViewById(R.id.open_list_open).setOnClickListener((v) -> {
       openListDialog.dismiss();
-      fopen.open(currentSelectedFiles.get(0), FileOpener.VIEW);
+      fopen.open(currentSelectedFiles.get(0));
       userStatus.change(idleState);
     });
     if (fopen.isRequestDocument){
@@ -471,7 +471,7 @@ public class MainActivity extends Activity {
     } else {
       openListDialog.findViewById(R.id.open_list_share).setOnClickListener((v) -> {
         openListDialog.dismiss();
-        fopen.open(currentSelectedFiles.get(0), FileOpener.SHARE);
+        fopen.share(currentSelectedFiles.get(0));
         userStatus.change(idleState);
       });
     }
