@@ -319,12 +319,12 @@ public class MainActivity extends Activity {
   }
 
   private void setupTopBar() {
-    findViewById(R.id.back_button).setOnClickListener((v) -> {
+    findViewById(R.id.back_button).setOnClickListener(v -> {
       if (parent != null && folderAccessible(parent))
         executor.execute(() -> listItem(parent));
     });
 
-    findViewById(R.id.menu_button).setOnClickListener((v) -> {
+    findViewById(R.id.menu_button).setOnClickListener(v -> {
       final View menuList = findViewById(R.id.menu_list);
       if (menuList.isShown())
         menuList.setVisibility(View.GONE);
@@ -335,12 +335,12 @@ public class MainActivity extends Activity {
 
   private void setupMenu() {
     findViewById(R.id.menu_create_new_directory)
-      .setOnClickListener((v) -> {
+      .setOnClickListener(v -> {
         createDirectoryDialog.show();
         findViewById(R.id.menu_list).setVisibility(View.GONE);
       });
     findViewById(R.id.menu_quick_switch)
-      .setOnClickListener((v) -> {
+      .setOnClickListener(v -> {
         findViewById(R.id.menu_list).setVisibility(View.GONE);
         final View driveList = findViewById(R.id.drive_list);
         if (driveList.isShown())
@@ -362,7 +362,7 @@ public class MainActivity extends Activity {
         )
       );
       entry.setText(file.getPath());
-      entry.setOnClickListener((v) -> {
+      entry.setOnClickListener(v -> {
         executor.execute(() -> listItem(file));
         findViewById(R.id.drive_list).setVisibility(View.GONE);
       });
@@ -371,21 +371,21 @@ public class MainActivity extends Activity {
   }
 
   private void setupSelectMenu() {
-    findViewById(R.id.select_cut).setOnClickListener((v) -> {
+    findViewById(R.id.select_cut).setOnClickListener(v -> {
       isCut = true;
       userStatus.change(pasteState);
     });
-    findViewById(R.id.select_copy).setOnClickListener((v) -> {
+    findViewById(R.id.select_copy).setOnClickListener(v -> {
       isCopy = true;
       userStatus.change(pasteState);
     });
 
-    findViewById(R.id.select_rename).setOnClickListener((v) -> {
+    findViewById(R.id.select_rename).setOnClickListener(v -> {
       ((EditText) renameDialog.findViewById(R.id.new_name)).setText(currentSelectedFiles.get(0).getName());
       renameDialog.show();
     });
 
-    findViewById(R.id.select_delete).setOnClickListener((v) -> {
+    findViewById(R.id.select_delete).setOnClickListener(v -> {
       StringBuilder list = new StringBuilder("Delete the following files/folders?\n");
       for (int i = 0; i < currentSelectedFiles.size(); i++) {
         list.append(currentSelectedFiles.get(i).getName());
@@ -396,7 +396,7 @@ public class MainActivity extends Activity {
       ((TextView) deleteConfirmationDialog.findViewById(R.id.delete_list)).setText(list.toString());
       deleteConfirmationDialog.show();
     });
-    findViewById(R.id.select_cancel).setOnClickListener((v) -> userStatus.change(idleState));
+    findViewById(R.id.select_cancel).setOnClickListener(v -> userStatus.change(idleState));
 
     findViewById(R.id.select_all)
       .setOnClickListener(v -> forEachItem(item -> {
@@ -413,7 +413,7 @@ public class MainActivity extends Activity {
   private void setupPasteMenu() {
     findViewById(R.id.paste_paste)
       .setOnClickListener(
-        (v) -> new Thread(() -> {
+        v -> new Thread(() -> {
           final int currentOperation = hasOperations + 1;
           hasOperations = currentOperation;
           runOnUiThread(() -> {
@@ -444,13 +444,13 @@ public class MainActivity extends Activity {
           selectedFiles.clear();
           executor.execute(() -> listItem(new File(filePath)));
         }).start());
-    findViewById(R.id.paste_cancel).setOnClickListener((v) -> userStatus.change(idleState));
+    findViewById(R.id.paste_cancel).setOnClickListener(v -> userStatus.change(idleState));
   }
 
   private void setupOpenListDialogue() {
     openListDialog = new Dialog(this, R.style.app_theme_dialog);
     openListDialog.setContentView(R.layout.open_list);
-    openListDialog.findViewById(R.id.open_list_open).setOnClickListener((v) -> {
+    openListDialog.findViewById(R.id.open_list_open).setOnClickListener(v -> {
       openListDialog.dismiss();
       fopen.open(currentSelectedFiles.get(0));
       userStatus.change(idleState);
@@ -458,17 +458,17 @@ public class MainActivity extends Activity {
     if (fopen.isRequestDocument){
       openListDialog.findViewById(R.id.open_list_share).setVisibility(View.GONE);
     } else {
-      openListDialog.findViewById(R.id.open_list_share).setOnClickListener((v) -> {
+      openListDialog.findViewById(R.id.open_list_share).setOnClickListener(v -> {
         openListDialog.dismiss();
         fopen.share(currentSelectedFiles.get(0));
         userStatus.change(idleState);
       });
     }
-    openListDialog.findViewById(R.id.open_list_cancel).setOnClickListener((v) -> {
+    openListDialog.findViewById(R.id.open_list_cancel).setOnClickListener(v -> {
       openListDialog.dismiss();
       userStatus.change(idleState);
     });
-    openListDialog.setOnCancelListener((d) -> userStatus.change(idleState));
+    openListDialog.setOnCancelListener(d -> userStatus.change(idleState));
   }
 
   private void setupRenameDialog() {
@@ -477,7 +477,7 @@ public class MainActivity extends Activity {
     renameDialog.setContentView(R.layout.rename_confirmation);
     renameDialog.findViewById(R.id.rename_rename)
       .setOnClickListener(
-        (v) -> {
+        v -> {
           renameDialog.dismiss();
           String name = ((EditText) renameDialog.findViewById(R.id.new_name)).getText().toString();
           File src = currentSelectedFiles.get(0);
@@ -489,7 +489,7 @@ public class MainActivity extends Activity {
       );
     renameDialog.findViewById(R.id.rename_cancel)
       .setOnClickListener(
-        (v) -> {
+        v -> {
           renameDialog.dismiss();
           userStatus.change(idleState);
         }
@@ -501,7 +501,7 @@ public class MainActivity extends Activity {
     deleteConfirmationDialog.setCancelable(false);
     deleteConfirmationDialog.setTitle("Confirm delete:");
     deleteConfirmationDialog.setContentView(R.layout.delete_comfirmation);
-    deleteConfirmationDialog.findViewById(R.id.delete_delete).setOnClickListener((v) -> {
+    deleteConfirmationDialog.findViewById(R.id.delete_delete).setOnClickListener(v -> {
       deleteConfirmationDialog.dismiss();
       new Thread(() -> {
         runOnUiThread(() -> {
@@ -524,7 +524,7 @@ public class MainActivity extends Activity {
         executor.execute(() -> listItem(new File(filePath)));
       }).start();
     });
-    deleteConfirmationDialog.findViewById(R.id.delete_cancel).setOnClickListener((v) -> {
+    deleteConfirmationDialog.findViewById(R.id.delete_cancel).setOnClickListener(v -> {
       deleteConfirmationDialog.dismiss();
       userStatus.change(idleState);
     });
@@ -534,10 +534,10 @@ public class MainActivity extends Activity {
     createDirectoryDialog = new Dialog(this, R.style.app_theme_dialog);
     createDirectoryDialog.setTitle("Create new folder");
     createDirectoryDialog.setContentView(R.layout.new_directory);
-    createDirectoryDialog.findViewById(R.id.new_directory_cancel).setOnClickListener((v) -> {
+    createDirectoryDialog.findViewById(R.id.new_directory_cancel).setOnClickListener(v -> {
       createDirectoryDialog.dismiss();
     });
-    createDirectoryDialog.findViewById(R.id.new_directory_create).setOnClickListener((v) -> {
+    createDirectoryDialog.findViewById(R.id.new_directory_create).setOnClickListener(v -> {
       String name = ((EditText) createDirectoryDialog.findViewById(R.id.new_directory_name)).getText().toString();
       new File(filePath, name).mkdirs();
       createDirectoryDialog.dismiss();
