@@ -645,30 +645,30 @@ public class MainActivity extends Activity {
   private class ShortTabOnButton implements View.OnClickListener {
     @Override
     public void onClick(final View view) {
-      final File folder = ((Item) view).file;
+      final File file = ((Item) view).file;
       if (!checkPermission())
         return;
 
-      if (folder.isDirectory()) {
+      if (file.isDirectory()) {
         if (appState.current == appState.select) {
-          selectFiles(folder, view);
+          selectFiles(file, view);
         } else {
-          executor.execute(() -> listItem(folder));
+          executor.execute(() -> listItem(file));
         }
       }
 
-      if (folder.isFile()) {
+      if (file.isFile()) {
         if (appState.current == appState.idle) {
           appState.change(appState.openFile);
 
           currentSelectedFiles.clear();
-          currentSelectedFiles.add(folder);
+          currentSelectedFiles.add(file);
 
-          openListDialog.setTitle(folder.getName());
+          openListDialog.setTitle(file.getName());
           openListDialog.show();
 
         } else if (appState.current == appState.select) {
-          selectFiles(folder, view);
+          selectFiles(file, view);
         }
       }
     }
@@ -680,8 +680,8 @@ public class MainActivity extends Activity {
       if (fopen.isRequestDocument) return true;
       if (appState.current == appState.idle || appState.current == appState.select) {
         appState.change(appState.select);
-        final File folder = ((Item) view).file;
-        selectFiles(folder, view);
+        final File file = ((Item) view).file;
+        selectFiles(file, view);
       }
       return true;
     }
