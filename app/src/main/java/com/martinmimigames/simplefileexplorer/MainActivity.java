@@ -92,13 +92,11 @@ public class MainActivity extends Activity {
 
     Intent intent = getIntent();
     switch (intent.getAction()) {
-      case Intent.ACTION_OPEN_DOCUMENT:
-      case Intent.ACTION_GET_CONTENT:
+      case Intent.ACTION_OPEN_DOCUMENT, Intent.ACTION_GET_CONTENT -> {
         fopen.isRequestDocument = true;
         setResult(RESULT_CANCELED);
-        break;
-      default:
-        fopen.isRequestDocument = false;
+      }
+      default -> fopen.isRequestDocument = false;
     }
 
     ll = findViewById(R.id.list);
@@ -212,26 +210,17 @@ public class MainActivity extends Activity {
               addDialog(lastLetter, 16);
             }
             switch (FileProvider.getFileType(item).split("/")[0]) {
-              case "image":
-                addItem(getImageView(pictureImage), item);
-                break;
-              case "video":
-                addItem(getImageView(videoImage), item);
-                break;
-              case "audio":
-                addItem(getImageView(audioImage), item);
-                break;
-              case "application":
+              case "image" -> addItem(getImageView(pictureImage), item);
+              case "video" -> addItem(getImageView(videoImage), item);
+              case "audio" -> addItem(getImageView(audioImage), item);
+              case "application" -> {
                 if (FileProvider.getFileType(item).contains("application/octet-stream"))
                   addItem(getImageView(unknownImage), item);
                 else
                   addItem(getImageView(archiveImage), item);
-                break;
-              case "text":
-                addItem(getImageView(fileImage), item);
-                break;
-              default:
-                addItem(getImageView(unknownImage), item);
+              }
+              case "text" -> addItem(getImageView(fileImage), item);
+              default -> addItem(getImageView(unknownImage), item);
             }
           }
       }
