@@ -318,10 +318,14 @@ public class MainActivity extends Activity {
 
     findViewById(R.id.menu_button).setOnClickListener(v -> {
       final View menuList = findViewById(R.id.menu_list);
-      if (menuList.isShown())
+      if (menuList.isShown()) {
         menuList.setVisibility(View.GONE);
-      else
+        if (appState.current == appState.select)
+          findViewById(R.id.quick_selection).setVisibility(View.VISIBLE);
+      } else {
         menuList.setVisibility(View.VISIBLE);
+        findViewById(R.id.quick_selection).setVisibility(View.GONE);
+      }
     });
   }
 
@@ -589,6 +593,7 @@ public class MainActivity extends Activity {
           findViewById(R.id.paste_operation).setVisibility(View.GONE);
           findViewById(R.id.select_operation).setVisibility(View.VISIBLE);
           findViewById(R.id.quick_selection).setVisibility(View.VISIBLE);
+          findViewById(R.id.menu_list).setVisibility(View.GONE);
         }
       };
 
