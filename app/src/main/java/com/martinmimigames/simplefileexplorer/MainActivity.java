@@ -310,11 +310,19 @@ public class MainActivity extends Activity {
     forEachItem(item -> item.setBackgroundColor(Color.TRANSPARENT));
   }
 
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
+    returnToParent();
+  }
+
+  void returnToParent() {
+    if (parent != null && folderAccessible(parent))
+      executor.execute(() -> listItem(parent));
+  }
+
   private void setupTopBar() {
-    findViewById(R.id.back_button).setOnClickListener(v -> {
-      if (parent != null && folderAccessible(parent))
-        executor.execute(() -> listItem(parent));
-    });
+    findViewById(R.id.back_button).setOnClickListener(v -> returnToParent());
 
     findViewById(R.id.menu_button).setOnClickListener(v -> {
       final View menuList = findViewById(R.id.menu_list);
@@ -574,11 +582,13 @@ public class MainActivity extends Activity {
 
     State current, idle, select, paste, openFile;
 
-    private State(boolean ignored){}
-    State(){
-      idle = new State(true){
+    private State(boolean ignored) {
+    }
+
+    State() {
+      idle = new State(true) {
         @Override
-        void start(){
+        void start() {
           findViewById(R.id.paste_operation).setVisibility(View.GONE);
           findViewById(R.id.select_operation).setVisibility(View.GONE);
           findViewById(R.id.quick_selection).setVisibility(View.GONE);
@@ -587,7 +597,7 @@ public class MainActivity extends Activity {
         }
       };
 
-      select = new State(true){
+      select = new State(true) {
         @Override
         void start() {
           findViewById(R.id.paste_operation).setVisibility(View.GONE);
@@ -597,7 +607,7 @@ public class MainActivity extends Activity {
         }
       };
 
-      paste = new State(true){
+      paste = new State(true) {
         @Override
         void start() {
           findViewById(R.id.select_operation).setVisibility(View.GONE);

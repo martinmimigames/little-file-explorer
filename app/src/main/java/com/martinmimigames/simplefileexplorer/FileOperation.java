@@ -18,7 +18,7 @@ public class FileOperation {
   public static File[] getAllStorages(final Context context) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       final File[] paths = context.getExternalFilesDirs(null);
-      for (int i = 0; i < paths.length; i++){
+      for (int i = 0; i < paths.length; i++) {
         final String path = paths[i].getAbsolutePath();
         paths[i] = new File(path.substring(0, path.lastIndexOf("/Android/") + 1)).getAbsoluteFile();
       }
