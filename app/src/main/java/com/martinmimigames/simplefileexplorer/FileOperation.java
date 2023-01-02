@@ -2,6 +2,7 @@ package com.martinmimigames.simplefileexplorer;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,16 +12,23 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class FileOperation {
 
   public static File[] getAllStorages(final Context context) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      final File[] paths = context.getExternalFilesDirs(null);
-      for (int i = 0; i < paths.length; i++) {
-        final String path = paths[i].getAbsolutePath();
-        paths[i] = new File(path.substring(0, path.lastIndexOf("/Android/") + 1)).getAbsoluteFile();
+      File[] paths = context.getExternalFilesDirs(null);
+      var pathArray = new ArrayList<File>();
+      for (File file : paths) {
+        if (file == null) continue;
+        final String path = file.getAbsolutePath();
+        pathArray.add(new File(path.substring(0, path.lastIndexOf("/Android/") + 1)).getAbsoluteFile());
+      }
+      paths = new File[pathArray.size()];
+      for (int i = 0; i < pathArray.size(); i++){
+        paths[i] = pathArray.get(i);
       }
       return paths;
     } else {
