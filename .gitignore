@@ -4,6 +4,8 @@
 .DS_Store
 /build
 /release
+/app/release
+/app/build
 /captures
 /keystore.properties
 .externalNativeBuild
