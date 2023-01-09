@@ -18,7 +18,7 @@ you can visit
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/com.gyorog.polycal/)
+     height="80">](https://f-droid.org/packages/com.martinmimigames.simplefileexplorer/)
 
 or get the APK from the [Releases Section](https://github.com/martinmimigames/little-file-explorer/releases/latest).
 
