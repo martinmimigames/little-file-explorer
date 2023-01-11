@@ -2,7 +2,6 @@ package com.martinmimigames.simplefileexplorer;
 
 import android.app.Activity;
 import android.database.DataSetObserver;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -26,7 +25,7 @@ public class ItemList implements ListAdapter {
     this.activity = activity;
   }
 
-  void clearWithNewSize(int size){
+  void clearWithNewSize(int size) {
     removeAll();
     items = new ArrayList<>(size);
   }
@@ -40,12 +39,12 @@ public class ItemList implements ListAdapter {
     onChanged();
   }
 
-  public void removeAll(){
+  public void removeAll() {
     activity.runOnUiThread(items::clear);
     onChanged();
   }
 
-  void removeView(View view){
+  void removeView(View view) {
     activity.runOnUiThread(() -> items.remove(view));
   }
 
@@ -65,7 +64,7 @@ public class ItemList implements ListAdapter {
 
   @Override
   public boolean isEnabled(int position) {
-    return items.get(position) instanceof  MainActivity.Item;
+    return items.get(position) instanceof MainActivity.Item;
   }
 
   @Override
@@ -101,7 +100,7 @@ public class ItemList implements ListAdapter {
   }
 
   @Override
-  public View getView(int position, View convertView, ViewGroup parent){
+  public View getView(int position, View convertView, ViewGroup parent) {
     return items.get(position);
   }
 

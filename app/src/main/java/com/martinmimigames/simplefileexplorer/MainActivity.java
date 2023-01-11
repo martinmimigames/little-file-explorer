@@ -29,10 +29,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class MainActivity extends Activity {
-
-  private static final int INFO_VIEW_ID = Integer.MAX_VALUE;
-  private static final int ONGOING_OPERATION_ID = Integer.MAX_VALUE - 1;
-  private static final int LOADING_VIEW_ID = Integer.MAX_VALUE - 2;
+  private static final int ONGOING_OPERATION_ID = Integer.MAX_VALUE;
+  private static final int LOADING_VIEW_ID = Integer.MAX_VALUE - 1;
   private final HashMap<Integer, View> viewsWithId;
   private static final String FILE_PATH_FLAG = "file path";
   private static final int HIGHLIGHT_COLOR = 0xFF00A4C9;
@@ -43,8 +41,7 @@ public class MainActivity extends Activity {
   private final FileOpener fopen;
   private final State appState;
   private int hasOperations;
-  private ListView listView;
-  private ItemList itemList;
+  private final ItemList itemList;
   private int width;
   private Bitmap fileImage, pictureImage, audioImage, videoImage, unknownImage, archiveImage, folderImage;
   private String filePath;
@@ -65,12 +62,13 @@ public class MainActivity extends Activity {
     appState = new State();
     itemList = new ItemList(this);
     hasOperations = 0;
-    viewsWithId = new HashMap<>(3);
+    viewsWithId = new HashMap<>(2);
   }
 
   private void setupUI() {
     setupTopBar();
     setupMenu();
+    setupListView();
     //setupDriveList(); in onStart for reload
     setupSelectMenu();
     setupPasteMenu();
@@ -94,13 +92,6 @@ public class MainActivity extends Activity {
       }
       default -> fopen.isRequestDocument = false;
     }
-
-    listView = findViewById(R.id.list);
-    listView.setAdapter(itemList);
-    itemList.setListView(listView);
-    listView.setFocusable(true);
-    listView.setClickable(true);
-    listView.setItemsCanFocus(true);
 
     setupBitmaps();
     setupUI();
@@ -163,7 +154,7 @@ public class MainActivity extends Activity {
     runOnUiThread(() -> {
       itemList.removeAll();
       ((TextView) findViewById(R.id.title)).setText(filePath);
-      addIdDialog(finalInfo, 16, INFO_VIEW_ID);
+      addDialog(finalInfo, 16);
 
       addIdDialog("Loading...", 16, LOADING_VIEW_ID);
       addIdDialog("cutting/copying/deleting files...", 16, ONGOING_OPERATION_ID);
@@ -241,7 +232,8 @@ public class MainActivity extends Activity {
     tv.setTextSize(textSize);
     tv.setId(id);
 
-    viewsWithId.put(id, tv);
+    if (id != View.NO_ID)
+      viewsWithId.put(id, tv);
     itemList.add(tv);
   }
 
@@ -512,6 +504,15 @@ public class MainActivity extends Activity {
       );
   }
 
+  private void setupListView(){
+    ListView listView = findViewById(R.id.list);
+    listView.setAdapter(itemList);
+    itemList.setListView(listView);
+    listView.setFocusable(true);
+    listView.setClickable(true);
+    listView.setItemsCanFocus(true);
+  }
+
   private void setupDeleteDialog() {
     deleteConfirmationDialog = new Dialog(this, R.style.app_theme_dialog);
     deleteConfirmationDialog.setCancelable(false);
@@ -520,10 +521,8 @@ public class MainActivity extends Activity {
     deleteConfirmationDialog.findViewById(R.id.delete_delete).setOnClickListener(v -> {
       deleteConfirmationDialog.dismiss();
       new Thread(() -> {
-        runOnUiThread(() -> {
           if (viewsWithId.get(ONGOING_OPERATION_ID) != null)
-            viewsWithId.get(ONGOING_OPERATION_ID).setVisibility(View.VISIBLE);
-        });
+            runOnUiThread(() -> viewsWithId.get(ONGOING_OPERATION_ID).setVisibility(View.VISIBLE));
         final int currentOperation = hasOperations + 1;
         hasOperations = currentOperation;
         ArrayList<File> selectedFiles = new ArrayList<>(currentSelectedFiles.size());
@@ -533,10 +532,8 @@ public class MainActivity extends Activity {
           FileOperation.delete(selectedFiles.get(i));
         if (hasOperations == currentOperation)
           hasOperations = 0;
-        runOnUiThread(() -> {
           if (viewsWithId.get(ONGOING_OPERATION_ID) != null)
-            viewsWithId.get(ONGOING_OPERATION_ID).setVisibility(View.GONE);
-        });
+            runOnUiThread(() -> viewsWithId.get(ONGOING_OPERATION_ID).setVisibility(View.GONE));
         executor.execute(() -> listItem(new File(filePath)));
       }).start();
     });
