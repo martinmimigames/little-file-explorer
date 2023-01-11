@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 
 import java.io.File;
+import java.util.ArrayList;
 
 class FileOpener {
 
@@ -39,16 +40,40 @@ class FileOpener {
     activity.startActivity(Intent.createChooser(intent, OPEN_FILE_WITH));
   }
 
-  void share(final File file) {
-    if (isRequestDocument) {
-      open(file);
+  void share(File[] files) {
+    if (isRequestDocument){
+      open(files[0]);
       return;
     }
-    final Intent intent = new Intent(Intent.ACTION_SEND);
-    final Uri uri = getUriFromFile(file);
-    intent.setType(FileProvider.getFileType(file));
-    intent.putExtra(Intent.EXTRA_SUBJECT, file.getName());
-    intent.putExtra(Intent.EXTRA_STREAM, uri);
+    Intent intent;
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.DONUT && files.length > 1) {
+      intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+      var fileList = new ArrayList<Uri>();
+      String generalMimetype = null;
+      for (var file : files){
+        fileList.add(getUriFromFile(file));
+        var mimetype = FileProvider.getFileType(file);
+        if (generalMimetype == null) {
+          generalMimetype = mimetype;
+          continue;
+        }
+        if (generalMimetype.equals(mimetype))
+          continue;
+        var type = mimetype.split("/")[0];
+        if (generalMimetype.startsWith(type)) {
+          generalMimetype = type + "/*";
+          continue;
+        }
+        generalMimetype = "*/*";
+      }
+      intent.setType(generalMimetype);
+      intent.putExtra(Intent.EXTRA_STREAM, fileList);
+    } else {
+      intent = new Intent(Intent.ACTION_SEND);
+      intent.setType(FileProvider.getFileType(files[0]));
+      intent.putExtra(Intent.EXTRA_SUBJECT, files[0].getName());
+      intent.putExtra(Intent.EXTRA_STREAM, getUriFromFile(files[0]));
+    }
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     activity.startActivity(Intent.createChooser(intent, SHARE_FILE_WITH));
   }

@@ -122,6 +122,13 @@
       android:text="invert select all"
       tools:ignore="HardcodedText" />
 
+    <Button
+      android:id="@+id/share_selected"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="share selected"
+      tools:ignore="HardcodedText" />
+
   </LinearLayout>
 
   <LinearLayout

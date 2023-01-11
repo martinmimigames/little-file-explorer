@@ -420,6 +420,12 @@ public class MainActivity extends Activity {
 
     findViewById(R.id.invert_select_all)
       .setOnClickListener(v -> forEachItem(item -> selectFiles(item.file, item)));
+
+    findViewById(R.id.share_selected)
+      .setOnClickListener(v -> {
+        fopen.share(getCurrentSelectedFilesList());
+        appState.change(appState.idle);
+      });
   }
 
   private void setupPasteMenu() {
@@ -468,7 +474,7 @@ public class MainActivity extends Activity {
     } else {
       openListDialog.findViewById(R.id.open_list_share).setOnClickListener(v -> {
         openListDialog.dismiss();
-        fopen.share(currentSelectedFiles.get(0));
+        fopen.share(getCurrentSelectedFilesList());
         appState.change(appState.idle);
       });
     }
@@ -477,6 +483,14 @@ public class MainActivity extends Activity {
       appState.change(appState.idle);
     });
     openListDialog.setOnCancelListener(d -> appState.change(appState.idle));
+  }
+
+  File[] getCurrentSelectedFilesList(){
+    var files = new File[currentSelectedFiles.size()];
+    for (int i = 0; i < currentSelectedFiles.size(); i++){
+      files[i] = currentSelectedFiles.get(i);
+    }
+    return files;
   }
 
   private void setupRenameDialog() {
