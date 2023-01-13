@@ -2,11 +2,11 @@ package com.martinmimigames.simplefileexplorer;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.content.res.Resources.getSystem;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -19,19 +19,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class MainActivity extends Activity {
   private static final int ONGOING_OPERATION_ID = Integer.MAX_VALUE;
   private static final int LOADING_VIEW_ID = Integer.MAX_VALUE - 1;
-  private final HashMap<Integer, View> viewsWithId;
   private static final String FILE_PATH_FLAG = "file path";
   private static final int HIGHLIGHT_COLOR = 0xFF00A4C9;
   private final ShortTabOnButton shortTabOnButton;
@@ -41,7 +38,7 @@ public class MainActivity extends Activity {
   private final FileOpener fopen;
   private final State appState;
   private int hasOperations;
-  private final ItemList itemList;
+  private LinearLayout ll;
   private int width;
   private Bitmap fileImage, pictureImage, audioImage, videoImage, unknownImage, archiveImage, folderImage;
   private String filePath;
@@ -60,15 +57,13 @@ public class MainActivity extends Activity {
     executor = new ScheduledThreadPoolExecutor(1);
     fopen = new FileOpener(this);
     appState = new State();
-    itemList = new ItemList(this);
+
     hasOperations = 0;
-    viewsWithId = new HashMap<>(2);
   }
 
   private void setupUI() {
     setupTopBar();
     setupMenu();
-    setupListView();
     //setupDriveList(); in onStart for reload
     setupSelectMenu();
     setupPasteMenu();
@@ -92,6 +87,8 @@ public class MainActivity extends Activity {
       }
       default -> fopen.isRequestDocument = false;
     }
+
+    ll = findViewById(R.id.list);
 
     setupBitmaps();
     setupUI();
@@ -152,14 +149,14 @@ public class MainActivity extends Activity {
     }
     final String finalInfo = info;
     runOnUiThread(() -> {
-      itemList.removeAll();
+      ll.removeAllViews();
       ((TextView) findViewById(R.id.title)).setText(filePath);
       addDialog(finalInfo, 16);
 
       addIdDialog("Loading...", 16, LOADING_VIEW_ID);
       addIdDialog("cutting/copying/deleting files...", 16, ONGOING_OPERATION_ID);
       if (hasOperations == 0)
-        viewsWithId.get(ONGOING_OPERATION_ID).setVisibility(View.GONE);
+        findViewById(ONGOING_OPERATION_ID).setVisibility(View.GONE);
     });
 
     parent = folder.getParentFile();
@@ -221,7 +218,7 @@ public class MainActivity extends Activity {
         addDialog("For android 11 or higher, Android/data and Android/obb is refused access.\n", 16);
       } else addDialog("Access Denied", 16);
     }
-    itemList.removeView(viewsWithId.get(LOADING_VIEW_ID));
+    runOnUiThread(() -> ll.removeView(findViewById(LOADING_VIEW_ID)));
   }
 
   private void addIdDialog(final String dialog, final int textSize, final int id) {
@@ -232,9 +229,7 @@ public class MainActivity extends Activity {
     tv.setTextSize(textSize);
     tv.setId(id);
 
-    if (id != View.NO_ID)
-      viewsWithId.put(id, tv);
-    itemList.add(tv);
+    runOnUiThread(() -> ll.addView(tv));
   }
 
   private void addDialog(final String dialog, final int textSize) {
@@ -434,11 +429,11 @@ public class MainActivity extends Activity {
         v -> new Thread(() -> {
           final int currentOperation = hasOperations + 1;
           hasOperations = currentOperation;
-          if (viewsWithId.get(ONGOING_OPERATION_ID) != null)
-            runOnUiThread(() -> viewsWithId.get(ONGOING_OPERATION_ID).setVisibility(View.VISIBLE));
+          if (findViewById(ONGOING_OPERATION_ID) != null)
+            runOnUiThread(() -> findViewById(ONGOING_OPERATION_ID).setVisibility(View.VISIBLE));
           final ArrayList<File> selectedFiles = new ArrayList<>(currentSelectedFiles.size());
           selectedFiles.addAll(currentSelectedFiles);
-          runOnUiThread(() -> appState.change(appState.idle));
+          appState.change(appState.idle);
           if (isCut) {
             for (int i = 0; i < selectedFiles.size(); i++) {
               File file = selectedFiles.get(i);
@@ -453,8 +448,8 @@ public class MainActivity extends Activity {
 
           if (hasOperations == currentOperation)
             hasOperations = 0;
-          if (viewsWithId.get(ONGOING_OPERATION_ID) != null)
-            runOnUiThread(() -> viewsWithId.get(ONGOING_OPERATION_ID).setVisibility(View.GONE));
+          if (findViewById(ONGOING_OPERATION_ID) != null)
+            runOnUiThread(() -> findViewById(ONGOING_OPERATION_ID).setVisibility(View.GONE));
           selectedFiles.clear();
           executor.execute(() -> listItem(new File(filePath)));
         }).start());
@@ -485,9 +480,9 @@ public class MainActivity extends Activity {
     openListDialog.setOnCancelListener(d -> appState.change(appState.idle));
   }
 
-  File[] getCurrentSelectedFilesList(){
+  File[] getCurrentSelectedFilesList() {
     var files = new File[currentSelectedFiles.size()];
-    for (int i = 0; i < currentSelectedFiles.size(); i++){
+    for (int i = 0; i < currentSelectedFiles.size(); i++) {
       files[i] = currentSelectedFiles.get(i);
     }
     return files;
@@ -518,15 +513,6 @@ public class MainActivity extends Activity {
       );
   }
 
-  private void setupListView(){
-    ListView listView = findViewById(R.id.list);
-    listView.setAdapter(itemList);
-    itemList.setListView(listView);
-    listView.setFocusable(true);
-    listView.setClickable(true);
-    listView.setItemsCanFocus(true);
-  }
-
   private void setupDeleteDialog() {
     deleteConfirmationDialog = new Dialog(this, R.style.app_theme_dialog);
     deleteConfirmationDialog.setCancelable(false);
@@ -535,19 +521,19 @@ public class MainActivity extends Activity {
     deleteConfirmationDialog.findViewById(R.id.delete_delete).setOnClickListener(v -> {
       deleteConfirmationDialog.dismiss();
       new Thread(() -> {
-          if (viewsWithId.get(ONGOING_OPERATION_ID) != null)
-            runOnUiThread(() -> viewsWithId.get(ONGOING_OPERATION_ID).setVisibility(View.VISIBLE));
+        if (findViewById(ONGOING_OPERATION_ID) != null)
+          runOnUiThread(() -> findViewById(ONGOING_OPERATION_ID).setVisibility(View.VISIBLE));
         final int currentOperation = hasOperations + 1;
         hasOperations = currentOperation;
         ArrayList<File> selectedFiles = new ArrayList<>(currentSelectedFiles.size());
         selectedFiles.addAll(currentSelectedFiles);
-        runOnUiThread(() -> appState.change(appState.idle));
+        appState.change(appState.idle);
         for (int i = 0; i < selectedFiles.size(); i++)
           FileOperation.delete(selectedFiles.get(i));
         if (hasOperations == currentOperation)
           hasOperations = 0;
-          if (viewsWithId.get(ONGOING_OPERATION_ID) != null)
-            runOnUiThread(() -> viewsWithId.get(ONGOING_OPERATION_ID).setVisibility(View.GONE));
+        if (findViewById(ONGOING_OPERATION_ID) != null)
+          runOnUiThread(() -> findViewById(ONGOING_OPERATION_ID).setVisibility(View.GONE));
         executor.execute(() -> listItem(new File(filePath)));
       }).start();
     });
@@ -571,7 +557,7 @@ public class MainActivity extends Activity {
   }
 
   private void setupBitmaps() {
-    width = getSystem().getDisplayMetrics().widthPixels;
+    width = Resources.getSystem().getDisplayMetrics().widthPixels;
     folderImage = BitmapFactory.decodeResource(getResources(),
       R.drawable.folder);
     fileImage = BitmapFactory.decodeResource(getResources(),
@@ -590,8 +576,8 @@ public class MainActivity extends Activity {
 
   private void forEachItem(ForEachItemFunction forEachItemFunction) {
     View v;
-    for (int i = itemList.getCount() - 1; i >= 0; i--) {
-      v = itemList.get(i);
+    for (int i = ll.getChildCount() - 1; i >= 0; i--) {
+      v = ll.getChildAt(i);
       if (v instanceof Item)
         forEachItemFunction.forEachItem((Item) v);
     }
@@ -648,7 +634,7 @@ public class MainActivity extends Activity {
 
     public void change(State state) {
       current = state;
-      current.start();
+      MainActivity.this.runOnUiThread(current::start);
     }
   }
 
@@ -674,7 +660,7 @@ public class MainActivity extends Activity {
       runOnUiThread(() -> {
         this.addView(imageView);
         this.addView(textView);
-        itemList.add(this);
+        ll.addView(this);
       });
     }
   }

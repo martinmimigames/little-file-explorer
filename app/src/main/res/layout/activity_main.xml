@@ -54,14 +54,18 @@
 
   </RelativeLayout>
 
-  <ListView
+  <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@+id/header"
-    android:id="@+id/list"
-    android:padding="7dp"
-    android:fastScrollEnabled="true"
-    android:fastScrollAlwaysVisible="true"/>
+    android:layout_below="@id/header">
+
+    <LinearLayout
+      android:id="@+id/list"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="6dp" />
+  </ScrollView>
 
   <LinearLayout
     android:id="@+id/drive_list"
