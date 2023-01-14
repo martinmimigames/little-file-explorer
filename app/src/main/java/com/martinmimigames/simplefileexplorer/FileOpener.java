@@ -13,8 +13,7 @@ import java.util.ArrayList;
 
 class FileOpener {
 
-  private static final String OPEN_FILE_WITH = "Open with:";
-  private static final String SHARE_FILE_WITH = "Share with:";
+  private static final String SHARE_FILE_WITH = "Share with";
   private final Activity activity;
   boolean isRequestDocument;
 
@@ -37,7 +36,7 @@ class FileOpener {
       activity.finish();
       return;
     }
-    activity.startActivity(Intent.createChooser(intent, OPEN_FILE_WITH));
+    activity.startActivity(intent);
   }
 
   void share(File[] files) {
