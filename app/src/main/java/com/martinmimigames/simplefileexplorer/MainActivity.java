@@ -421,11 +421,15 @@ public class MainActivity extends Activity {
     findViewById(R.id.invert_select_all)
       .setOnClickListener(v -> forEachItem(item -> selectFiles(item.file, item)));
 
-    findViewById(R.id.share_selected)
-      .setOnClickListener(v -> {
-        fopen.share(getCurrentSelectedFilesList());
-        appState.change(appState.idle);
-      });
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
+      findViewById(R.id.share_selected)
+        .setOnClickListener(v -> {
+          fopen.share(getCurrentSelectedFilesList());
+          appState.change(appState.idle);
+        });
+    } else {
+      findViewById(R.id.share_selected).setVisibility(View.GONE);
+    }
   }
 
   private void setupPasteMenu() {
