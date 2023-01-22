@@ -14,7 +14,8 @@
     android:layout_alignParentTop="true"
     android:layout_gravity="start"
     android:background="#3c3c3c"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:ignore="RtlHardcoded">
 
     <Button
       android:id="@+id/back_button"
@@ -83,7 +84,8 @@
     android:layout_below="@id/header"
     android:layout_alignParentRight="true"
     android:orientation="vertical"
-    android:visibility="gone">
+    android:visibility="gone"
+    tools:ignore="RtlHardcoded">
 
     <Button
       android:id="@+id/menu_create_new_directory"
@@ -142,7 +144,7 @@
     android:layout_alignParentBottom="true"
     android:layout_centerInParent="true"
     android:orientation="horizontal"
-    android:visibility="gone"
+    android:visibility="visible"
     android:padding="6dp">
 
     <Button

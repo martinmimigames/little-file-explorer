@@ -1,0 +1,3 @@
+[submodule "app/src/main/java/mg/utils"]
+	path = app/src/main/java/mg/utils
+	url = https://github.com/martinmimigames/utils
