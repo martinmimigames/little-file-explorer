@@ -74,8 +74,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@id/header"
     android:orientation="vertical"
-    android:padding="6dp"
-    android:visibility="gone"/>
+    android:padding="6dp"/>
 
   <LinearLayout
     android:id="@+id/menu_list"
@@ -84,7 +83,6 @@
     android:layout_below="@id/header"
     android:layout_alignParentRight="true"
     android:orientation="vertical"
-    android:visibility="gone"
     tools:ignore="RtlHardcoded">
 
     <Button
@@ -112,7 +110,7 @@
     android:layout_below="@id/header"
     android:layout_alignParentRight="true"
     android:orientation="vertical"
-    android:visibility="gone">
+    tools:ignore="RtlHardcoded">
 
     <Button
       android:id="@+id/select_all"
@@ -144,7 +142,6 @@
     android:layout_alignParentBottom="true"
     android:layout_centerInParent="true"
     android:orientation="horizontal"
-    android:visibility="visible"
     android:padding="6dp">
 
     <Button
@@ -191,7 +188,6 @@
     android:layout_alignParentBottom="true"
     android:layout_centerInParent="true"
     android:orientation="horizontal"
-    android:visibility="gone"
     android:padding="6dp">
 
     <Button

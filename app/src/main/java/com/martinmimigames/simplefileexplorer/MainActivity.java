@@ -341,6 +341,7 @@ public class MainActivity extends Activity {
   }
 
   private void setupMenu() {
+    findViewById(R.id.menu_list).setVisibility(View.GONE);
     findViewById(R.id.menu_create_new_directory)
       .setOnClickListener(v -> {
         createDirectoryDialog.show();
@@ -375,6 +376,7 @@ public class MainActivity extends Activity {
       });
       list.addView(entry);
     }
+    list.setVisibility(View.GONE);
   }
 
   private void setupSelectMenu() {
