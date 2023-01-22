@@ -13,7 +13,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Open"
-    android:textSize="20sp"
+    android:textSize="18sp"
     tools:ignore="HardcodedText" />
 
   <Button
@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Share"
-    android:textSize="20sp"
+    android:textSize="18sp"
     tools:ignore="HardcodedText" />
 
   <Button
@@ -31,7 +31,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Copy path"
-    android:textSize="20sp"
+    android:textSize="18sp"
     tools:ignore="HardcodedText" />
 
   <Button
@@ -40,7 +40,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Cancel"
-    android:textSize="20sp"
+    android:textSize="18sp"
     tools:ignore="HardcodedText" />
 
 </LinearLayout>
