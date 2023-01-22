@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:a="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical"
-  android:theme="@style/app_theme"
-  android:background="@color/background">
+  a:layout_width="match_parent"
+  a:layout_height="match_parent"
+  a:orientation="vertical"
+  a:theme="@style/app_theme"
+  a:background="@color/background">
 
   <EditText
-    android:id="@+id/new_directory_name"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:hint="Enter folder name"
-    android:text="New folder"
+    a:id="@+id/new_directory_name"
+    a:layout_width="match_parent"
+    a:layout_height="wrap_content"
+    a:layout_alignParentTop="true"
+    a:hint="Enter folder name"
+    a:text="New folder"
     tools:ignore="HardcodedText"/>
 
   <Button
-    android:id="@+id/new_directory_cancel"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/new_directory_name"
-    android:layout_toLeftOf="@id/new_directory_create"
-    android:text="Cancel"
+    a:id="@+id/new_directory_cancel"
+    a:layout_width="wrap_content"
+    a:layout_height="wrap_content"
+    a:layout_below="@id/new_directory_name"
+    a:layout_toLeftOf="@id/new_directory_create"
+    a:text="Cancel"
     tools:ignore="HardcodedText,RtlHardcoded"
     style="@style/buttonStyle" />
 
   <Button
-    android:id="@+id/new_directory_create"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/new_directory_name"
-    android:layout_alignParentRight="true"
-    android:text="Create"
+    a:id="@+id/new_directory_create"
+    a:layout_width="wrap_content"
+    a:layout_height="wrap_content"
+    a:layout_below="@id/new_directory_name"
+    a:layout_alignParentRight="true"
+    a:text="Create"
     tools:ignore="HardcodedText,RtlHardcoded"
     style="@style/buttonStyle" />
 

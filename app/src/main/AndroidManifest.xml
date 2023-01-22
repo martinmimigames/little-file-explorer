@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:a="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   package="com.martinmimigames.simplefileexplorer"
-  android:versionCode="8"
-  android:versionName="4.6">
+  a:versionCode="9"
+  a:versionName="4.7">
 
   <uses-sdk
-    android:minSdkVersion="1"
+    a:minSdkVersion="1"
     tools:ignore="GradleOverrides" />
 
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission a:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission a:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission
-    android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+    a:name="android.permission.MANAGE_EXTERNAL_STORAGE"
     tools:ignore="ScopedStorage" />
-  <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+  <uses-permission a:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
   <application
-    android:icon="@drawable/folder"
-    android:label="Little File Explorer"
-    android:requestLegacyExternalStorage="true"
-    android:resizeableActivity="true"
-    android:restoreAnyVersion="true"
-    android:theme="@style/app_theme"
+    a:icon="@drawable/folder"
+    a:label="Little File Explorer"
+    a:requestLegacyExternalStorage="true"
+    a:resizeableActivity="true"
+    a:restoreAnyVersion="true"
+    a:theme="@style/app_theme"
     tools:targetApi="n">
 
     <provider
-      android:name=".FileProvider"
-      android:authorities="com.martinmimigames.simplefileexplorer.FileProvider"
-      android:exported="true"
-      android:grantUriPermissions="true" />
+      a:name=".FileProvider"
+      a:authorities="com.martinmimigames.simplefileexplorer.FileProvider"
+      a:exported="true"
+      a:grantUriPermissions="true" />
 
     <activity
-      android:name=".MainActivity"
-      android:exported="true">
+      a:name=".MainActivity"
+      a:exported="true">
       <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
+        <action a:name="android.intent.action.MAIN" />
+        <category a:name="android.intent.category.LAUNCHER" />
       </intent-filter>
       <intent-filter>
-        <action android:name="android.intent.action.GET_CONTENT" />
-        <action android:name="android.intent.action.OPEN_DOCUMENT" />
+        <action a:name="android.intent.action.GET_CONTENT" />
+        <action a:name="android.intent.action.OPEN_DOCUMENT" />
 
-        <data android:mimeType="*/*" />
+        <data a:mimeType="*/*" />
 
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.OPENABLE" />
+        <category a:name="android.intent.category.DEFAULT" />
+        <category a:name="android.intent.category.OPENABLE" />
       </intent-filter>
     </activity>
 

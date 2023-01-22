@@ -1,207 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:a="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical"
-  android:background="@color/background">
+  a:layout_width="match_parent"
+  a:layout_height="match_parent"
+  a:orientation="vertical"
+  a:background="@color/background">
 
   <RelativeLayout
-    android:id="@+id/header"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentTop="true"
-    android:layout_gravity="start"
-    android:background="#3c3c3c"
-    android:orientation="horizontal"
+    a:id="@+id/header"
+    a:layout_width="match_parent"
+    a:layout_height="wrap_content"
+    a:layout_alignParentLeft="true"
+    a:layout_alignParentTop="true"
+    a:layout_gravity="start"
+    a:background="#3c3c3c"
+    a:orientation="horizontal"
     tools:ignore="RtlHardcoded">
 
     <Button
-      android:id="@+id/back_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentLeft="true"
-      android:layout_alignParentTop="true"
-      android:padding="10dp"
-      android:text=" &#60;- "
-      android:textSize="30sp"
+      a:id="@+id/back_button"
+      a:layout_width="wrap_content"
+      a:layout_height="wrap_content"
+      a:layout_alignParentLeft="true"
+      a:layout_alignParentTop="true"
+      a:padding="10dp"
+      a:text=" &#60;- "
+      a:textSize="30sp"
       tools:ignore="HardcodedText" />
 
     <Button
-      android:id="@+id/menu_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentTop="true"
-      android:layout_alignParentRight="true"
-      android:padding="10dp"
-      android:text=" ||| "
-      android:textSize="30sp"
+      a:id="@+id/menu_button"
+      a:layout_width="wrap_content"
+      a:layout_height="wrap_content"
+      a:layout_alignParentTop="true"
+      a:layout_alignParentRight="true"
+      a:padding="10dp"
+      a:text=" ||| "
+      a:textSize="30sp"
       tools:ignore="HardcodedText" />
 
     <TextView
-      android:id="@+id/title"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentTop="true"
-      android:paddingLeft="5dp"
-      android:paddingRight="5dp"
-      android:layout_toLeftOf="@id/menu_button"
-      android:layout_toRightOf="@id/back_button"
-      android:background="#3c3c3c"
-      android:ellipsize="start"
-      android:singleLine="true"
-      android:textSize="20sp" />
+      a:id="@+id/title"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      a:layout_alignParentTop="true"
+      a:paddingLeft="5dp"
+      a:paddingRight="5dp"
+      a:layout_toLeftOf="@id/menu_button"
+      a:layout_toRightOf="@id/back_button"
+      a:background="#3c3c3c"
+      a:ellipsize="start"
+      a:singleLine="true"
+      a:textSize="20sp" />
 
   </RelativeLayout>
 
   <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_below="@id/header">
+    a:layout_width="match_parent"
+    a:layout_height="match_parent"
+    a:layout_below="@id/header">
 
     <LinearLayout
-      android:id="@+id/list"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:padding="6dp" />
+      a:id="@+id/list"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      a:orientation="vertical"
+      a:padding="6dp" />
   </ScrollView>
 
   <LinearLayout
-    android:id="@+id/drive_list"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/header"
-    android:orientation="vertical"
-    android:padding="6dp"/>
+    a:id="@+id/drive_list"
+    a:layout_width="match_parent"
+    a:layout_height="wrap_content"
+    a:layout_below="@id/header"
+    a:orientation="vertical"
+    a:padding="6dp"/>
 
   <LinearLayout
-    android:id="@+id/menu_list"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/header"
-    android:layout_alignParentRight="true"
-    android:orientation="vertical"
+    a:id="@+id/menu_list"
+    a:layout_width="wrap_content"
+    a:layout_height="wrap_content"
+    a:layout_below="@id/header"
+    a:layout_alignParentRight="true"
+    a:orientation="vertical"
     tools:ignore="RtlHardcoded">
 
     <Button
-      android:id="@+id/menu_create_new_directory"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Create new folder"
-      android:layout_gravity="right"
+      a:id="@+id/menu_create_new_directory"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      a:text="Create new folder"
+      a:layout_gravity="right"
       tools:ignore="HardcodedText" />
 
     <Button
-      android:id="@+id/menu_quick_switch"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Switch drive menu"
-      android:layout_gravity="right"
+      a:id="@+id/menu_quick_switch"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      a:text="Switch drive menu"
+      a:layout_gravity="right"
       tools:ignore="HardcodedText" />
 
   </LinearLayout>
 
   <LinearLayout
-    android:id="@+id/quick_selection"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/header"
-    android:layout_alignParentRight="true"
-    android:orientation="vertical"
+    a:id="@+id/quick_selection"
+    a:layout_width="wrap_content"
+    a:layout_height="wrap_content"
+    a:layout_below="@id/header"
+    a:layout_alignParentRight="true"
+    a:orientation="vertical"
     tools:ignore="RtlHardcoded">
 
     <Button
-      android:id="@+id/select_all"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Select all"
+      a:id="@+id/select_all"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      a:text="Select all"
       tools:ignore="HardcodedText" />
 
     <Button
-      android:id="@+id/invert_select_all"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Invert select all"
+      a:id="@+id/invert_select_all"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      a:text="Invert select all"
       tools:ignore="HardcodedText" />
 
     <Button
-      android:id="@+id/share_selected"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Share selected"
-      tools:ignore="HardcodedText" />
-
-  </LinearLayout>
-
-  <LinearLayout
-    android:id="@+id/select_operation"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_centerInParent="true"
-    android:orientation="horizontal"
-    android:padding="6dp">
-
-    <Button
-      android:id="@+id/select_cut"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Cut"
-      tools:ignore="HardcodedText" />
-
-    <Button
-      android:id="@+id/select_copy"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Copy"
-      tools:ignore="HardcodedText" />
-
-    <Button
-      android:id="@+id/select_rename"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Rename"
-      tools:ignore="HardcodedText" />
-
-    <Button
-      android:id="@+id/select_delete"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Delete"
-      tools:ignore="HardcodedText" />
-
-    <Button
-      android:id="@+id/select_cancel"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Cancel"
+      a:id="@+id/share_selected"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      a:text="Share selected"
       tools:ignore="HardcodedText" />
 
   </LinearLayout>
 
   <LinearLayout
-    android:id="@+id/paste_operation"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_centerInParent="true"
-    android:orientation="horizontal"
-    android:padding="6dp">
+    a:id="@+id/select_operation"
+    a:layout_width="wrap_content"
+    a:layout_height="wrap_content"
+    a:layout_alignParentBottom="true"
+    a:layout_centerInParent="true"
+    a:orientation="horizontal"
+    a:padding="6dp">
 
     <Button
-      android:id="@+id/paste_paste"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Paste"
+      a:id="@+id/select_cut"
+      a:layout_width="wrap_content"
+      a:layout_height="wrap_content"
+      a:text="Cut"
       tools:ignore="HardcodedText" />
 
     <Button
-      android:id="@+id/paste_cancel"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Cancel"
+      a:id="@+id/select_copy"
+      a:layout_width="wrap_content"
+      a:layout_height="wrap_content"
+      a:text="Copy"
+      tools:ignore="HardcodedText" />
+
+    <Button
+      a:id="@+id/select_rename"
+      a:layout_width="wrap_content"
+      a:layout_height="wrap_content"
+      a:text="Rename"
+      tools:ignore="HardcodedText" />
+
+    <Button
+      a:id="@+id/select_delete"
+      a:layout_width="wrap_content"
+      a:layout_height="wrap_content"
+      a:text="Delete"
+      tools:ignore="HardcodedText" />
+
+    <Button
+      a:id="@+id/select_cancel"
+      a:layout_width="wrap_content"
+      a:layout_height="wrap_content"
+      a:text="Cancel"
+      tools:ignore="HardcodedText" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    a:id="@+id/paste_operation"
+    a:layout_width="wrap_content"
+    a:layout_height="wrap_content"
+    a:layout_alignParentBottom="true"
+    a:layout_centerInParent="true"
+    a:orientation="horizontal"
+    a:padding="6dp">
+
+    <Button
+      a:id="@+id/paste_paste"
+      a:layout_width="wrap_content"
+      a:layout_height="wrap_content"
+      a:text="Paste"
+      tools:ignore="HardcodedText" />
+
+    <Button
+      a:id="@+id/paste_cancel"
+      a:layout_width="wrap_content"
+      a:layout_height="wrap_content"
+      a:text="Cancel"
       tools:ignore="HardcodedText" />
 
   </LinearLayout>

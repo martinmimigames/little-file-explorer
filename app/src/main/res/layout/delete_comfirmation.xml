@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:a="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical"
-  android:theme="@style/app_theme"
-  android:background="@color/background">
+  a:layout_width="match_parent"
+  a:layout_height="match_parent"
+  a:orientation="vertical"
+  a:theme="@style/app_theme"
+  a:background="@color/background">
 
   <ScrollView
-    android:id="@+id/delete_scroll_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:gravity="top">
+    a:id="@+id/delete_scroll_view"
+    a:layout_width="match_parent"
+    a:layout_height="wrap_content"
+    a:layout_alignParentTop="true"
+    a:gravity="top">
 
     <TextView
-      android:id="@+id/delete_list"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="2dp"/>
+      a:id="@+id/delete_list"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      a:padding="2dp"/>
 
   </ScrollView>
 
   <Button
-    android:id="@+id/delete_delete"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/delete_scroll_view"
-    android:text="Delete"
-    android:textSize="20sp"
+    a:id="@+id/delete_delete"
+    a:layout_width="match_parent"
+    a:layout_height="wrap_content"
+    a:layout_below="@id/delete_scroll_view"
+    a:text="Delete"
+    a:textSize="20sp"
     style="@style/buttonStyle"
     tools:ignore="HardcodedText" />
 
   <Button
-    android:id="@+id/delete_cancel"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/delete_delete"
-    android:text="Cancel"
-    android:textSize="20sp"
+    a:id="@+id/delete_cancel"
+    a:layout_width="match_parent"
+    a:layout_height="wrap_content"
+    a:layout_below="@id/delete_delete"
+    a:text="Cancel"
+    a:textSize="20sp"
     style="@style/buttonStyle"
     tools:ignore="HardcodedText" />
 

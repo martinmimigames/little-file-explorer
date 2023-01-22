@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:a="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical"
-  android:theme="@style/app_theme"
-  android:background="@color/background">
+  a:layout_width="match_parent"
+  a:layout_height="match_parent"
+  a:orientation="vertical"
+  a:theme="@style/app_theme"
+  a:background="@color/background">
 
   <EditText
-    android:id="@+id/new_name"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:hint="Enter new name"
+    a:id="@+id/new_name"
+    a:layout_width="match_parent"
+    a:layout_height="wrap_content"
+    a:layout_alignParentTop="true"
+    a:hint="Enter new name"
     tools:ignore="HardcodedText"/>
 
   <Button
-    android:id="@+id/rename_cancel"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/new_name"
-    android:layout_toLeftOf="@id/rename_rename"
-    android:text="Cancel"
+    a:id="@+id/rename_cancel"
+    a:layout_width="wrap_content"
+    a:layout_height="wrap_content"
+    a:layout_below="@id/new_name"
+    a:layout_toLeftOf="@id/rename_rename"
+    a:text="Cancel"
     tools:ignore="HardcodedText,RtlHardcoded"
     style="@style/buttonStyle" />
 
   <Button
-    android:id="@+id/rename_rename"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/new_name"
-    android:layout_alignParentRight="true"
-    android:text="Rename"
+    a:id="@+id/rename_rename"
+    a:layout_width="wrap_content"
+    a:layout_height="wrap_content"
+    a:layout_below="@id/new_name"
+    a:layout_alignParentRight="true"
+    a:text="Rename"
     tools:ignore="HardcodedText,RtlHardcoded"
     style="@style/buttonStyle" />
 
