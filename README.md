@@ -26,4 +26,8 @@ or get the APK from the [Releases Section](https://github.com/martinmimigames/li
 
 - Free
 - Small (< 40KB)
+- Basic file operations (Cut, copy, paste, rename, delete)
+- Easy switch between sdcard and internal storage
+- Multi-share function
+- File path copying
 - Minimum permissions

@@ -1,0 +1,6 @@
+- Added multi-share option (sdk 4+)
+- Added file path copy option
+- Allow open file with default apps
+- Reduced open list button size
+- Capitalised buttons
+- Changed opener text

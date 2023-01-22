@@ -8,6 +8,10 @@ Previous known as Simple File Explorer (but from martinmimigames).
 
 - Free
 - Small (< 40KB)
+- Basic file operations (Cut, copy, paste, rename, delete)
+- Easy switch between sdcard and internal storage
+- Multi-share function
+- File path copying
 - Minimum permissions
 - Supports Android 1.0+
 
