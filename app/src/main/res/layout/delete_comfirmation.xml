@@ -27,7 +27,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@id/delete_scroll_view"
-    android:text="delete"
+    android:text="Delete"
     android:textSize="20sp"
     style="@style/buttonStyle"
     tools:ignore="HardcodedText" />
@@ -37,7 +37,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@id/delete_delete"
-    android:text="cancel"
+    android:text="Cancel"
     android:textSize="20sp"
     style="@style/buttonStyle"
     tools:ignore="HardcodedText" />

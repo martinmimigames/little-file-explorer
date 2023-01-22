@@ -12,8 +12,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
-    android:hint="enter folder name"
-    android:text="new folder"
+    android:hint="Enter folder name"
+    android:text="New folder"
     tools:ignore="HardcodedText"/>
 
   <Button
@@ -22,7 +22,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@id/new_directory_name"
     android:layout_toLeftOf="@id/new_directory_create"
-    android:text="cancel"
+    android:text="Cancel"
     tools:ignore="HardcodedText,RtlHardcoded"
     style="@style/buttonStyle" />
 
@@ -32,7 +32,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@id/new_directory_name"
     android:layout_alignParentRight="true"
-    android:text="create"
+    android:text="Create"
     tools:ignore="HardcodedText,RtlHardcoded"
     style="@style/buttonStyle" />
 

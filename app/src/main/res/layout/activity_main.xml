@@ -89,7 +89,7 @@
       android:id="@+id/menu_create_new_directory"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="create new folder"
+      android:text="Create new folder"
       android:layout_gravity="right"
       tools:ignore="HardcodedText" />
 
@@ -97,7 +97,7 @@
       android:id="@+id/menu_quick_switch"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="switch drive menu"
+      android:text="Switch drive menu"
       android:layout_gravity="right"
       tools:ignore="HardcodedText" />
 
@@ -116,21 +116,21 @@
       android:id="@+id/select_all"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="select all"
+      android:text="Select all"
       tools:ignore="HardcodedText" />
 
     <Button
       android:id="@+id/invert_select_all"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="invert select all"
+      android:text="Invert select all"
       tools:ignore="HardcodedText" />
 
     <Button
       android:id="@+id/share_selected"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="share selected"
+      android:text="Share selected"
       tools:ignore="HardcodedText" />
 
   </LinearLayout>
@@ -148,35 +148,35 @@
       android:id="@+id/select_cut"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="cut"
+      android:text="Cut"
       tools:ignore="HardcodedText" />
 
     <Button
       android:id="@+id/select_copy"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="copy"
+      android:text="Copy"
       tools:ignore="HardcodedText" />
 
     <Button
       android:id="@+id/select_rename"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="rename"
+      android:text="Rename"
       tools:ignore="HardcodedText" />
 
     <Button
       android:id="@+id/select_delete"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="delete"
+      android:text="Delete"
       tools:ignore="HardcodedText" />
 
     <Button
       android:id="@+id/select_cancel"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="cancel"
+      android:text="Cancel"
       tools:ignore="HardcodedText" />
 
   </LinearLayout>
@@ -194,14 +194,14 @@
       android:id="@+id/paste_paste"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="paste"
+      android:text="Paste"
       tools:ignore="HardcodedText" />
 
     <Button
       android:id="@+id/paste_cancel"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="cancel"
+      android:text="Cancel"
       tools:ignore="HardcodedText" />
 
   </LinearLayout>

@@ -12,7 +12,7 @@
     style="@style/buttonStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="open"
+    android:text="Open"
     android:textSize="20sp"
     tools:ignore="HardcodedText" />
 
@@ -21,7 +21,7 @@
     style="@style/buttonStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="share"
+    android:text="Share"
     android:textSize="20sp"
     tools:ignore="HardcodedText" />
 
@@ -30,7 +30,7 @@
     style="@style/buttonStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="copy path"
+    android:text="Copy path"
     android:textSize="20sp"
     tools:ignore="HardcodedText" />
 
@@ -39,7 +39,7 @@
     style="@style/buttonStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="cancel"
+    android:text="Cancel"
     android:textSize="20sp"
     tools:ignore="HardcodedText" />
 

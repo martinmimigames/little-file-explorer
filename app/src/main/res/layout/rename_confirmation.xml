@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
-    android:hint="enter new name"
+    android:hint="Enter new name"
     tools:ignore="HardcodedText"/>
 
   <Button
@@ -21,7 +21,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@id/new_name"
     android:layout_toLeftOf="@id/rename_rename"
-    android:text="cancel"
+    android:text="Cancel"
     tools:ignore="HardcodedText,RtlHardcoded"
     style="@style/buttonStyle" />
 
@@ -31,7 +31,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@id/new_name"
     android:layout_alignParentRight="true"
-    android:text="rename"
+    android:text="Rename"
     tools:ignore="HardcodedText,RtlHardcoded"
     style="@style/buttonStyle" />
 
