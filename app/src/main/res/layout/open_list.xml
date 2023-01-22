@@ -3,35 +3,44 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="@color/background"
   android:orientation="vertical"
-  android:theme="@style/app_theme"
-  android:background="@color/background">
+  android:theme="@style/app_theme">
 
   <Button
     android:id="@+id/open_list_open"
+    style="@style/buttonStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="open"
     android:textSize="20sp"
-    tools:ignore="HardcodedText"
-    style="@style/buttonStyle" />
+    tools:ignore="HardcodedText" />
 
   <Button
     android:id="@+id/open_list_share"
+    style="@style/buttonStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="share"
     android:textSize="20sp"
-    tools:ignore="HardcodedText"
-    style="@style/buttonStyle" />
+    tools:ignore="HardcodedText" />
+
+  <Button
+    android:id="@+id/open_list_copy_path"
+    style="@style/buttonStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="copy path"
+    android:textSize="20sp"
+    tools:ignore="HardcodedText" />
 
   <Button
     android:id="@+id/open_list_cancel"
+    style="@style/buttonStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="cancel"
     android:textSize="20sp"
-    tools:ignore="HardcodedText"
-    style="@style/buttonStyle" />
+    tools:ignore="HardcodedText" />
 
 </LinearLayout>

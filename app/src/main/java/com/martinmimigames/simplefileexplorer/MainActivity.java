@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import mg.utils.clipboard.v1.ClipBoard;
+import mg.utils.notify.ToastHelper;
+
 public class MainActivity extends Activity {
   private static final int ONGOING_OPERATION_ID = Integer.MAX_VALUE;
   private static final int LOADING_VIEW_ID = Integer.MAX_VALUE - 1;
@@ -465,6 +468,11 @@ public class MainActivity extends Activity {
       openListDialog.dismiss();
       fopen.open(currentSelectedFiles.get(0));
       appState.change(appState.idle);
+    });
+    openListDialog.findViewById(R.id.open_list_copy_path).setOnClickListener(v -> {
+      openListDialog.dismiss();
+      ClipBoard.copyText(this, currentSelectedFiles.get(0).getAbsolutePath());
+      ToastHelper.showShort(this, "copied path");
     });
     if (fopen.isRequestDocument) {
       openListDialog.findViewById(R.id.open_list_share).setVisibility(View.GONE);
