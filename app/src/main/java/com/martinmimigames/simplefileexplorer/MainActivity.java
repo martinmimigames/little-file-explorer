@@ -159,7 +159,7 @@ public class MainActivity extends Activity {
       addIdDialog("Loading...", 16, LOADING_VIEW_ID);
       addIdDialog("cutting/copying/deleting files...", 16, ONGOING_OPERATION_ID);
       if (hasOperations == 0)
-        findViewById(ONGOING_OPERATION_ID).setVisibility(View.GONE);
+        setViewVisibility(ONGOING_OPERATION_ID, View.GONE);
     });
 
     parent = folder.getParentFile();
@@ -294,14 +294,14 @@ public class MainActivity extends Activity {
       view.setBackgroundColor(Color.TRANSPARENT);
     }
     if (currentSelectedFiles.size() > 1) {
-      findViewById(R.id.select_rename).setVisibility(View.GONE);
+      setViewVisibility(R.id.select_rename, View.GONE);
     } else {
       if (currentSelectedFiles.size() == 0) {
         appState.change(appState.idle);
       } else {
         appState.change(appState.select);
       }
-      findViewById(R.id.select_rename).setVisibility(View.VISIBLE);
+      setViewVisibility(R.id.select_rename, View.VISIBLE);
     }
   }
 
@@ -335,24 +335,24 @@ public class MainActivity extends Activity {
       if (menuList.isShown()) {
         menuList.setVisibility(View.GONE);
         if (appState.current == appState.select)
-          findViewById(R.id.quick_selection).setVisibility(View.VISIBLE);
+          setViewVisibility(R.id.quick_selection, View.VISIBLE);
       } else {
         menuList.setVisibility(View.VISIBLE);
-        findViewById(R.id.quick_selection).setVisibility(View.GONE);
+        setViewVisibility(R.id.quick_selection, View.GONE);
       }
     });
   }
 
   private void setupMenu() {
-    findViewById(R.id.menu_list).setVisibility(View.GONE);
+    setViewVisibility(R.id.menu_list, View.GONE);
     findViewById(R.id.menu_create_new_directory)
       .setOnClickListener(v -> {
         createDirectoryDialog.show();
-        findViewById(R.id.menu_list).setVisibility(View.GONE);
+        setViewVisibility(R.id.menu_list, View.GONE);
       });
     findViewById(R.id.menu_quick_switch)
       .setOnClickListener(v -> {
-        findViewById(R.id.menu_list).setVisibility(View.GONE);
+        setViewVisibility(R.id.menu_list, View.GONE);
         final View driveList = findViewById(R.id.drive_list);
         if (driveList.isShown())
           driveList.setVisibility(View.GONE);
@@ -375,7 +375,7 @@ public class MainActivity extends Activity {
       entry.setText(file.getPath());
       entry.setOnClickListener(v -> {
         executor.execute(() -> listItem(file));
-        findViewById(R.id.drive_list).setVisibility(View.GONE);
+        setViewVisibility(R.id.drive_list, View.GONE);
       });
       list.addView(entry);
     }
@@ -428,7 +428,7 @@ public class MainActivity extends Activity {
           appState.change(appState.idle);
         });
     } else {
-      findViewById(R.id.share_selected).setVisibility(View.GONE);
+      setViewVisibility(R.id.share_selected, View.GONE);
     }
   }
 
@@ -439,7 +439,7 @@ public class MainActivity extends Activity {
           final int currentOperation = hasOperations + 1;
           hasOperations = currentOperation;
           if (findViewById(ONGOING_OPERATION_ID) != null)
-            runOnUiThread(() -> findViewById(ONGOING_OPERATION_ID).setVisibility(View.VISIBLE));
+            setViewVisibility(ONGOING_OPERATION_ID, View.VISIBLE);
           final ArrayList<File> selectedFiles = new ArrayList<>(currentSelectedFiles.size());
           selectedFiles.addAll(currentSelectedFiles);
           appState.change(appState.idle);
@@ -458,11 +458,15 @@ public class MainActivity extends Activity {
           if (hasOperations == currentOperation)
             hasOperations = 0;
           if (findViewById(ONGOING_OPERATION_ID) != null)
-            runOnUiThread(() -> findViewById(ONGOING_OPERATION_ID).setVisibility(View.GONE));
+            setViewVisibility(ONGOING_OPERATION_ID, View.GONE);
           selectedFiles.clear();
           executor.execute(() -> listItem(new File(filePath)));
         }).start());
     findViewById(R.id.paste_cancel).setOnClickListener(v -> appState.change(appState.idle));
+  }
+
+  private void setViewVisibility(int id, int visibility) {
+    runOnUiThread(() -> findViewById(id).setVisibility(visibility));
   }
 
   private void setupOpenListDialogue() {
@@ -536,7 +540,7 @@ public class MainActivity extends Activity {
       deleteConfirmationDialog.dismiss();
       new Thread(() -> {
         if (findViewById(ONGOING_OPERATION_ID) != null)
-          runOnUiThread(() -> findViewById(ONGOING_OPERATION_ID).setVisibility(View.VISIBLE));
+          setViewVisibility(ONGOING_OPERATION_ID, View.VISIBLE);
         final int currentOperation = hasOperations + 1;
         hasOperations = currentOperation;
         ArrayList<File> selectedFiles = new ArrayList<>(currentSelectedFiles.size());
@@ -547,7 +551,7 @@ public class MainActivity extends Activity {
         if (hasOperations == currentOperation)
           hasOperations = 0;
         if (findViewById(ONGOING_OPERATION_ID) != null)
-          runOnUiThread(() -> findViewById(ONGOING_OPERATION_ID).setVisibility(View.GONE));
+          setViewVisibility(ONGOING_OPERATION_ID, View.GONE);
         executor.execute(() -> listItem(new File(filePath)));
       }).start();
     });
@@ -612,9 +616,9 @@ public class MainActivity extends Activity {
       idle = new State(true) {
         @Override
         void start() {
-          findViewById(R.id.paste_operation).setVisibility(View.GONE);
-          findViewById(R.id.select_operation).setVisibility(View.GONE);
-          findViewById(R.id.quick_selection).setVisibility(View.GONE);
+          setViewVisibility(R.id.paste_operation, View.GONE);
+          setViewVisibility(R.id.select_operation, View.GONE);
+          setViewVisibility(R.id.quick_selection, View.GONE);
           clearHighlight();
           currentSelectedFiles.clear();
         }
@@ -623,19 +627,19 @@ public class MainActivity extends Activity {
       select = new State(true) {
         @Override
         void start() {
-          findViewById(R.id.paste_operation).setVisibility(View.GONE);
-          findViewById(R.id.select_operation).setVisibility(View.VISIBLE);
-          findViewById(R.id.quick_selection).setVisibility(View.VISIBLE);
-          findViewById(R.id.menu_list).setVisibility(View.GONE);
+          setViewVisibility(R.id.paste_operation, View.GONE);
+          setViewVisibility(R.id.select_operation, View.VISIBLE);
+          setViewVisibility(R.id.quick_selection, View.VISIBLE);
+          setViewVisibility(R.id.menu_list, View.GONE);
         }
       };
 
       paste = new State(true) {
         @Override
         void start() {
-          findViewById(R.id.select_operation).setVisibility(View.GONE);
-          findViewById(R.id.quick_selection).setVisibility(View.GONE);
-          findViewById(R.id.paste_operation).setVisibility(View.VISIBLE);
+          setViewVisibility(R.id.select_operation, View.GONE);
+          setViewVisibility(R.id.quick_selection, View.GONE);
+          setViewVisibility(R.id.paste_operation, View.VISIBLE);
         }
       };
 
