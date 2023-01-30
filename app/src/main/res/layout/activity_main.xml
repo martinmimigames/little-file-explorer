@@ -136,6 +136,30 @@
   </LinearLayout>
 
   <LinearLayout
+    a:id="@+id/single_select_operation"
+    a:layout_width="wrap_content"
+    a:layout_height="wrap_content"
+    a:layout_above="@id/select_operation"
+    a:layout_centerInParent="true"
+    a:orientation="horizontal">
+
+    <Button
+      a:id="@+id/single_select_rename"
+      a:layout_width="wrap_content"
+      a:layout_height="wrap_content"
+      a:text="Rename"
+      tools:ignore="HardcodedText" />
+
+    <Button
+      a:id="@+id/single_select_copy_path"
+      a:layout_width="wrap_content"
+      a:layout_height="wrap_content"
+      a:text="Copy Path"
+      tools:ignore="HardcodedText" />
+
+  </LinearLayout>
+
+  <LinearLayout
     a:id="@+id/select_operation"
     a:layout_width="wrap_content"
     a:layout_height="wrap_content"
@@ -156,13 +180,6 @@
       a:layout_width="wrap_content"
       a:layout_height="wrap_content"
       a:text="Copy"
-      tools:ignore="HardcodedText" />
-
-    <Button
-      a:id="@+id/select_rename"
-      a:layout_width="wrap_content"
-      a:layout_height="wrap_content"
-      a:text="Rename"
       tools:ignore="HardcodedText" />
 
     <Button

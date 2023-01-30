@@ -26,15 +26,6 @@
     tools:ignore="HardcodedText" />
 
   <Button
-    a:id="@+id/open_list_copy_path"
-    style="@style/buttonStyle"
-    a:layout_width="match_parent"
-    a:layout_height="wrap_content"
-    a:text="Copy path"
-    a:textSize="18sp"
-    tools:ignore="HardcodedText" />
-
-  <Button
     a:id="@+id/open_list_cancel"
     style="@style/buttonStyle"
     a:layout_width="match_parent"

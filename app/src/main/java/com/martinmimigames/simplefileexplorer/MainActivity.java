@@ -69,6 +69,7 @@ public class MainActivity extends Activity {
     setupMenu();
     //setupDriveList(); in onStart for reload
     setupSelectMenu();
+    setupSingleSelectMenu();
     setupPasteMenu();
     setupOpenListDialogue();
     setupRenameDialog();
@@ -293,15 +294,13 @@ public class MainActivity extends Activity {
       currentSelectedFiles.remove(file);
       view.setBackgroundColor(Color.TRANSPARENT);
     }
-    if (currentSelectedFiles.size() > 1) {
-      setViewVisibility(R.id.select_rename, View.GONE);
-    } else {
-      if (currentSelectedFiles.size() == 0) {
-        appState.change(appState.idle);
-      } else {
+    switch (currentSelectedFiles.size()){
+      case 1 -> {
         appState.change(appState.select);
+        setViewVisibility(R.id.single_select_operation, View.VISIBLE);
       }
-      setViewVisibility(R.id.select_rename, View.VISIBLE);
+      case 0 -> appState.change(appState.idle);
+      default -> setViewVisibility(R.id.single_select_operation, View.GONE);
     }
   }
 
@@ -382,6 +381,18 @@ public class MainActivity extends Activity {
     list.setVisibility(View.GONE);
   }
 
+  private void setupSingleSelectMenu() {
+    findViewById(R.id.single_select_copy_path).setOnClickListener(v -> {
+      copyFilePath();
+      appState.change(appState.idle);
+    });
+
+    findViewById(R.id.single_select_rename).setOnClickListener(v -> {
+      ((EditText) renameDialog.findViewById(R.id.new_name)).setText(currentSelectedFiles.get(0).getName());
+      renameDialog.show();
+    });
+  }
+
   private void setupSelectMenu() {
     findViewById(R.id.select_cut).setOnClickListener(v -> {
       isCut = true;
@@ -390,11 +401,6 @@ public class MainActivity extends Activity {
     findViewById(R.id.select_copy).setOnClickListener(v -> {
       isCopy = true;
       appState.change(appState.paste);
-    });
-
-    findViewById(R.id.select_rename).setOnClickListener(v -> {
-      ((EditText) renameDialog.findViewById(R.id.new_name)).setText(currentSelectedFiles.get(0).getName());
-      renameDialog.show();
     });
 
     findViewById(R.id.select_delete).setOnClickListener(v -> {
@@ -469,6 +475,12 @@ public class MainActivity extends Activity {
     runOnUiThread(() -> findViewById(id).setVisibility(visibility));
   }
 
+  private void copyFilePath(){
+    ClipBoard.copyText(this, currentSelectedFiles.get(0).getAbsolutePath());
+    ToastHelper.showShort(this, "copied path");
+    appState.change(appState.idle);
+  }
+
   private void setupOpenListDialogue() {
     openListDialog = new Dialog(this, R.style.app_theme_dialog);
     openListDialog.setContentView(R.layout.open_list);
@@ -477,12 +489,7 @@ public class MainActivity extends Activity {
       fopen.open(currentSelectedFiles.get(0));
       appState.change(appState.idle);
     });
-    openListDialog.findViewById(R.id.open_list_copy_path).setOnClickListener(v -> {
-      openListDialog.dismiss();
-      ClipBoard.copyText(this, currentSelectedFiles.get(0).getAbsolutePath());
-      ToastHelper.showShort(this, "copied path");
-      appState.change(appState.idle);
-    });
+
     if (fopen.isRequestDocument) {
       openListDialog.findViewById(R.id.open_list_share).setVisibility(View.GONE);
     } else {
@@ -620,6 +627,7 @@ public class MainActivity extends Activity {
           setViewVisibility(R.id.paste_operation, View.GONE);
           setViewVisibility(R.id.select_operation, View.GONE);
           setViewVisibility(R.id.quick_selection, View.GONE);
+          setViewVisibility(R.id.single_select_operation, View.GONE);
           clearHighlight();
           currentSelectedFiles.clear();
         }
@@ -641,6 +649,7 @@ public class MainActivity extends Activity {
           setViewVisibility(R.id.select_operation, View.GONE);
           setViewVisibility(R.id.quick_selection, View.GONE);
           setViewVisibility(R.id.paste_operation, View.VISIBLE);
+          setViewVisibility(R.id.single_select_operation, View.GONE);
         }
       };
 
