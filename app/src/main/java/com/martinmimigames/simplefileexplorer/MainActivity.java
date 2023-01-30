@@ -481,6 +481,7 @@ public class MainActivity extends Activity {
       openListDialog.dismiss();
       ClipBoard.copyText(this, currentSelectedFiles.get(0).getAbsolutePath());
       ToastHelper.showShort(this, "copied path");
+      appState.change(appState.idle);
     });
     if (fopen.isRequestDocument) {
       openListDialog.findViewById(R.id.open_list_share).setVisibility(View.GONE);
