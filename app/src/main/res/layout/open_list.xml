@@ -13,7 +13,6 @@
     a:layout_width="match_parent"
     a:layout_height="wrap_content"
     a:text="Open"
-    a:textSize="18sp"
     tools:ignore="HardcodedText" />
 
   <Button
@@ -22,7 +21,6 @@
     a:layout_width="match_parent"
     a:layout_height="wrap_content"
     a:text="Share"
-    a:textSize="18sp"
     tools:ignore="HardcodedText" />
 
   <Button
@@ -31,7 +29,6 @@
     a:layout_width="match_parent"
     a:layout_height="wrap_content"
     a:text="Copy path"
-    a:textSize="18sp"
     tools:ignore="HardcodedText" />
 
   <Button
@@ -40,7 +37,6 @@
     a:layout_width="match_parent"
     a:layout_height="wrap_content"
     a:text="Cancel"
-    a:textSize="18sp"
     tools:ignore="HardcodedText" />
 
 </LinearLayout>

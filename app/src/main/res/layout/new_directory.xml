@@ -14,7 +14,9 @@
     a:layout_alignParentTop="true"
     a:hint="Enter folder name"
     a:text="New folder"
-    tools:ignore="HardcodedText"/>
+    tools:ignore="HardcodedText"
+    a:inputType="text"
+    tools:targetApi="cupcake" />
 
   <Button
     a:id="@+id/new_directory_cancel"

@@ -13,7 +13,9 @@
     a:layout_height="wrap_content"
     a:layout_alignParentTop="true"
     a:hint="Enter new name"
-    tools:ignore="HardcodedText"/>
+    tools:ignore="HardcodedText"
+    a:inputType="text"
+    tools:targetApi="cupcake" />
 
   <Button
     a:id="@+id/rename_cancel"

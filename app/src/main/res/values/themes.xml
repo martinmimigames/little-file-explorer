@@ -5,7 +5,7 @@
     <item name="android:colorForeground">@color/foreground</item>
     <item name="android:textColor">@color/foreground</item>
     <item name="android:buttonStyle">@style/buttonStyle</item>
-    <item name="android:textSize">14sp</item>
+    <item name="android:textSize">16sp</item>
     <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
   </style>
 
