@@ -2,16 +2,35 @@
 <RelativeLayout xmlns:a="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   a:layout_width="match_parent"
-  a:layout_height="match_parent"
+  a:layout_height="wrap_content"
   a:orientation="vertical"
   a:theme="@style/app_theme"
   a:background="@color/background">
+
+  <Button
+    a:id="@+id/delete_delete"
+    a:layout_width="match_parent"
+    a:layout_height="wrap_content"
+    a:layout_above="@id/delete_cancel"
+    a:text="Delete"
+    style="@style/buttonStyle"
+    tools:ignore="HardcodedText" />
+
+  <Button
+    a:id="@+id/delete_cancel"
+    a:layout_width="match_parent"
+    a:layout_height="wrap_content"
+    a:layout_alignParentBottom="true"
+    a:text="Cancel"
+    style="@style/buttonStyle"
+    tools:ignore="HardcodedText" />
 
   <ScrollView
     a:id="@+id/delete_scroll_view"
     a:layout_width="match_parent"
     a:layout_height="wrap_content"
     a:layout_alignParentTop="true"
+    a:layout_above="@id/delete_delete"
     a:gravity="top">
 
     <TextView
@@ -21,25 +40,5 @@
       a:padding="2dp"/>
 
   </ScrollView>
-
-  <Button
-    a:id="@+id/delete_delete"
-    a:layout_width="match_parent"
-    a:layout_height="wrap_content"
-    a:layout_below="@id/delete_scroll_view"
-    a:text="Delete"
-    a:textSize="20sp"
-    style="@style/buttonStyle"
-    tools:ignore="HardcodedText" />
-
-  <Button
-    a:id="@+id/delete_cancel"
-    a:layout_width="match_parent"
-    a:layout_height="wrap_content"
-    a:layout_below="@id/delete_delete"
-    a:text="Cancel"
-    a:textSize="20sp"
-    style="@style/buttonStyle"
-    tools:ignore="HardcodedText" />
 
 </RelativeLayout>
