@@ -62,7 +62,9 @@ public class FileOperation {
     }
 
     // if move logic didn't work, try copy & delete
-    return copy(src, dst) && delete(src);
+    if (copy(src, dst))
+      return delete(src);
+    return false;
   }
 
   public static boolean copy(final File src, final File dst) {
