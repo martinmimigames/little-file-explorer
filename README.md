@@ -39,7 +39,7 @@ Location of website:
 Issues and pull requests are always welcome!
 
 You can submit issues the following ways:
-- via [Github Issues](https://github.com/martinmimigames/little-file-explorer/issues/new).
+- via [Github Issues](https://github.com/martinmimigames/little-file-explorer/issues).
 - via email: martinmimigames@gmail.com
 
 ## Installation
