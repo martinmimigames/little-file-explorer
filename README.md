@@ -1,7 +1,7 @@
 # Little File Explorer
 
-[<img src="https://img.shields.io/github/license/martinmimigames/little-music-player?style=flat-square"
-alt="Read license">](https://github.com/martinmimigames/little-music-player/blob/main/LICENSE.md)
+[<img src="https://img.shields.io/github/license/martinmimigames/little-file-explorer?style=flat-square"
+alt="Read license">](https://github.com/martinmimigames/little-file-explorer/blob/main/LICENSE.md)
 
 ## Descriptions
 
@@ -39,7 +39,7 @@ Location of website:
 Issues and pull requests are always welcome!
 
 You can submit issues the following ways:
-- via [Github Issues](https://github.com/martinmimigames/little-music-player/issues/new).
+- via [Github Issues](https://github.com/martinmimigames/little-file-explorer/issues/new).
 - via email: martinmimigames@gmail.com
 
 ## Installation
@@ -50,7 +50,7 @@ You can submit issues the following ways:
 
 [Get it from Github](https://github.com/martinmimigames/little-file-explorer/releases/latest).
 
-[Get it from the official website](https://martinmimigames.github.io/projects/little-music-player)
+[Get it from the official website](https://martinmimigames.github.io/projects/little-file-explorer)
 
 ## Made by Martinmimigames
 
