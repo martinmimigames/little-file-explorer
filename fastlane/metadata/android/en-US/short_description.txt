@@ -1,1 +1,1 @@
-A small, simple file explorer that supports Android 1.0+
+Android 1.0+ mini simple file manager/explorer

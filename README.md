@@ -9,15 +9,15 @@ A small, simple file explorer, designed with compatibility in mind.
 
 Open-sourced and publicly-viewable code for anyone worrying about being locked in or privacy invasion.
 
-It allows browsing in the file system, and let you do simple things like copy and pasting files.
+It provides multiple functions, including copy and pasting files, multi-file share, etc. More information available in **Features** section below.
 
 Supports Android 1.0+
 
 Currently under 40 KB.
 
-Previous known as Simple File Explorer (but from martinmimigames).
+Previous known as *Simple File Explorer* (but from martinmimigames).
 
-Location of website: 
+Location of website:
 [https://martinmimigames.github.io/projects/little-file-explorer](https://martinmimigames.github.io/projects/little-file-explorer/index.html).
 
 ## Features
@@ -27,8 +27,34 @@ Location of website:
 - Basic file operations (Cut, copy, paste, rename, delete)
 - Easy switch between sdcard and internal storage
 - Multi-share function
-- File path copying
+- File/folder path copying
 - Minimum permissions
+
+## Latest Versions
+
+- v4.8
+  - Allow folder path to be copied to clipboard
+  - Fixed incorrect handling after path copying
+  - Fixed delete conformation button being pushed out by long list
+  - Fixed copying to incorrect directory when moved directory while in progress
+
+- v4.7
+  - Added multi-share option (sdk 4+)
+  - Added file path copy option
+  - Allow open file with default apps
+  - Reduced open list button size
+  - Capitalised buttons
+  - Changed opener text
+
+- v4.6
+  - Fixed not opening when no sdcard inserted
+
+- v4.5
+  - smaller apk
+  - fixed quick selection overlap with menu list
+  - opening file request by other app now have open prompt
+  - changed audio png
+  - back button now go back to parent folder if available
 
 ## Branches
 
@@ -39,7 +65,8 @@ Location of website:
 Issues and pull requests are always welcome!
 
 You can submit issues the following ways:
-- via [Github Issues](https://github.com/martinmimigames/little-file-explorer/issues).
+
+- via [Github Issues](https://github.com/martinmimigames/little-file-explorer/issues)
 - via email: martinmimigames@gmail.com
 
 ## Installation
@@ -58,7 +85,7 @@ Official Website at [https://martinmimigames.github.io](https://martinmimigames.
 
 ### Last update of README
 
-Date : 04-02-2023 dd-mm-yyyy
+Date : 08-03-2023 dd-mm-yyyy
 
 ### Important
 

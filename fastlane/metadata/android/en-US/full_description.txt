@@ -1,10 +1,18 @@
-A simple file explorer, designed with compatibility in mind.
+A small, simple file explorer, designed with compatibility in mind.
 
-It allows browsing in the file system, and let you do simple things like copy and pasting files.
+Open-sourced and publicly-viewable code for anyone worrying about being locked in or privacy invasion.
+
+It provides multiple functions, including copy and pasting files, multi-file share, etc. More information available in Features section below.
+
+Supports Android 1.0+
+
+Currently under 40 KB.
 
 Previous known as Simple File Explorer (but from martinmimigames).
 
-"Important features":
+You can visit the official webpage at https://martinmimigames.github.io/projects/little-file-explorer/index.html
+
+Features
 
 - Free
 - Small (< 40KB)
@@ -14,5 +22,13 @@ Previous known as Simple File Explorer (but from martinmimigames).
 - File path copying
 - Minimum permissions
 - Supports Android 1.0+
+
+Issues
+
+Issues and pull requests are always welcome!
+
+You can submit issues the following ways:
+- via Github Issues at https://github.com/martinmimigames/little-file-explorer/issues
+- via email: martinmimigames@gmail.com
 
 Made by Martinmimigames! :)

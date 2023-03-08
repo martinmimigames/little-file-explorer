@@ -1,0 +1,4 @@
+- Allow folder path to be copied to clipboard
+- Fixed incorrect handling after path copying
+- Fixed delete conformation button being pushed out by long list
+- Fixed copying to incorrect directory when moved directory while in progress
