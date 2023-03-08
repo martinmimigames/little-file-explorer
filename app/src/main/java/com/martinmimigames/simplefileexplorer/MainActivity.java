@@ -430,7 +430,7 @@ public class MainActivity extends Activity {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT) {
       findViewById(R.id.share_selected)
         .setOnClickListener(v -> {
-          fopen.share(getCurrentSelectedFilesList());
+          fopen.share(getSelectedFiles());
           appState.change(appState.idle);
         });
     } else {
@@ -446,18 +446,18 @@ public class MainActivity extends Activity {
           hasOperations = currentOperation;
           if (findViewById(ONGOING_OPERATION_ID) != null)
             setViewVisibility(ONGOING_OPERATION_ID, View.VISIBLE);
-          final ArrayList<File> selectedFiles = new ArrayList<>(currentSelectedFiles.size());
-          selectedFiles.addAll(currentSelectedFiles);
-          appState.change(appState.idle);
+
+          var selectedFiles = getSelectedFiles();
           var dst = filePath;
+
+          appState.change(appState.idle);
+
           if (isCut) {
-            for (int i = 0; i < selectedFiles.size(); i++) {
-              File file = selectedFiles.get(i);
+            for (var file : selectedFiles) {
               FileOperation.move(file, new File(dst, file.getName()));
             }
           } else if (isCopy) {
-            for (int i = 0; i < selectedFiles.size(); i++) {
-              final File file = selectedFiles.get(i);
+            for (var file : selectedFiles) {
               FileOperation.copy(file, new File(dst, file.getName()));
             }
           }
@@ -466,7 +466,7 @@ public class MainActivity extends Activity {
             hasOperations = 0;
           if (findViewById(ONGOING_OPERATION_ID) != null)
             setViewVisibility(ONGOING_OPERATION_ID, View.GONE);
-          selectedFiles.clear();
+
           executor.execute(() -> listItem(new File(filePath)));
         }).start());
     findViewById(R.id.paste_cancel).setOnClickListener(v -> appState.change(appState.idle));
@@ -496,7 +496,7 @@ public class MainActivity extends Activity {
     } else {
       openListDialog.findViewById(R.id.open_list_share).setOnClickListener(v -> {
         openListDialog.dismiss();
-        fopen.share(getCurrentSelectedFilesList());
+        fopen.share(getSelectedFiles());
         appState.change(appState.idle);
       });
     }
@@ -507,12 +507,8 @@ public class MainActivity extends Activity {
     openListDialog.setOnCancelListener(d -> appState.change(appState.idle));
   }
 
-  File[] getCurrentSelectedFilesList() {
-    var files = new File[currentSelectedFiles.size()];
-    for (int i = 0; i < currentSelectedFiles.size(); i++) {
-      files[i] = currentSelectedFiles.get(i);
-    }
-    return files;
+  File[] getSelectedFiles() {
+    return currentSelectedFiles.toArray(new File[0]);
   }
 
   private void setupRenameDialog() {
@@ -552,11 +548,10 @@ public class MainActivity extends Activity {
           setViewVisibility(ONGOING_OPERATION_ID, View.VISIBLE);
         final int currentOperation = hasOperations + 1;
         hasOperations = currentOperation;
-        ArrayList<File> selectedFiles = new ArrayList<>(currentSelectedFiles.size());
-        selectedFiles.addAll(currentSelectedFiles);
+        var selectedFiles = getSelectedFiles();
         appState.change(appState.idle);
-        for (int i = 0; i < selectedFiles.size(); i++)
-          FileOperation.delete(selectedFiles.get(i));
+        for (var file : selectedFiles)
+          FileOperation.delete(file);
         if (hasOperations == currentOperation)
           hasOperations = 0;
         if (findViewById(ONGOING_OPERATION_ID) != null)

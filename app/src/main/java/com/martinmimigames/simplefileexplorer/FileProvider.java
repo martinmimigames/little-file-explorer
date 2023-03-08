@@ -20,11 +20,11 @@ public class FileProvider extends ContentProvider {
   private static final String SCHEME = "content://";
   private static final String AUTHORITY = "com.martinmimigames.simplefileexplorer.FileProvider";
 
-  private static HashMap<Integer, NameToFile> database;
+  private static HashMap<Integer, FileNameRecord> database;
 
   public static File uriToFile(Uri uri) {
     final List<String> pathSegments = uri.getPathSegments();
-    final NameToFile data = database.get(Integer.parseInt(pathSegments.get(pathSegments.size() - 2)));
+    final FileNameRecord data = database.get(Integer.parseInt(pathSegments.get(pathSegments.size() - 2)));
     if (data == null)
       return null;
     else
@@ -37,7 +37,7 @@ public class FileProvider extends ContentProvider {
     while (true) {
       key = r.nextInt();
       if (database.get(key) == null) {
-        final NameToFile data = new NameToFile();
+        final FileNameRecord data = new FileNameRecord();
         data.name = file.getName();
         data.file = file;
         database.put(key, data);
@@ -118,7 +118,7 @@ public class FileProvider extends ContentProvider {
     return ParcelFileDescriptor.open(file, pfdMode);
   }
 
-  private static class NameToFile {
+  private static class FileNameRecord {
     String name;
     File file;
   }
