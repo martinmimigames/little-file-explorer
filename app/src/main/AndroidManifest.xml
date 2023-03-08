@@ -5,10 +5,6 @@
   a:versionCode="9"
   a:versionName="4.7">
 
-  <uses-sdk
-    a:minSdkVersion="1"
-    tools:ignore="GradleOverrides" />
-
   <uses-permission a:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission a:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission
