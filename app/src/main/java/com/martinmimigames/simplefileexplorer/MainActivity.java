@@ -449,15 +449,16 @@ public class MainActivity extends Activity {
           final ArrayList<File> selectedFiles = new ArrayList<>(currentSelectedFiles.size());
           selectedFiles.addAll(currentSelectedFiles);
           appState.change(appState.idle);
+          var dst = filePath;
           if (isCut) {
             for (int i = 0; i < selectedFiles.size(); i++) {
               File file = selectedFiles.get(i);
-              FileOperation.move(file, new File(filePath, file.getName()));
+              FileOperation.move(file, new File(dst, file.getName()));
             }
           } else if (isCopy) {
             for (int i = 0; i < selectedFiles.size(); i++) {
               final File file = selectedFiles.get(i);
-              FileOperation.copy(file, new File(filePath, file.getName()));
+              FileOperation.copy(file, new File(dst, file.getName()));
             }
           }
 
