@@ -23,8 +23,8 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import mg.utils.clipboard.v1.ClipBoard;
 import mg.utils.notify.ToastHelper;
@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
   private final ShortTabOnButton shortTabOnButton;
   private final LongPressOnButton longPressOnButton;
   private final ArrayList<File> currentSelectedFiles;
-  private final ThreadPoolExecutor executor;
+  private final ExecutorService executor;
   private final FileOpener fopen;
   private final State appState;
   private int hasOperations;
@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
     shortTabOnButton = new ShortTabOnButton();
     longPressOnButton = new LongPressOnButton();
     currentSelectedFiles = new ArrayList<>(3);
-    executor = new ScheduledThreadPoolExecutor(1);
+    executor = Executors.newCachedThreadPool();
     fopen = new FileOpener(this);
     appState = new State();
 
@@ -120,7 +120,7 @@ public class MainActivity extends Activity {
     executor.execute(() -> {
       if (filePath != null) {
         if (checkPermission())
-          listItem(new File(filePath));
+          listItem(filePath);
       } else {
         for (File folder : rootDirectories) {
           if (checkPermission()) listItem(folder);
@@ -138,7 +138,20 @@ public class MainActivity extends Activity {
     return permissionManager.havePermission(new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE});
   }
 
-  private void listItem(final File folder) {
+  private void listItem(String path) {
+    listItem(new File(path));
+  }
+
+  /** flag for calling a directory list update */
+  private boolean needDirectoryUpdate;
+
+  /**
+   * Update the directory list, displaying the folder provided.
+   * @param folder the folder to display contents of
+   */
+  private void updateDirectoryView(File folder) {
+
+    // retrieve folder and driver information
     String info = "Name: " + folder.getName() + "\n";
     if (Build.VERSION.SDK_INT >= 9) {
       StatFs stat = new StatFs(folder.getPath());
@@ -157,23 +170,31 @@ public class MainActivity extends Activity {
       ((TextView) findViewById(R.id.title)).setText(filePath);
       addDialog(finalInfo, 16);
 
+      // create process indicator
       addIdDialog("Loading...", 16, LOADING_VIEW_ID);
       addIdDialog("cutting/copying/deleting files...", 16, ONGOING_OPERATION_ID);
       if (hasOperations == 0)
         setViewVisibility(ONGOING_OPERATION_ID, View.GONE);
     });
 
+    // update variables for current path and parent
     parent = folder.getParentFile();
-
     filePath = folder.getPath();
+
     if (folderAccessible(folder)) {
       final File[] items = folder.listFiles();
+
+      // directory updated
+      needDirectoryUpdate = false;
+
       assert items != null;
       sort(items);
       if (items.length == 0) {
         addDialog("Empty folder!", 16);
       } else {
         String lastLetter = "";
+
+        // print folders items
         boolean hasFolders = false;
         for (File item : items) {
           if (item.isDirectory()) {
@@ -186,10 +207,16 @@ public class MainActivity extends Activity {
               lastLetter = item.getName().substring(0, 1).toUpperCase();
               addDialog(lastLetter, 16);
             }
+            // if need to update, immediate return to avoid unwanted writing the list from concurrency
+            if (needDirectoryUpdate) {
+              return;
+            }
             addDirectory(item);
           }
         }
         lastLetter = "";
+
+        // print file items
         boolean hasFiles = false;
         for (File item : items)
           if (item.isFile()) {
@@ -201,6 +228,10 @@ public class MainActivity extends Activity {
               .compareToIgnoreCase(lastLetter) > 0) {
               lastLetter = item.getName().substring(0, 1).toUpperCase();
               addDialog(lastLetter, 16);
+            }
+            // if need to update, immediate return to avoid unwanted writing the list from concurrency
+            if (needDirectoryUpdate) {
+              return;
             }
             switch (FileProvider.getFileType(item).split("/")[0]) {
               case "image" -> addItem(getImageView(pictureImage), item);
@@ -218,11 +249,19 @@ public class MainActivity extends Activity {
           }
       }
     } else {
+      // apps are not allowed to access these folders due to permissions in Android 11
       if (filePath.contains("Android/data") || filePath.contains("Android/obb")) {
         addDialog("For android 11 or higher, Android/data and Android/obb is refused access.\n", 16);
       } else addDialog("Access Denied", 16);
     }
     runOnUiThread(() -> ll.removeView(findViewById(LOADING_VIEW_ID)));
+  };
+  private void listItem(final File folder) {
+    // update flag, helps avoid concurrent list update
+    if (!needDirectoryUpdate) {
+      needDirectoryUpdate = true;
+      executor.execute(() -> updateDirectoryView(folder));
+    }
   }
 
   private void addIdDialog(final String dialog, final int textSize, final int id) {
@@ -322,7 +361,7 @@ public class MainActivity extends Activity {
   boolean returnToParent() {
     if (parent == null || !folderAccessible(parent))
       return false;
-    executor.execute(() -> listItem(parent));
+    listItem(parent);
     return true;
   }
 
@@ -373,7 +412,7 @@ public class MainActivity extends Activity {
       );
       entry.setText(file.getPath());
       entry.setOnClickListener(v -> {
-        executor.execute(() -> listItem(file));
+        listItem(file);
         setViewVisibility(R.id.drive_list, View.GONE);
       });
       list.addView(entry);
@@ -440,8 +479,7 @@ public class MainActivity extends Activity {
 
   private void setupPasteMenu() {
     findViewById(R.id.paste_paste)
-      .setOnClickListener(
-        v -> new Thread(() -> {
+      .setOnClickListener(v -> executor.execute(() -> {
           final int currentOperation = hasOperations + 1;
           hasOperations = currentOperation;
           if (findViewById(ONGOING_OPERATION_ID) != null)
@@ -467,8 +505,8 @@ public class MainActivity extends Activity {
           if (findViewById(ONGOING_OPERATION_ID) != null)
             setViewVisibility(ONGOING_OPERATION_ID, View.GONE);
 
-          executor.execute(() -> listItem(new File(filePath)));
-        }).start());
+          listItem(filePath);
+        }));
     findViewById(R.id.paste_cancel).setOnClickListener(v -> appState.change(appState.idle));
   }
 
@@ -524,7 +562,7 @@ public class MainActivity extends Activity {
           File dst = new File(src.getParent(), name);
           FileOperation.move(src, dst);
           appState.change(appState.idle);
-          executor.execute(() -> listItem(new File(filePath)));
+          listItem(filePath);
         }
       );
     renameDialog.findViewById(R.id.rename_cancel)
@@ -543,7 +581,7 @@ public class MainActivity extends Activity {
     deleteConfirmationDialog.setContentView(R.layout.delete_comfirmation);
     deleteConfirmationDialog.findViewById(R.id.delete_delete).setOnClickListener(v -> {
       deleteConfirmationDialog.dismiss();
-      new Thread(() -> {
+      executor.execute(() -> {
         if (findViewById(ONGOING_OPERATION_ID) != null)
           setViewVisibility(ONGOING_OPERATION_ID, View.VISIBLE);
         final int currentOperation = hasOperations + 1;
@@ -556,8 +594,8 @@ public class MainActivity extends Activity {
           hasOperations = 0;
         if (findViewById(ONGOING_OPERATION_ID) != null)
           setViewVisibility(ONGOING_OPERATION_ID, View.GONE);
-        executor.execute(() -> listItem(new File(filePath)));
-      }).start();
+        listItem(filePath);
+      });
     });
     deleteConfirmationDialog.findViewById(R.id.delete_cancel).setOnClickListener(v -> {
       deleteConfirmationDialog.dismiss();
@@ -574,7 +612,7 @@ public class MainActivity extends Activity {
       String name = ((EditText) createDirectoryDialog.findViewById(R.id.new_directory_name)).getText().toString();
       new File(filePath, name).mkdirs();
       createDirectoryDialog.dismiss();
-      executor.execute(() -> listItem(new File(filePath)));
+      listItem(filePath);
     });
   }
 
@@ -700,7 +738,7 @@ public class MainActivity extends Activity {
         if (appState.current == appState.select) {
           selectFiles(file, view);
         } else {
-          executor.execute(() -> listItem(file));
+          listItem(file);
         }
       }
 
