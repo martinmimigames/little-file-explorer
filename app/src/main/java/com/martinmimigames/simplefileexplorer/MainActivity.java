@@ -609,10 +609,15 @@ public class MainActivity extends Activity {
     createDirectoryDialog.setContentView(R.layout.new_directory);
     createDirectoryDialog.findViewById(R.id.new_directory_cancel).setOnClickListener(v -> createDirectoryDialog.dismiss());
     createDirectoryDialog.findViewById(R.id.new_directory_create).setOnClickListener(v -> {
-      String name = ((EditText) createDirectoryDialog.findViewById(R.id.new_directory_name)).getText().toString();
-      new File(filePath, name).mkdirs();
+      var name = ((EditText) createDirectoryDialog.findViewById(R.id.new_directory_name)).getText().toString();
+      var folder = new File(filePath, name);
+      if (!folder.exists()) {
+        folder.mkdirs();
+        listItem(filePath);
+      } else {
+        ToastHelper.showShort(this, "Folder already exists");
+      }
       createDirectoryDialog.dismiss();
-      listItem(filePath);
     });
   }
 
