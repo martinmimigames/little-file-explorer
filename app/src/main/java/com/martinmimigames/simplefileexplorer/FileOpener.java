@@ -45,7 +45,7 @@ class FileOpener {
       return;
     }
     Intent intent;
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.DONUT && files.length > 1) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.DONUT && files.length > 1) {
       intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
       var fileList = new ArrayList<Uri>();
       String generalMimetype = null;
