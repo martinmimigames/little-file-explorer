@@ -67,7 +67,6 @@ public class MainActivity extends Activity {
   private void setupUI() {
     setupTopBar();
     setupMenu();
-    //setupDriveList(); in onStart for reload
     setupSelectMenu();
     setupSingleSelectMenu();
     setupPasteMenu();
@@ -114,15 +113,13 @@ public class MainActivity extends Activity {
   @Override
   protected void onStart() {
     super.onStart();
-    final File[] rootDirectories = FileOperation.getAllStorages(this);
-    setupDriveList(rootDirectories);
 
     executor.execute(() -> {
       if (filePath != null) {
         if (checkPermission())
           listItem(filePath);
       } else {
-        for (File folder : rootDirectories) {
+        for (File folder : FileOperation.getAllStorages(this)) {
           if (checkPermission()) listItem(folder);
           break;
         }
@@ -388,36 +385,44 @@ public class MainActivity extends Activity {
         createDirectoryDialog.show();
         setViewVisibility(R.id.menu_list, View.GONE);
       });
+
+    // ensure drive list is not visible by default
+    // visibility state is required
+    final LinearLayout storageList = findViewById(R.id.drive_list);
+    storageList.setVisibility(View.GONE);
+
     findViewById(R.id.menu_quick_switch)
       .setOnClickListener(v -> {
         setViewVisibility(R.id.menu_list, View.GONE);
-        final View driveList = findViewById(R.id.drive_list);
-        if (driveList.isShown())
-          driveList.setVisibility(View.GONE);
-        else
-          driveList.setVisibility(View.VISIBLE);
-      });
-  }
 
-  private void setupDriveList(final File[] rootDirectories) {
-    final LinearLayout list = findViewById(R.id.drive_list);
-    list.removeAllViews();
-    for (File file : rootDirectories) {
-      final Button entry = new Button(this);
-      entry.setLayoutParams(
-        new LinearLayout.LayoutParams(
-          LinearLayout.LayoutParams.MATCH_PARENT,
-          LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-      );
-      entry.setText(file.getPath());
-      entry.setOnClickListener(v -> {
-        listItem(file);
-        setViewVisibility(R.id.drive_list, View.GONE);
+        // update storage list
+
+        storageList.removeAllViews();
+        var storages = FileOperation.getAllStorages(this);
+        for (var file : storages) {
+          // skip unreadable folders
+          if (!file.canRead()) continue;
+
+          var entry = new Button(this);
+          entry.setLayoutParams(
+            new LinearLayout.LayoutParams(
+              LinearLayout.LayoutParams.MATCH_PARENT,
+              LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+          );
+          entry.setText(file.getPath());
+          entry.setOnClickListener(v2 -> {
+            listItem(file);
+            setViewVisibility(R.id.drive_list, View.GONE);
+          });
+          storageList.addView(entry);
+        }
+
+        if (storageList.isShown())
+          storageList.setVisibility(View.GONE);
+        else
+          storageList.setVisibility(View.VISIBLE);
       });
-      list.addView(entry);
-    }
-    list.setVisibility(View.GONE);
   }
 
   private void setupSingleSelectMenu() {
