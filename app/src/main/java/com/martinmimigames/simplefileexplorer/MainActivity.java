@@ -540,15 +540,6 @@ public class MainActivity extends Activity {
       appState.change(appState.idle);
     });
 
-    if (fopen.isRequestDocument) {
-      openListDialog.findViewById(R.id.open_list_share).setVisibility(View.GONE);
-    } else {
-      openListDialog.findViewById(R.id.open_list_share).setOnClickListener(v -> {
-        openListDialog.dismiss();
-        fopen.share(getSelectedFiles());
-        appState.change(appState.idle);
-      });
-    }
     openListDialog.findViewById(R.id.open_list_cancel).setOnClickListener(v -> {
       openListDialog.dismiss();
       appState.change(appState.idle);
