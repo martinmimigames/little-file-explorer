@@ -143,7 +143,7 @@ public class FileOperation {
     }
     final String[] units = {"KB", "MB", "GB", "TB", "PB"};
     size = size * 100;
-    for (int unitJump = 0; size >= 10240 && unitJump < units.length; unitJump++) {
+    for (int unitJump = 0; size >= 102400 && unitJump < units.length; unitJump++) {
       size = size / 1024L;
       unit = units[unitJump];
     }
