@@ -127,6 +127,12 @@ public class MainActivity extends Activity {
     });
   }
 
+  @Override
+  protected void onStop() {
+    super.onStop();
+    appState.change(appState.idle);
+  }
+
   private boolean checkPermission() {
 
     permissionManager.getPermission(READ_EXTERNAL_STORAGE, "Storage access is required", false);
