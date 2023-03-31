@@ -31,6 +31,14 @@ Location of website:
 - Minimum permissions
 
 ## Latest Versions
+- v4.9
+  - Fixed sticky selection state after leaving app
+  - Fixed concurrent directory list modification
+  - Removed share button from file option menu
+  - Added duplicate folder warning when creating new folder
+  - Changed rounding system for storage size display
+  - Always update storage list quick switch display
+  - Now use cache thread pool for reducing idle cpu usage and increase performance
 
 - v4.8
   - Allow folder path to be copied to clipboard
@@ -85,7 +93,7 @@ Official Website at [https://martinmimigames.github.io](https://martinmimigames.
 
 ### Last update of README
 
-Date : 08-03-2023 dd-mm-yyyy
+Date : 31-03-2023 dd-mm-yyyy
 
 ### Important
 

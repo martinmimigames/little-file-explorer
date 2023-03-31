@@ -1,0 +1,7 @@
+- Fixed sticky selection state after leaving app
+- Fixed concurrent directory list modification
+- Removed share button from file option menu
+- Added duplicate folder warning when creating new folder
+- Changed rounding system for storage size display
+- Always update storage list quick switch display
+- Now use cache thread pool for reducing idle cpu usage and increase performance
