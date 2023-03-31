@@ -17,7 +17,6 @@
     a:label="Little File Explorer"
     a:requestLegacyExternalStorage="true"
     a:resizeableActivity="true"
-    a:restoreAnyVersion="true"
     a:theme="@style/app_theme"
     tools:targetApi="n">
 
