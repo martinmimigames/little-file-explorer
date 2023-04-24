@@ -3,7 +3,7 @@
 [<img src="https://img.shields.io/github/license/martinmimigames/little-file-explorer?style=flat-square"
 alt="Read license">](https://github.com/martinmimigames/little-file-explorer/blob/main/LICENSE.md)
 
-![[Code Quality](https://img.shields.io/codefactor/grade/github/martinmimigames/little-file-explorer/main?style=flat-square)](https://www.codefactor.io/repository/github/martinmimigames/little-file-explorer)
+[![Code Quality](https://img.shields.io/codefactor/grade/github/martinmimigames/little-file-explorer/main?style=flat-square)](https://www.codefactor.io/repository/github/martinmimigames/little-file-explorer)
 
 ## Descriptions
 
