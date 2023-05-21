@@ -25,7 +25,7 @@ Location of website:
 
 ## Screenshots
 
-![Screenshot 1](https://raw.githubusercontent.com/martinmimigames/little-file-explorer/main/docs/images/example1.jpg)
+![Screenshot 1](docs/images/example1.jpg)
 
 ## Features
 
