@@ -1,6 +1,6 @@
 # Little File Explorer
 
-![Icon](https://raw.githubusercontent.com/martinmimigames/little-file-explorer/main/docs/images/icon.png)
+![Icon](docs/images/icon.png)
 
 [![Read License](https://img.shields.io/github/license/martinmimigames/little-file-explorer?style=flat-square)](https://github.com/martinmimigames/little-file-explorer/blob/main/LICENSE.md)
 
