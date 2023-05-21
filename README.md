@@ -1,5 +1,7 @@
 # Little File Explorer
 
+![Icon](docs/images/icon.png)
+
 [![Read License](https://img.shields.io/github/license/martinmimigames/little-file-explorer?style=flat-square)](https://github.com/martinmimigames/little-file-explorer/blob/main/LICENSE.md)
 
 [![Code Quality](https://img.shields.io/codefactor/grade/github/martinmimigames/little-file-explorer/main?style=flat-square)](https://www.codefactor.io/repository/github/martinmimigames/little-file-explorer)
@@ -20,6 +22,10 @@ Previous known as *Simple File Explorer* (but from martinmimigames).
 
 Location of website:
 [https://martinmimigames.github.io/projects/little-file-explorer](https://martinmimigames.github.io/projects/little-file-explorer/index.html).
+
+## Screenshots
+
+![Screenshot 1](docs/images/example1.jpg)
 
 ## Features
 
@@ -94,7 +100,7 @@ Official Website at [https://martinmimigames.github.io](https://martinmimigames.
 
 ### Last update of README
 
-Date : 25-04-2023 dd-mm-yyyy
+Date : 21-05-2023 dd-mm-yyyy
 
 ### Important
 
