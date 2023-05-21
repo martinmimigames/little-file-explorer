@@ -1,6 +1,6 @@
 # Little File Explorer
 
-![Icon](docs/images/icon.png)
+![Icon](https://raw.githubusercontent.com/martinmimigames/little-file-explorer/main/docs/images/icon.png)
 
 [![Read License](https://img.shields.io/github/license/martinmimigames/little-file-explorer?style=flat-square)](https://github.com/martinmimigames/little-file-explorer/blob/main/LICENSE.md)
 
@@ -25,7 +25,7 @@ Location of website:
 
 ## Screenshots
 
-![Screenshot 1](docs/images/example1.jpg)
+![Screenshot 1](https://raw.githubusercontent.com/martinmimigames/little-file-explorer/main/docs/images/example1.jpg)
 
 ## Features
 
