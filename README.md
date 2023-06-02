@@ -83,15 +83,17 @@ Issues and pull requests are always welcome!
 You can submit issues the following ways:
 
 - via [Github Issues](https://github.com/martinmimigames/little-file-explorer/issues)
-- via email: martinmimigames@gmail.com
+- via email: <martinmimigames@gmail.com>
 
 ## Installation
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+[<img src="https://martinmimigames.github.io/res/get-it-on/f-droid.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/com.martinmimigames.simplefileexplorer/)
 
-[Get it from Github](https://github.com/martinmimigames/little-file-explorer/releases/latest).
+[<img src="https://martinmimigames.github.io/res/get-it-on/github.png"
+     alt="Get it on Github"
+     height="80">](https://github.com/martinmimigames/little-file-explorer/releases/latest)
 
 [Get it from the official website](https://martinmimigames.github.io/projects/little-file-explorer)
 
