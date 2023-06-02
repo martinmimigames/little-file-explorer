@@ -38,6 +38,7 @@ Location of website:
 - Minimum permissions
 
 ## Latest Versions
+
 - v4.9
   - Fixed sticky selection state after leaving app
   - Fixed concurrent directory list modification
