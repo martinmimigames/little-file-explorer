@@ -33,22 +33,19 @@ import mg.utils.notify.ToastHelper;
 public class MainActivity extends Activity {
   private static final int ONGOING_OPERATION_ID = Integer.MAX_VALUE;
   private static final int LOADING_VIEW_ID = Integer.MAX_VALUE - 1;
-  private static final String FILE_PATH_FLAG = "file path";
   private static final int HIGHLIGHT_COLOR = 0xFF00A4C9;
   private final ShortTabOnButton shortTabOnButton;
   private final LongPressOnButton longPressOnButton;
   private final ArrayList<File> currentSelectedFiles;
   private final ExecutorService executor;
   private final FileOpener fopen;
-  private final State appState;
+  private final AppState currentState;
 
-  private boolean showHiddenFiles;
+  private boolean allowHiddenFileDisplay;
   private int hasOperations;
-  private LinearLayout ll;
+  private LinearLayout mainListView;
   private int width;
   private Bitmap fileImage, pictureImage, audioImage, videoImage, unknownImage, archiveImage, folderImage;
-  private String filePath;
-  private File parent;
   private boolean isCut, isCopy;
   private PermissionManager permissionManager;
   private Dialog openListDialog;
@@ -63,7 +60,7 @@ public class MainActivity extends Activity {
     currentSelectedFiles = new ArrayList<>(3);
     executor = Executors.newCachedThreadPool();
     fopen = new FileOpener(this);
-    appState = new State();
+    currentState = new AppState();
 
     preferences = new Preferences();
 
@@ -97,31 +94,31 @@ public class MainActivity extends Activity {
       default -> fopen.isRequestDocument = false;
     }
 
-    ll = findViewById(R.id.list);
+    mainListView = findViewById(R.id.list);
 
     setupBitmaps();
     setupUI();
 
     if (savedInstanceState != null) {
-      filePath = savedInstanceState.getString(FILE_PATH_FLAG);
+      currentState.filePath = savedInstanceState.getString(Preferences.FILE_PATH_KEY);
     }
 
     preferences.onCreate(this);
 
     var save = preferences.getSharedPreferences();
-    showHiddenFiles = save.getBoolean(Preferences.TOGGLE_HIDDEN_KEY, false);
+    allowHiddenFileDisplay = save.getBoolean(Preferences.TOGGLE_HIDDEN_KEY, false);
 
     // default app state is idle state
-    appState.changeTo(State.idle);
+    currentState.changeTo(AppState.Mode.IDLE);
   }
 
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
     super.onSaveInstanceState(savedInstanceState);
-    savedInstanceState.putString(Preferences.FILE_PATH_KEY, filePath);
+    savedInstanceState.putString(Preferences.FILE_PATH_KEY, currentState.filePath);
 
     var saveEditor = preferences.getSharedPreferences().edit();
-    saveEditor.putBoolean(Preferences.TOGGLE_HIDDEN_KEY, showHiddenFiles);
+    saveEditor.putBoolean(Preferences.TOGGLE_HIDDEN_KEY, allowHiddenFileDisplay);
     saveEditor.commit();
   }
 
@@ -130,9 +127,9 @@ public class MainActivity extends Activity {
     super.onStart();
 
     executor.execute(() -> {
-      if (filePath != null) {
+      if (currentState.filePath != null) {
         if (checkPermission())
-          listItem(filePath);
+          listItem(currentState.filePath);
       } else {
         for (File folder : FileOperation.getAllStorages(this)) {
           if (checkPermission()) listItem(folder);
@@ -145,7 +142,7 @@ public class MainActivity extends Activity {
   @Override
   protected void onStop() {
     super.onStop();
-    appState.changeTo(State.idle);
+    currentState.changeTo(AppState.Mode.IDLE);
   }
 
   private boolean checkPermission() {
@@ -187,8 +184,8 @@ public class MainActivity extends Activity {
     }
     final String finalInfo = info;
     runOnUiThread(() -> {
-      ll.removeAllViews();
-      ((TextView) findViewById(R.id.title)).setText(filePath);
+      mainListView.removeAllViews();
+      ((TextView) findViewById(R.id.title)).setText(currentState.filePath);
       addDialog(finalInfo, 16);
 
       // create process indicator
@@ -199,11 +196,11 @@ public class MainActivity extends Activity {
     });
 
     // update variables for current path and parent
-    parent = folder.getParentFile();
-    filePath = folder.getPath();
+    currentState.parent = folder.getParentFile();
+    currentState.filePath = folder.getPath();
 
     if (folderAccessible(folder)) {
-      final File[] items = folder.listFiles((file) -> showHiddenFiles || !file.isHidden());
+      final File[] items = folder.listFiles((file) -> allowHiddenFileDisplay || !file.isHidden());
 
       // directory updated
       needDirectoryUpdate = false;
@@ -271,11 +268,11 @@ public class MainActivity extends Activity {
       }
     } else {
       // apps are not allowed to access these folders due to permissions in Android 11
-      if (filePath.contains("Android/data") || filePath.contains("Android/obb")) {
+      if (currentState.filePath.contains("Android/data") || currentState.filePath.contains("Android/obb")) {
         addDialog("For android 11 or higher, Android/data and Android/obb is refused access.\n", 16);
       } else addDialog("Access Denied", 16);
     }
-    runOnUiThread(() -> ll.removeView(findViewById(LOADING_VIEW_ID)));
+    runOnUiThread(() -> mainListView.removeView(findViewById(LOADING_VIEW_ID)));
   }
 
   private void listItem(final File folder) {
@@ -294,7 +291,7 @@ public class MainActivity extends Activity {
     tv.setTextSize(textSize);
     tv.setId(id);
 
-    runOnUiThread(() -> ll.addView(tv));
+    runOnUiThread(() -> mainListView.addView(tv));
   }
 
   private void addDialog(final String dialog, final int textSize) {
@@ -331,7 +328,7 @@ public class MainActivity extends Activity {
   }
 
   private void addItem(final ImageView imageView, final File file) {
-    new ItemView(this, ll, imageView, file, width, shortTabOnButton, longPressOnButton);
+    new ItemView(this, mainListView, imageView, file, width, shortTabOnButton, longPressOnButton);
   }
 
   private ImageView getImageView(final Bitmap bitmap) {
@@ -357,10 +354,10 @@ public class MainActivity extends Activity {
     }
     switch (currentSelectedFiles.size()) {
       case 1 -> {
-        appState.changeTo(State.select);
+        currentState.changeTo(AppState.Mode.SELECT);
         setViewVisibility(R.id.single_select_operation, View.VISIBLE);
       }
-      case 0 -> appState.changeTo(appState.idle);
+      case 0 -> currentState.changeTo(AppState.Mode.IDLE);
       default -> setViewVisibility(R.id.single_select_operation, View.GONE);
     }
   }
@@ -381,9 +378,9 @@ public class MainActivity extends Activity {
    * @return false if failed, else true
    */
   boolean returnToParent() {
-    if (parent == null || !folderAccessible(parent))
+    if (currentState.parent == null || !folderAccessible(currentState.parent))
       return false;
-    listItem(parent);
+    listItem(currentState.parent);
     return true;
   }
 
@@ -394,7 +391,7 @@ public class MainActivity extends Activity {
       final View menuList = findViewById(R.id.menu_list);
       if (menuList.isShown()) {
         menuList.setVisibility(View.GONE);
-        if (appState.current == State.select)
+        if (currentState.mode == AppState.Mode.SELECT)
           setViewVisibility(R.id.quick_selection, View.VISIBLE);
       } else {
         menuList.setVisibility(View.VISIBLE);
@@ -408,8 +405,8 @@ public class MainActivity extends Activity {
 
     findViewById(R.id.menu_toggle_hidden)
         .setOnClickListener(v -> {
-          showHiddenFiles = !showHiddenFiles;
-          listItem(filePath);
+          allowHiddenFileDisplay = !allowHiddenFileDisplay;
+          listItem(currentState.filePath);
           setViewVisibility(R.id.menu_list, View.GONE);
         });
 
@@ -461,7 +458,7 @@ public class MainActivity extends Activity {
   private void setupSingleSelectMenu() {
     findViewById(R.id.single_select_copy_path).setOnClickListener(v -> {
       copyFilePath();
-      appState.changeTo(State.idle);
+      currentState.changeTo(AppState.Mode.IDLE);
     });
 
     findViewById(R.id.single_select_rename).setOnClickListener(v -> {
@@ -473,11 +470,11 @@ public class MainActivity extends Activity {
   private void setupSelectMenu() {
     findViewById(R.id.select_cut).setOnClickListener(v -> {
       isCut = true;
-      appState.changeTo(State.paste);
+      currentState.changeTo(AppState.Mode.PASTE);
     });
     findViewById(R.id.select_copy).setOnClickListener(v -> {
       isCopy = true;
-      appState.changeTo(State.paste);
+      currentState.changeTo(AppState.Mode.PASTE);
     });
 
     findViewById(R.id.select_delete).setOnClickListener(v -> {
@@ -491,7 +488,7 @@ public class MainActivity extends Activity {
       ((TextView) deleteConfirmationDialog.findViewById(R.id.delete_list)).setText(list.toString());
       deleteConfirmationDialog.show();
     });
-    findViewById(R.id.select_cancel).setOnClickListener(v -> appState.changeTo(State.idle));
+    findViewById(R.id.select_cancel).setOnClickListener(v -> currentState.changeTo(AppState.Mode.IDLE));
 
     findViewById(R.id.select_all)
         .setOnClickListener(v -> forEachItem(item -> {
@@ -508,7 +505,7 @@ public class MainActivity extends Activity {
       findViewById(R.id.share_selected)
           .setOnClickListener(v -> {
             fopen.share(getSelectedFiles());
-            appState.changeTo(State.idle);
+            currentState.changeTo(AppState.Mode.IDLE);
           });
     } else {
       setViewVisibility(R.id.share_selected, View.GONE);
@@ -524,9 +521,9 @@ public class MainActivity extends Activity {
             setViewVisibility(ONGOING_OPERATION_ID, View.VISIBLE);
 
           var selectedFiles = getSelectedFiles();
-          var dst = filePath;
+          var dst = currentState.filePath;
 
-          appState.changeTo(State.idle);
+          currentState.changeTo(AppState.Mode.IDLE);
 
           if (isCut) {
             for (var file : selectedFiles) {
@@ -543,9 +540,9 @@ public class MainActivity extends Activity {
           if (findViewById(ONGOING_OPERATION_ID) != null)
             setViewVisibility(ONGOING_OPERATION_ID, View.GONE);
 
-          listItem(filePath);
+          listItem(currentState.filePath);
         }));
-    findViewById(R.id.paste_cancel).setOnClickListener(v -> appState.changeTo(State.idle));
+    findViewById(R.id.paste_cancel).setOnClickListener(v -> currentState.changeTo(AppState.Mode.IDLE));
   }
 
   private void setViewVisibility(int id, int visibility) {
@@ -555,7 +552,7 @@ public class MainActivity extends Activity {
   private void copyFilePath() {
     ClipBoard.copyText(this, currentSelectedFiles.get(0).getAbsolutePath());
     ToastHelper.showShort(this, "copied path");
-    appState.changeTo(State.idle);
+    currentState.changeTo(AppState.Mode.IDLE);
   }
 
   private void setupOpenListDialogue() {
@@ -564,14 +561,14 @@ public class MainActivity extends Activity {
     openListDialog.findViewById(R.id.open_list_open).setOnClickListener(v -> {
       openListDialog.dismiss();
       fopen.open(currentSelectedFiles.get(0));
-      appState.changeTo(State.idle);
+      currentState.changeTo(AppState.Mode.IDLE);
     });
 
     openListDialog.findViewById(R.id.open_list_cancel).setOnClickListener(v -> {
       openListDialog.dismiss();
-      appState.changeTo(State.idle);
+      currentState.changeTo(AppState.Mode.IDLE);
     });
-    openListDialog.setOnCancelListener(d -> appState.changeTo(State.idle));
+    openListDialog.setOnCancelListener(d -> currentState.changeTo(AppState.Mode.IDLE));
   }
 
   File[] getSelectedFiles() {
@@ -590,15 +587,15 @@ public class MainActivity extends Activity {
               File src = currentSelectedFiles.get(0);
               File dst = new File(src.getParent(), name);
               FileOperation.move(src, dst);
-              appState.changeTo(State.idle);
-              listItem(filePath);
+              currentState.changeTo(AppState.Mode.IDLE);
+              listItem(currentState.filePath);
             }
         );
     renameDialog.findViewById(R.id.rename_cancel)
         .setOnClickListener(
             v -> {
               renameDialog.dismiss();
-              appState.changeTo(State.idle);
+              currentState.changeTo(AppState.Mode.IDLE);
             }
         );
   }
@@ -616,19 +613,19 @@ public class MainActivity extends Activity {
         final int currentOperation = hasOperations + 1;
         hasOperations = currentOperation;
         var selectedFiles = getSelectedFiles();
-        appState.changeTo(State.idle);
+        currentState.changeTo(AppState.Mode.IDLE);
         for (var file : selectedFiles)
           FileOperation.delete(file);
         if (hasOperations == currentOperation)
           hasOperations = 0;
         if (findViewById(ONGOING_OPERATION_ID) != null)
           setViewVisibility(ONGOING_OPERATION_ID, View.GONE);
-        listItem(filePath);
+        listItem(currentState.filePath);
       });
     });
     deleteConfirmationDialog.findViewById(R.id.delete_cancel).setOnClickListener(v -> {
       deleteConfirmationDialog.dismiss();
-      appState.changeTo(State.idle);
+      currentState.changeTo(AppState.Mode.IDLE);
     });
   }
 
@@ -639,10 +636,10 @@ public class MainActivity extends Activity {
     createDirectoryDialog.findViewById(R.id.new_directory_cancel).setOnClickListener(v -> createDirectoryDialog.dismiss());
     createDirectoryDialog.findViewById(R.id.new_directory_create).setOnClickListener(v -> {
       var name = ((EditText) createDirectoryDialog.findViewById(R.id.new_directory_name)).getText().toString();
-      var folder = new File(filePath, name);
+      var folder = new File(currentState.filePath, name);
       if (!folder.exists()) {
         folder.mkdirs();
-        listItem(filePath);
+        listItem(currentState.filePath);
       } else {
         ToastHelper.showShort(this, "Folder already exists");
       }
@@ -670,8 +667,8 @@ public class MainActivity extends Activity {
 
   private void forEachItem(ForEachItemFunction forEachItemFunction) {
     View v;
-    for (int i = ll.getChildCount() - 1; i >= 0; i--) {
-      v = ll.getChildAt(i);
+    for (int i = mainListView.getChildCount() - 1; i >= 0; i--) {
+      v = mainListView.getChildAt(i);
       if (v instanceof ItemView)
         forEachItemFunction.forEachItem((ItemView) v);
     }
@@ -681,13 +678,19 @@ public class MainActivity extends Activity {
     void forEachItem(ItemView item);
   }
 
-  private class State {
+  private class AppState {
 
-    byte current;
-    static final byte idle = 0;
-    static final byte select = 1;
-    static final byte paste = 2;
-    static final byte openFile = 3;
+    private String filePath;
+    private File parent;
+    byte mode;
+
+    static final class Mode {
+
+      static final byte IDLE = 0;
+      static final byte SELECT = 1;
+      static final byte PASTE = 2;
+      static final byte OPEN_FILE = 3;
+    }
 
     void enterIdle() {
       setViewVisibility(R.id.paste_operation, View.GONE);
@@ -716,17 +719,17 @@ public class MainActivity extends Activity {
       // empty
     }
 
-    State() {
-      current = idle;
+    AppState() {
+      mode = Mode.IDLE;
     }
 
     public void changeTo(byte state) {
-      current = state;
+      mode = state;
       MainThread.run(() -> {
         switch (state) {
-          case select -> enterSelect();
-          case paste -> enterPaste();
-          case openFile -> enterOpenFile();
+          case Mode.SELECT -> enterSelect();
+          case Mode.PASTE -> enterPaste();
+          case Mode.OPEN_FILE -> enterOpenFile();
           // case idle -> enterIdle();
           default -> enterIdle();
         }
@@ -742,7 +745,7 @@ public class MainActivity extends Activity {
         return;
 
       if (file.isDirectory()) {
-        if (appState.current == State.select) {
+        if (currentState.mode == AppState.Mode.SELECT) {
           selectFiles(file, view);
         } else {
           listItem(file);
@@ -750,8 +753,8 @@ public class MainActivity extends Activity {
       }
 
       if (file.isFile()) {
-        if (appState.current == State.idle) {
-          appState.changeTo(State.openFile);
+        if (currentState.mode == AppState.Mode.IDLE) {
+          currentState.changeTo(AppState.Mode.OPEN_FILE);
 
           currentSelectedFiles.clear();
           currentSelectedFiles.add(file);
@@ -759,7 +762,7 @@ public class MainActivity extends Activity {
           openListDialog.setTitle(file.getName());
           openListDialog.show();
 
-        } else if (appState.current == State.select) {
+        } else if (currentState.mode == AppState.Mode.SELECT) {
           selectFiles(file, view);
         }
       }
@@ -770,8 +773,8 @@ public class MainActivity extends Activity {
     @Override
     public boolean onLongClick(final View view) {
       if (fopen.isRequestDocument) return true;
-      if (appState.current == State.idle || appState.current == State.select) {
-        appState.changeTo(State.select);
+      if (currentState.mode == AppState.Mode.IDLE || currentState.mode == AppState.Mode.SELECT) {
+        currentState.changeTo(AppState.Mode.SELECT);
         final File file = ((ItemView) view).file;
         selectFiles(file, view);
       }
