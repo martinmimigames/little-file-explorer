@@ -667,10 +667,10 @@ public class MainActivity extends Activity {
 
   private void forEachItem(ForEachItemFunction forEachItemFunction) {
     View v;
-    for (int i = mainListView.getChildCount() - 1; i >= 0; i--) {
+    for (int i = 0; i < mainListView.getChildCount(); i++) {
       v = mainListView.getChildAt(i);
-      if (v instanceof ItemView)
-        forEachItemFunction.forEachItem((ItemView) v);
+      if (v instanceof ItemView item)
+        forEachItemFunction.forEachItem(item);
     }
   }
 

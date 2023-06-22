@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:a="http://schemas.android.com/apk/res/android"
+<LinearLayout
+  xmlns:a="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   a:layout_width="match_parent"
   a:layout_height="wrap_content"
   a:orientation="vertical"
+  a:layout_gravity="bottom"
   a:theme="@style/app_theme"
   a:background="@color/background">
+
+  <LinearLayout
+    a:layout_width="match_parent"
+    a:layout_height="wrap_content"
+    a:layout_weight="1">
+
+    <ScrollView
+      a:id="@+id/delete_scroll_view"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      a:gravity="top">
+
+      <TextView
+        a:id="@+id/delete_list"
+        a:layout_width="match_parent"
+        a:layout_height="wrap_content"
+        a:padding="2dp"/>
+
+    </ScrollView>
+
+  </LinearLayout>
 
   <Button
     a:id="@+id/delete_delete"
     a:layout_width="match_parent"
     a:layout_height="wrap_content"
-    a:layout_above="@id/delete_cancel"
     a:text="Delete"
     style="@style/buttonStyle"
     tools:ignore="HardcodedText" />
@@ -20,25 +42,8 @@
     a:id="@+id/delete_cancel"
     a:layout_width="match_parent"
     a:layout_height="wrap_content"
-    a:layout_alignParentBottom="true"
     a:text="Cancel"
     style="@style/buttonStyle"
     tools:ignore="HardcodedText" />
 
-  <ScrollView
-    a:id="@+id/delete_scroll_view"
-    a:layout_width="match_parent"
-    a:layout_height="wrap_content"
-    a:layout_alignParentTop="true"
-    a:layout_above="@id/delete_delete"
-    a:gravity="top">
-
-    <TextView
-      a:id="@+id/delete_list"
-      a:layout_width="match_parent"
-      a:layout_height="wrap_content"
-      a:padding="2dp"/>
-
-  </ScrollView>
-
-</RelativeLayout>
+</LinearLayout>
