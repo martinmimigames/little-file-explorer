@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -55,6 +54,7 @@ public class MainActivity extends Activity {
   private Dialog deleteConfirmationDialog;
   private Dialog createDirectoryDialog;
   private Dialog renameDialog;
+  private final Preferences preferences;
 
   public MainActivity() {
     shortTabOnButton = new ShortTabOnButton();
@@ -63,7 +63,8 @@ public class MainActivity extends Activity {
     executor = Executors.newCachedThreadPool();
     fopen = new FileOpener(this);
     appState = new State();
-    showHiddenFiles = false;
+
+    preferences = new Preferences();
 
     hasOperations = 0;
   }
@@ -104,6 +105,12 @@ public class MainActivity extends Activity {
       filePath = savedInstanceState.getString(FILE_PATH_FLAG);
     }
 
+    preferences.onCreate(this);
+
+    var save = preferences.getSharedPreferences();
+    showHiddenFiles = save.getBoolean(Preferences.TOGGLE_HIDDEN_KEY, false);
+
+
     // jump start app state
     appState.current.start();
   }
@@ -111,7 +118,11 @@ public class MainActivity extends Activity {
   @Override
   public void onSaveInstanceState(Bundle savedInstanceState) {
     super.onSaveInstanceState(savedInstanceState);
-    savedInstanceState.putString(FILE_PATH_FLAG, filePath);
+    savedInstanceState.putString(Preferences.FILE_PATH_KEY, filePath);
+
+    var saveEditor = preferences.getSharedPreferences().edit();
+    saveEditor.putBoolean(Preferences.TOGGLE_HIDDEN_KEY, showHiddenFiles);
+    saveEditor.commit();
   }
 
   @Override
@@ -796,4 +807,5 @@ public class MainActivity extends Activity {
       return true;
     }
   }
+
 }
