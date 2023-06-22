@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:a="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+  xmlns:a="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   a:layout_width="match_parent"
   a:layout_height="match_parent"
@@ -26,7 +27,7 @@
       a:padding="10dp"
       a:text=" &#60;- "
       a:textSize="30sp"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
     <Button
       a:id="@+id/menu_button"
@@ -37,7 +38,7 @@
       a:padding="10dp"
       a:text=" ||| "
       a:textSize="30sp"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
     <TextView
       a:id="@+id/title"
@@ -51,7 +52,7 @@
       a:background="#3c3c3c"
       a:ellipsize="start"
       a:singleLine="true"
-      a:textSize="20sp" />
+      a:textSize="20sp"/>
 
   </RelativeLayout>
 
@@ -65,7 +66,7 @@
       a:layout_width="match_parent"
       a:layout_height="wrap_content"
       a:orientation="vertical"
-      a:padding="6dp" />
+      a:padding="6dp"/>
   </ScrollView>
 
   <LinearLayout
@@ -86,20 +87,25 @@
     tools:ignore="RtlHardcoded">
 
     <Button
+      a:id="@+id/menu_toggle_hidden"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      a:text="Toggle hidden"
+      tools:ignore="HardcodedText"/>
+
+    <Button
       a:id="@+id/menu_create_new_directory"
       a:layout_width="match_parent"
       a:layout_height="wrap_content"
       a:text="Create new folder"
-      a:layout_gravity="right"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
     <Button
       a:id="@+id/menu_quick_switch"
       a:layout_width="match_parent"
       a:layout_height="wrap_content"
       a:text="Switch drive menu"
-      a:layout_gravity="right"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
   </LinearLayout>
 
@@ -117,21 +123,21 @@
       a:layout_width="match_parent"
       a:layout_height="wrap_content"
       a:text="Select all"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
     <Button
       a:id="@+id/invert_select_all"
       a:layout_width="match_parent"
       a:layout_height="wrap_content"
       a:text="Invert select all"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
     <Button
       a:id="@+id/share_selected"
       a:layout_width="match_parent"
       a:layout_height="wrap_content"
       a:text="Share selected"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
   </LinearLayout>
 
@@ -148,14 +154,14 @@
       a:layout_width="wrap_content"
       a:layout_height="wrap_content"
       a:text="Rename"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
     <Button
       a:id="@+id/single_select_copy_path"
       a:layout_width="wrap_content"
       a:layout_height="wrap_content"
       a:text="Copy Path"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
   </LinearLayout>
 
@@ -173,28 +179,28 @@
       a:layout_width="wrap_content"
       a:layout_height="wrap_content"
       a:text="Cut"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
     <Button
       a:id="@+id/select_copy"
       a:layout_width="wrap_content"
       a:layout_height="wrap_content"
       a:text="Copy"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
     <Button
       a:id="@+id/select_delete"
       a:layout_width="wrap_content"
       a:layout_height="wrap_content"
       a:text="Delete"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
     <Button
       a:id="@+id/select_cancel"
       a:layout_width="wrap_content"
       a:layout_height="wrap_content"
       a:text="Cancel"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
   </LinearLayout>
 
@@ -212,14 +218,14 @@
       a:layout_width="wrap_content"
       a:layout_height="wrap_content"
       a:text="Paste"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
     <Button
       a:id="@+id/paste_cancel"
       a:layout_width="wrap_content"
       a:layout_height="wrap_content"
       a:text="Cancel"
-      tools:ignore="HardcodedText" />
+      tools:ignore="HardcodedText"/>
 
   </LinearLayout>
 </RelativeLayout>
