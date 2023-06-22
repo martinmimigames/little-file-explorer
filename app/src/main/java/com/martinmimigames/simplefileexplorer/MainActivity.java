@@ -448,10 +448,7 @@ public class MainActivity extends Activity {
             storageList.addView(entry);
           }
 
-          if (storageList.isShown())
-            storageList.setVisibility(View.GONE);
-          else
-            storageList.setVisibility(View.VISIBLE);
+          storageList.setVisibility((storageList.isShown()) ? View.GONE : View.VISIBLE);
         });
   }
 
@@ -781,5 +778,4 @@ public class MainActivity extends Activity {
       return true;
     }
   }
-
 }

@@ -9,16 +9,17 @@
   a:theme="@style/app_theme"
   a:background="@color/background">
 
+  <!-- to make ScrollView not fill up dialog when empty-ish -->
   <LinearLayout
     a:layout_width="match_parent"
-    a:layout_height="wrap_content"
+    a:layout_height="0dp"
     a:layout_weight="1">
 
     <ScrollView
       a:id="@+id/delete_scroll_view"
       a:layout_width="match_parent"
       a:layout_height="wrap_content"
-      a:gravity="top">
+      a:gravity="top" tools:ignore="UselessParent">
 
       <TextView
         a:id="@+id/delete_list"
