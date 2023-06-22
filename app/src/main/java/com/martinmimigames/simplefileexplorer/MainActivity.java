@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StatFs;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +25,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.martinmimigames.simplefileexplorer.view.ItemView;
 import mg.utils.clipboard.v1.ClipBoard;
 import mg.utils.helper.MainThread;
 import mg.utils.notify.ToastHelper;
@@ -331,7 +331,7 @@ public class MainActivity extends Activity {
   }
 
   private void addItem(final ImageView imageView, final File file) {
-    new Item(imageView, file);
+    new ItemView(this, ll, imageView, file, width, shortTabOnButton, longPressOnButton);
   }
 
   private ImageView getImageView(final Bitmap bitmap) {
@@ -672,22 +672,22 @@ public class MainActivity extends Activity {
     View v;
     for (int i = ll.getChildCount() - 1; i >= 0; i--) {
       v = ll.getChildAt(i);
-      if (v instanceof Item)
-        forEachItemFunction.forEachItem((Item) v);
+      if (v instanceof ItemView)
+        forEachItemFunction.forEachItem((ItemView) v);
     }
   }
 
   private interface ForEachItemFunction {
-    void forEachItem(Item item);
+    void forEachItem(ItemView item);
   }
 
   private class State {
 
-    int current;
-    static final int idle = 0;
-    static final int select = 1;
-    static final int paste = 2;
-    static final int openFile = 3;
+    byte current;
+    static final byte idle = 0;
+    static final byte select = 1;
+    static final byte paste = 2;
+    static final byte openFile = 3;
 
     void enterIdle() {
       setViewVisibility(R.id.paste_operation, View.GONE);
@@ -720,7 +720,7 @@ public class MainActivity extends Activity {
       current = idle;
     }
 
-    public void changeTo(int state) {
+    public void changeTo(byte state) {
       current = state;
       MainThread.run(() -> {
         switch (state) {
@@ -734,90 +734,10 @@ public class MainActivity extends Activity {
     }
   }
 
-  /*private class State {
-
-    State current, idle, select, paste, openFile;
-
-    private State(boolean ignored) {
-    }
-
-    State() {
-      idle = new State(true) {
-        @Override
-        void start() {
-          setViewVisibility(R.id.paste_operation, View.GONE);
-          setViewVisibility(R.id.select_operation, View.GONE);
-          setViewVisibility(R.id.quick_selection, View.GONE);
-          setViewVisibility(R.id.single_select_operation, View.GONE);
-          clearHighlight();
-          currentSelectedFiles.clear();
-        }
-      };
-
-      select = new State(true) {
-        @Override
-        void start() {
-          setViewVisibility(R.id.paste_operation, View.GONE);
-          setViewVisibility(R.id.select_operation, View.VISIBLE);
-          setViewVisibility(R.id.quick_selection, View.VISIBLE);
-          setViewVisibility(R.id.menu_list, View.GONE);
-        }
-      };
-
-      paste = new State(true) {
-        @Override
-        void start() {
-          setViewVisibility(R.id.select_operation, View.GONE);
-          setViewVisibility(R.id.quick_selection, View.GONE);
-          setViewVisibility(R.id.paste_operation, View.VISIBLE);
-          setViewVisibility(R.id.single_select_operation, View.GONE);
-        }
-      };
-
-      openFile = new State(true);
-      current = idle;
-    }
-
-    void start() {
-    }
-
-    public void change(State state) {
-      current = state;
-      MainActivity.this.runOnUiThread(current::start);
-    }
-  }*/
-
-  class Item extends LinearLayout {
-    final File file;
-
-    private Item(final ImageView imageView, final File file) {
-      super(MainActivity.this);
-
-      this.file = file;
-      this.setClickable(true);
-      this.setOnClickListener(shortTabOnButton);
-      this.setOnLongClickListener(longPressOnButton);
-
-      final TextView textView = new TextView(MainActivity.this);
-      textView.setText(file.getName());
-      textView.setTextColor(Color.WHITE);
-      textView.setBackgroundColor(Color.TRANSPARENT);
-      textView.setWidth(width - (width / 8));
-      textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16); //material list title
-
-      this.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-      runOnUiThread(() -> {
-        this.addView(imageView);
-        this.addView(textView);
-        ll.addView(this);
-      });
-    }
-  }
-
   private class ShortTabOnButton implements View.OnClickListener {
     @Override
     public void onClick(final View view) {
-      final File file = ((Item) view).file;
+      final File file = ((ItemView) view).file;
       if (!checkPermission())
         return;
 
@@ -852,7 +772,7 @@ public class MainActivity extends Activity {
       if (fopen.isRequestDocument) return true;
       if (appState.current == State.idle || appState.current == State.select) {
         appState.changeTo(State.select);
-        final File file = ((Item) view).file;
+        final File file = ((ItemView) view).file;
         selectFiles(file, view);
       }
       return true;
