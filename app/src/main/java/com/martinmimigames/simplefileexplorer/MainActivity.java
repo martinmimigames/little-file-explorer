@@ -10,14 +10,11 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.icu.text.DateTimePatternGenerator;
-import android.media.MediaCodec;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StatFs;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -91,6 +88,14 @@ public class MainActivity extends Activity {
   protected void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    preferences.onCreate(this);
+
+    var save = preferences.getSharedPreferences();
+    allowHiddenFileDisplay = save.getBoolean(Preferences.TOGGLE_HIDDEN_KEY, false);
+    currentState.filePath = save.getString(Preferences.FILE_PATH_KEY, null);
+    currentState.sorterName = save.getString(Preferences.SORTER_KEY, AppState.Sorters.ASCENDING_NAME_SORTER_TAG);
+
     permissionManager = new PermissionManager(this);
 
     Intent intent = getIntent();
@@ -106,12 +111,6 @@ public class MainActivity extends Activity {
 
     setupBitmaps();
     setupUI();
-
-    preferences.onCreate(this);
-
-    var save = preferences.getSharedPreferences();
-    allowHiddenFileDisplay = save.getBoolean(Preferences.TOGGLE_HIDDEN_KEY, false);
-    currentState.filePath = save.getString(Preferences.FILE_PATH_KEY, null);
 
     // default app state is idle state
     currentState.changeTo(AppState.Mode.IDLE);
@@ -142,6 +141,9 @@ public class MainActivity extends Activity {
     var saveEditor = preferences.getSharedPreferences().edit();
     saveEditor.putBoolean(Preferences.TOGGLE_HIDDEN_KEY, allowHiddenFileDisplay);
     saveEditor.putString(Preferences.FILE_PATH_KEY, currentState.filePath);
+
+    saveEditor.putString(Preferences.SORTER_KEY, currentState.sorterName);
+
     saveEditor.commit();
   }
 
@@ -207,13 +209,18 @@ public class MainActivity extends Activity {
 
       assert items != null;
 
-      Arrays.sort(items, (a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+      Arrays.sort(items, switch (currentState.sorterName) {
+            case AppState.Sorters.DESCENDING_NAME_SORTER_TAG -> AppState.Sorters.DESCENDING_NAME;
+            case AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.ASCENDING_MODIFIED_TIME;
+            case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.DESCENDING_MODIFIED_TIME;
+            //case AppState.Sorters.ASCENDING_NAME_SORTER_TAG -> AppState.Sorters.ASCENDING_NAME;
+            default ->  AppState.Sorters.ASCENDING_NAME;
+          });
 
       //sort(items);
       if (items.length == 0) {
         addDialog("Empty folder!", 16);
       } else {
-        String lastLetter = "";
 
         // print folders items
         boolean hasFolders = false;
@@ -223,11 +230,6 @@ public class MainActivity extends Activity {
               addDialog("Folders:", 18);
               hasFolders = true;
             }
-            if (item.getName().substring(0, 1)
-                .compareToIgnoreCase(lastLetter) > 0) {
-              lastLetter = item.getName().substring(0, 1).toUpperCase();
-              addDialog(lastLetter, 16);
-            }
             // if need to update, immediate return to avoid unwanted writing the list from concurrency
             if (needDirectoryUpdate) {
               return;
@@ -235,7 +237,6 @@ public class MainActivity extends Activity {
             addDirectory(item);
           }
         }
-        lastLetter = "";
 
         // print file items
         boolean hasFiles = false;
@@ -244,11 +245,6 @@ public class MainActivity extends Activity {
             if (!hasFiles) {
               addDialog("Files:", 18);
               hasFiles = true;
-            }
-            if (item.getName().substring(0, 1)
-                .compareToIgnoreCase(lastLetter) > 0) {
-              lastLetter = item.getName().substring(0, 1).toUpperCase();
-              addDialog(lastLetter, 16);
             }
             // if need to update, immediate return to avoid unwanted writing the list from concurrency
             if (needDirectoryUpdate) {
@@ -268,9 +264,10 @@ public class MainActivity extends Activity {
               default -> addItem(getImageView(unknownImage), item);
             }
           }
+
+        regexMatch();
       }
 
-      regexMatch();
 
     } else {
       // apps are not allowed to access these folders due to permissions in Android 11
@@ -283,8 +280,8 @@ public class MainActivity extends Activity {
 
   private void regexMatch() {
     var regex = Pattern.compile(((TextView) findViewById(R.id.regex)).getText().toString(), Pattern.CASE_INSENSITIVE);
-    forEachItem(item -> {
-      runOnUiThread(() -> item.setVisibility(regex.matcher(item.file.getName()).find() ? View.VISIBLE : View.GONE));
+    runOnUiThread(() -> {
+      forEachItem(item -> item.setVisibility(regex.matcher(item.file.getName()).find() ? View.VISIBLE : View.GONE));
     });
   }
 
@@ -359,10 +356,6 @@ public class MainActivity extends Activity {
     }
   }
 
-  private void clearHighlight() {
-    forEachItem(item -> item.setBackgroundColor(Color.TRANSPARENT));
-  }
-
   @Override
   public void onBackPressed() {
     if (!returnToParent())
@@ -424,6 +417,30 @@ public class MainActivity extends Activity {
           listItem(currentState.filePath);
           setViewVisibility(R.id.menu_list, View.GONE);
         });
+
+    findViewById(R.id.menu_sorter)
+        .setOnClickListener(v -> {
+          switch (currentState.sorterName) {
+            case AppState.Sorters.ASCENDING_NAME_SORTER_TAG -> {
+              currentState.sorterName = AppState.Sorters.DESCENDING_NAME_SORTER_TAG;
+              listItem(currentState.filePath);
+            }
+            case AppState.Sorters.DESCENDING_NAME_SORTER_TAG -> {
+              currentState.sorterName = AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG;
+              listItem(currentState.filePath);
+            }
+            case AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG -> {
+              currentState.sorterName = AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG;
+              listItem(currentState.filePath);
+            }
+            case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG -> {
+              currentState.sorterName = AppState.Sorters.ASCENDING_NAME_SORTER_TAG;
+              listItem(currentState.filePath);
+            }
+          }
+          ((TextView) v).setText(currentState.sorterName);
+        });
+    ((TextView) findViewById(R.id.menu_sorter)).setText(currentState.sorterName);
 
     findViewById(R.id.menu_create_new_directory)
         .setOnClickListener(v -> {
@@ -677,24 +694,47 @@ public class MainActivity extends Activity {
         R.drawable.unknown);
   }
 
-  private void forEachItem(ForEachItemFunction forEachItemFunction) {
+  /**
+   * Loop call function for each entry item stored in mainListView.
+   * Must be called in uiThread to avoid threading issues.
+   * @param forEachItemFunctionalInterface function to be run against each item in mainListView
+   */
+  private void forEachItem(ForEachItemFunctionalInterface forEachItemFunctionalInterface) {
     View v;
     for (int i = 0; i < mainListView.getChildCount(); i++) {
       v = mainListView.getChildAt(i);
       if (v instanceof ItemView item)
-        forEachItemFunction.forEachItem(item);
+        forEachItemFunctionalInterface.forEachItem(item);
     }
   }
 
-  private interface ForEachItemFunction {
+  /**
+   * functional interface for forEachItem
+   */
+  private interface ForEachItemFunctionalInterface {
     void forEachItem(ItemView item);
   }
 
   private class AppState {
 
+    private String sorterName;
+
     private String filePath;
     private File parent;
+    private Pattern pattern;
     byte mode;
+
+    static final class Sorters {
+      static final Comparator<File> ASCENDING_NAME = (f1, f2) -> f1.getName().compareToIgnoreCase(f2.getName());
+      static final String ASCENDING_NAME_SORTER_TAG = "A-z";
+      static final Comparator<File> DESCENDING_NAME = (f1, f2) -> ASCENDING_NAME.compare(f2, f1);
+      static final String DESCENDING_NAME_SORTER_TAG = "z-A";
+
+      static final Comparator<File> DESCENDING_MODIFIED_TIME = (f1, f2) -> Math.toIntExact(Math.max(Math.min(f1.lastModified() - f2.lastModified(), 1), -1));
+      static final String DESCENDING_MODIFIED_TIME_SORTER_TAG = "By oldest";
+      static final Comparator<File> ASCENDING_MODIFIED_TIME = (f1, f2) -> DESCENDING_MODIFIED_TIME.compare(f2, f1);
+      static final String ASCENDING_MODIFIED_TIME_SORTER_TAG = "By earliest";
+    }
 
     static final class Mode {
 
@@ -709,7 +749,7 @@ public class MainActivity extends Activity {
       setViewVisibility(R.id.select_operation, View.GONE);
       setViewVisibility(R.id.quick_selection, View.GONE);
       setViewVisibility(R.id.single_select_operation, View.GONE);
-      clearHighlight();
+      forEachItem(item -> item.setBackgroundColor(Color.TRANSPARENT));
       currentSelectedFiles.clear();
     }
 

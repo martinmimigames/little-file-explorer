@@ -107,6 +107,12 @@
       tools:ignore="HardcodedText"/>
 
     <Button
+      a:id="@+id/menu_sorter"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      tools:ignore="HardcodedText"/>
+
+    <Button
       a:id="@+id/menu_create_new_directory"
       a:layout_width="match_parent"
       a:layout_height="wrap_content"

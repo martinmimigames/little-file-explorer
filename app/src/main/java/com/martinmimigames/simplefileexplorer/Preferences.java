@@ -10,6 +10,8 @@ final class Preferences {
   static final String FILE_PATH_KEY = "file_path";
   static final String TOGGLE_HIDDEN_KEY = "toggle_hidden";
 
+  static final String SORTER_KEY = "sorter";
+
   SharedPreferences sharedPreferences;
 
 
