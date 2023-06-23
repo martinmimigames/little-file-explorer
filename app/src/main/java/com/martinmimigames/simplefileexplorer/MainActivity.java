@@ -7,8 +7,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,7 +48,6 @@ public class MainActivity extends Activity {
   private int hasOperations;
   private LinearLayout mainListView;
   private int width;
-  private Bitmap fileImage, pictureImage, audioImage, videoImage, unknownImage, archiveImage, folderImage;
   private boolean isCut, isCopy;
   private PermissionManager permissionManager;
   private Dialog openListDialog;
@@ -109,7 +106,7 @@ public class MainActivity extends Activity {
 
     mainListView = findViewById(R.id.list);
 
-    setupBitmaps();
+    width = Resources.getSystem().getDisplayMetrics().widthPixels;
     setupUI();
 
     // default app state is idle state
@@ -251,21 +248,21 @@ public class MainActivity extends Activity {
               return;
             }
             switch (FileProvider.getFileType(item).split("/")[0]) {
-              case "image" -> addItem(getImageView(pictureImage), item);
-              case "video" -> addItem(getImageView(videoImage), item);
-              case "audio" -> addItem(getImageView(audioImage), item);
+              case "image" -> addItem(getImageView(R.drawable.picture), item);
+              case "video" -> addItem(getImageView(R.drawable.video), item);
+              case "audio" -> addItem(getImageView(R.drawable.audio), item);
               case "application" -> {
                 if (FileProvider.getFileType(item).contains("application/octet-stream"))
-                  addItem(getImageView(unknownImage), item);
+                  addItem(getImageView(R.drawable.unknown), item);
                 else
-                  addItem(getImageView(archiveImage), item);
+                  addItem(getImageView(R.drawable.archive), item);
               }
-              case "text" -> addItem(getImageView(fileImage), item);
-              default -> addItem(getImageView(unknownImage), item);
+              case "text" -> addItem(getImageView(R.drawable.file), item);
+              default -> addItem(getImageView(R.drawable.unknown), item);
             }
           }
 
-        regexFilter();
+        filter();
       }
 
 
@@ -281,10 +278,10 @@ public class MainActivity extends Activity {
   /**
    * filter through each item using regex entered in regex bar
    */
-  private void regexFilter() {
-    var regex = Pattern.compile(((TextView) findViewById(R.id.regex)).getText().toString(), Pattern.CASE_INSENSITIVE);
+  private void filter() {
+    var filter = ((TextView) findViewById(R.id.filter)).getText().toString().toLowerCase();
     runOnUiThread(() -> {
-      forEachItem(item -> item.setVisibility(regex.matcher(item.file.getName()).find() ? View.VISIBLE : View.GONE));
+      forEachItem(item -> item.setVisibility(item.file.getName().toLowerCase().contains(filter) ? View.VISIBLE : View.GONE));
     });
   }
 
@@ -321,16 +318,16 @@ public class MainActivity extends Activity {
   }
 
   private void addDirectory(final File folder) {
-    addItem(getImageView(folderImage), folder);
+    addItem(getImageView(R.drawable.folder), folder);
   }
 
   private void addItem(final ImageView imageView, final File file) {
     new ItemView(this, mainListView, imageView, file, width, shortTabOnButton, longPressOnButton);
   }
 
-  private ImageView getImageView(final Bitmap bitmap) {
+  private ImageView getImageView(int imageId) {
     final ImageView imageView = new ImageView(this);
-    imageView.setImageBitmap(bitmap);
+    imageView.setImageResource(imageId);
     final int width10 = width / 8;
     imageView.setAdjustViewBounds(true);
     imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -392,7 +389,7 @@ public class MainActivity extends Activity {
       }
     });
 
-    ((EditText) findViewById(R.id.regex)).addTextChangedListener(new TextWatcher() {
+    ((EditText) findViewById(R.id.filter)).addTextChangedListener(new TextWatcher() {
 
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -406,7 +403,7 @@ public class MainActivity extends Activity {
 
       @Override
       public void afterTextChanged(Editable s) {
-        regexFilter();
+        filter();
       }
     });
   }
@@ -680,24 +677,6 @@ public class MainActivity extends Activity {
       }
       createDirectoryDialog.dismiss();
     });
-  }
-
-  private void setupBitmaps() {
-    width = Resources.getSystem().getDisplayMetrics().widthPixels;
-    folderImage = BitmapFactory.decodeResource(getResources(),
-        R.drawable.folder);
-    fileImage = BitmapFactory.decodeResource(getResources(),
-        R.drawable.file);
-    archiveImage = BitmapFactory.decodeResource(getResources(),
-        R.drawable.archive);
-    audioImage = BitmapFactory.decodeResource(getResources(),
-        R.drawable.audio);
-    videoImage = BitmapFactory.decodeResource(getResources(),
-        R.drawable.video);
-    pictureImage = BitmapFactory.decodeResource(getResources(),
-        R.drawable.picture);
-    unknownImage = BitmapFactory.decodeResource(getResources(),
-        R.drawable.unknown);
   }
 
   /**
