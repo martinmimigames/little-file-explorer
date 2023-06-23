@@ -596,6 +596,12 @@ public class MainActivity extends Activity {
       currentState.changeTo(AppState.Mode.IDLE);
     });
 
+    openListDialog.findViewById(R.id.open_list_share).setOnClickListener(v -> {
+      openListDialog.dismiss();
+      fopen.share(getSelectedFiles());
+      currentState.changeTo(AppState.Mode.IDLE);
+    });
+
     openListDialog.findViewById(R.id.open_list_cancel).setOnClickListener(v -> {
       openListDialog.dismiss();
       currentState.changeTo(AppState.Mode.IDLE);
