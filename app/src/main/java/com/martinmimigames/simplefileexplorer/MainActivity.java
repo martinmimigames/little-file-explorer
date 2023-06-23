@@ -727,7 +727,6 @@ public class MainActivity extends Activity {
 
     private String filePath;
     private File parent;
-    private Pattern pattern;
     byte mode;
 
     static final class Sorters {
