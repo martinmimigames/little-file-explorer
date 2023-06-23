@@ -54,6 +54,19 @@
       a:singleLine="true"
       a:textSize="20sp"/>
 
+    <EditText
+      a:id="@+id/regex"
+      a:layout_width="match_parent"
+      a:layout_height="wrap_content"
+      a:singleLine="true"
+      a:layout_below="@id/title"
+      a:layout_toLeftOf="@id/menu_button"
+      a:layout_toRightOf="@id/back_button"
+      a:layout_alignBottom="@id/back_button"
+      a:hint="regex pattern"
+      tools:ignore="HardcodedText"/>
+
+
   </RelativeLayout>
 
   <ScrollView

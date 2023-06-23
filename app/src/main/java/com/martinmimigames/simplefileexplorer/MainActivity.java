@@ -10,9 +10,14 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.icu.text.DateTimePatternGenerator;
+import android.media.MediaCodec;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StatFs;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +31,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Pattern;
 
 import com.martinmimigames.simplefileexplorer.view.ItemView;
 import mg.utils.clipboard.v1.ClipBoard;
@@ -271,6 +277,9 @@ public class MainActivity extends Activity {
             }
           }
       }
+
+      regexMatch();
+
     } else {
       // apps are not allowed to access these folders due to permissions in Android 11
       if (currentState.filePath.contains("Android/data") || currentState.filePath.contains("Android/obb")) {
@@ -278,6 +287,13 @@ public class MainActivity extends Activity {
       } else addDialog("Access Denied", 16);
     }
     runOnUiThread(() -> mainListView.removeView(findViewById(LOADING_VIEW_ID)));
+  }
+
+  private void regexMatch() {
+    var regex = Pattern.compile(((TextView) findViewById(R.id.regex)).getText().toString(), Pattern.CASE_INSENSITIVE);
+    forEachItem(item -> {
+      runOnUiThread(() -> item.setVisibility(regex.matcher(item.file.getName()).find() ? View.VISIBLE : View.GONE));
+    });
   }
 
   private void listItem(final File folder) {
@@ -385,6 +401,24 @@ public class MainActivity extends Activity {
       } else {
         menuList.setVisibility(View.VISIBLE);
         setViewVisibility(R.id.quick_selection, View.GONE);
+      }
+    });
+
+    ((EditText) findViewById(R.id.regex)).addTextChangedListener(new TextWatcher() {
+
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        regexMatch();
       }
     });
   }
