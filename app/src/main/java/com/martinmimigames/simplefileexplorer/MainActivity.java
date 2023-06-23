@@ -107,27 +107,14 @@ public class MainActivity extends Activity {
     setupBitmaps();
     setupUI();
 
-    if (savedInstanceState != null) {
-      currentState.filePath = savedInstanceState.getString(Preferences.FILE_PATH_KEY);
-    }
-
     preferences.onCreate(this);
 
     var save = preferences.getSharedPreferences();
     allowHiddenFileDisplay = save.getBoolean(Preferences.TOGGLE_HIDDEN_KEY, false);
+    currentState.filePath = save.getString(Preferences.FILE_PATH_KEY, null);
 
     // default app state is idle state
     currentState.changeTo(AppState.Mode.IDLE);
-  }
-
-  @Override
-  public void onSaveInstanceState(Bundle savedInstanceState) {
-    super.onSaveInstanceState(savedInstanceState);
-    savedInstanceState.putString(Preferences.FILE_PATH_KEY, currentState.filePath);
-
-    var saveEditor = preferences.getSharedPreferences().edit();
-    saveEditor.putBoolean(Preferences.TOGGLE_HIDDEN_KEY, allowHiddenFileDisplay);
-    saveEditor.commit();
   }
 
   @Override
@@ -151,6 +138,11 @@ public class MainActivity extends Activity {
   protected void onStop() {
     super.onStop();
     currentState.changeTo(AppState.Mode.IDLE);
+
+    var saveEditor = preferences.getSharedPreferences().edit();
+    saveEditor.putBoolean(Preferences.TOGGLE_HIDDEN_KEY, allowHiddenFileDisplay);
+    saveEditor.putString(Preferences.FILE_PATH_KEY, currentState.filePath);
+    saveEditor.commit();
   }
 
   private boolean checkPermission() {
