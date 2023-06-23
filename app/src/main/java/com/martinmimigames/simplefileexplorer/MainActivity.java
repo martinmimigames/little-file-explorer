@@ -276,7 +276,7 @@ public class MainActivity extends Activity {
   }
 
   /**
-   * filter through each item using regex entered in regex bar
+   * filter through each item using filter text entered in filter bar
    */
   private void filter() {
     var filter = ((TextView) findViewById(R.id.filter)).getText().toString().toLowerCase();
