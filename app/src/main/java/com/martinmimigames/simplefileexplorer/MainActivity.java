@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -206,7 +208,10 @@ public class MainActivity extends Activity {
       needDirectoryUpdate = false;
 
       assert items != null;
-      sort(items);
+
+      Arrays.sort(items, (a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+
+      //sort(items);
       if (items.length == 0) {
         addDialog("Empty folder!", 16);
       } else {
@@ -296,22 +301,6 @@ public class MainActivity extends Activity {
 
   private void addDialog(final String dialog, final int textSize) {
     addIdDialog(dialog, textSize, View.NO_ID);
-  }
-
-  private void sort(final File[] items) {
-    // for every item
-    for (int i = 0; i < items.length; i++) {
-      // j = for every next item
-      for (int j = i + 1; j < items.length; j++) {
-        // if larger than next
-        if (items[i].toString()
-            .compareToIgnoreCase(items[j].toString()) > 0) {
-          File temp = items[i];
-          items[i] = items[j];
-          items[j] = temp;
-        }
-      }
-    }
   }
 
   //return true if can read
