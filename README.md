@@ -32,12 +32,22 @@ Location of website:
 - Free
 - Small (< 40 KB)
 - Basic file operations (Cut, copy, paste, rename, delete)
+- File name filter
+- Name and Modified Time sort
 - Easy switch between sdcard and internal storage
 - Multi-share function
 - File/folder path copying
 - Minimum permissions
 
 ## Latest Versions
+
+- v4.10
+  - Added "toggle hidden" option (available in menu button)
+  - Added File/Folder name filtering (available on top bar)
+  - Added display sorting (name, last modified time) (available in menu button)
+  - Added file path remembering on app exit
+  - Re-added share button in open list options
+  - Fixed delete confirmation screen being full screen
 
 - v4.9
   - Fixed sticky selection state after leaving app
@@ -103,7 +113,7 @@ Official Website at [https://martinmimigames.github.io](https://martinmimigames.
 
 ### Last update of README
 
-Date : 21-05-2023 dd-mm-yyyy
+Date : 23-06-2023 dd-mm-yyyy
 
 ### Important
 

@@ -15,19 +15,21 @@ You can visit the official webpage at https://martinmimigames.github.io/projects
 Features
 
 - Free
-- Small (< 40KB)
+- Small (< 40 KB)
 - Basic file operations (Cut, copy, paste, rename, delete)
+- File name filter
+- Name and Modified Time sort
 - Easy switch between sdcard and internal storage
 - Multi-share function
-- File path copying
+- File/folder path copying
 - Minimum permissions
-- Supports Android 1.0+
 
 Issues
 
 Issues and pull requests are always welcome!
 
 You can submit issues the following ways:
+
 - via Github Issues at https://github.com/martinmimigames/little-file-explorer/issues
 - via email: martinmimigames@gmail.com
 

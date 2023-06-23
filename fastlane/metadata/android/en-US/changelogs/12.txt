@@ -1,0 +1,6 @@
+- Added "toggle hidden" option (available in menu button)
+- Added File/Folder name filtering (available on top bar)
+- Added display sorting (name, last modified time) (available in menu button)
+- Added file path remembering on app exit
+- Re-added share button in open list options
+- Fixed delete confirmation screen being full screen
