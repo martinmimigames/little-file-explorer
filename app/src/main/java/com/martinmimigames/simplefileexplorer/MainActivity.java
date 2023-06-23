@@ -265,7 +265,7 @@ public class MainActivity extends Activity {
             }
           }
 
-        regexMatch();
+        regexFilter();
       }
 
 
@@ -278,7 +278,10 @@ public class MainActivity extends Activity {
     runOnUiThread(() -> mainListView.removeView(findViewById(LOADING_VIEW_ID)));
   }
 
-  private void regexMatch() {
+  /**
+   * filter through each item using regex entered in regex bar
+   */
+  private void regexFilter() {
     var regex = Pattern.compile(((TextView) findViewById(R.id.regex)).getText().toString(), Pattern.CASE_INSENSITIVE);
     runOnUiThread(() -> {
       forEachItem(item -> item.setVisibility(regex.matcher(item.file.getName()).find() ? View.VISIBLE : View.GONE));
@@ -403,7 +406,7 @@ public class MainActivity extends Activity {
 
       @Override
       public void afterTextChanged(Editable s) {
-        regexMatch();
+        regexFilter();
       }
     });
   }
@@ -578,6 +581,9 @@ public class MainActivity extends Activity {
     runOnUiThread(() -> findViewById(id).setVisibility(visibility));
   }
 
+  /**
+   * Copies the selected file's file path and place in clipboard.
+   */
   private void copyFilePath() {
     ClipBoard.copyText(this, currentSelectedFiles.get(0).getAbsolutePath());
     ToastHelper.showShort(this, "copied path");
