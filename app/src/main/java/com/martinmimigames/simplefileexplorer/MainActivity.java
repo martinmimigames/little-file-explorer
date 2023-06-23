@@ -1,8 +1,5 @@
 package com.martinmimigames.simplefileexplorer;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -14,11 +11,11 @@ import android.os.StatFs;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.*;
+import com.martinmimigames.simplefileexplorer.view.ItemView;
+import mg.utils.clipboard.v1.ClipBoard;
+import mg.utils.helper.MainThread;
+import mg.utils.notify.ToastHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,12 +23,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.regex.Pattern;
 
-import com.martinmimigames.simplefileexplorer.view.ItemView;
-import mg.utils.clipboard.v1.ClipBoard;
-import mg.utils.helper.MainThread;
-import mg.utils.notify.ToastHelper;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends Activity {
   private static final int ONGOING_OPERATION_ID = Integer.MAX_VALUE;
@@ -207,12 +201,12 @@ public class MainActivity extends Activity {
       assert items != null;
 
       Arrays.sort(items, switch (currentState.sorterName) {
-            case AppState.Sorters.DESCENDING_NAME_SORTER_TAG -> AppState.Sorters.DESCENDING_NAME;
-            case AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.ASCENDING_MODIFIED_TIME;
-            case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.DESCENDING_MODIFIED_TIME;
-            //case AppState.Sorters.ASCENDING_NAME_SORTER_TAG -> AppState.Sorters.ASCENDING_NAME;
-            default ->  AppState.Sorters.ASCENDING_NAME;
-          });
+        case AppState.Sorters.DESCENDING_NAME_SORTER_TAG -> AppState.Sorters.DESCENDING_NAME;
+        case AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.ASCENDING_MODIFIED_TIME;
+        case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.DESCENDING_MODIFIED_TIME;
+        //case AppState.Sorters.ASCENDING_NAME_SORTER_TAG -> AppState.Sorters.ASCENDING_NAME;
+        default -> AppState.Sorters.ASCENDING_NAME;
+      });
 
       //sort(items);
       if (items.length == 0) {
@@ -688,6 +682,7 @@ public class MainActivity extends Activity {
   /**
    * Loop call function for each entry item stored in mainListView.
    * Must be called in uiThread to avoid threading issues.
+   *
    * @param forEachItemFunctionalInterface function to be run against each item in mainListView
    */
   private void forEachItem(ForEachItemFunctionalInterface forEachItemFunctionalInterface) {

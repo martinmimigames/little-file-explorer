@@ -1,7 +1,5 @@
 package com.martinmimigames.simplefileexplorer;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
@@ -10,6 +8,8 @@ import android.os.Build;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import static android.app.Activity.RESULT_OK;
 
 class FileOpener {
 
@@ -40,7 +40,7 @@ class FileOpener {
   }
 
   void share(File[] files) {
-    if (isRequestDocument){
+    if (isRequestDocument) {
       open(files[0]);
       return;
     }
@@ -49,7 +49,7 @@ class FileOpener {
       intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
       var fileList = new ArrayList<Uri>();
       String generalMimetype = null;
-      for (var file : files){
+      for (var file : files) {
         fileList.add(getUriFromFile(file));
         var mimetype = FileProvider.getFileType(file);
         if (generalMimetype == null) {

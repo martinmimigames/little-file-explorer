@@ -1,9 +1,5 @@
 package com.martinmimigames.simplefileexplorer;
 
-import static android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS;
-import static android.provider.Settings.ACTION_MANAGE_ALL_APPLICATIONS_SETTINGS;
-import static android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import static android.provider.Settings.*;
 
 public class PermissionManager {
 
@@ -37,16 +35,16 @@ public class PermissionManager {
     permissionDialog.setTitle("Permission Request");
 
     RelativeLayout.LayoutParams layoutParams =
-      new RelativeLayout.LayoutParams(
-        RelativeLayout.LayoutParams.MATCH_PARENT,
-        RelativeLayout.LayoutParams.MATCH_PARENT
-      );
+        new RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.MATCH_PARENT,
+            RelativeLayout.LayoutParams.MATCH_PARENT
+        );
     final RelativeLayout relativeLayout = new RelativeLayout(this.activity);
     relativeLayout.setLayoutParams(layoutParams);
 
     layoutParams = new RelativeLayout.LayoutParams(
-      RelativeLayout.LayoutParams.MATCH_PARENT,
-      RelativeLayout.LayoutParams.WRAP_CONTENT
+        RelativeLayout.LayoutParams.MATCH_PARENT,
+        RelativeLayout.LayoutParams.WRAP_CONTENT
     );
 
     final TextView text = new TextView(this.activity);
@@ -55,8 +53,8 @@ public class PermissionManager {
     relativeLayout.addView(text);
 
     layoutParams = new RelativeLayout.LayoutParams(
-      RelativeLayout.LayoutParams.WRAP_CONTENT,
-      RelativeLayout.LayoutParams.WRAP_CONTENT
+        RelativeLayout.LayoutParams.WRAP_CONTENT,
+        RelativeLayout.LayoutParams.WRAP_CONTENT
     );
     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
     layoutParams.addRule(RelativeLayout.BELOW, textId);
@@ -68,8 +66,8 @@ public class PermissionManager {
     relativeLayout.addView(grant);
 
     layoutParams = new RelativeLayout.LayoutParams(
-      RelativeLayout.LayoutParams.WRAP_CONTENT,
-      RelativeLayout.LayoutParams.WRAP_CONTENT
+        RelativeLayout.LayoutParams.WRAP_CONTENT,
+        RelativeLayout.LayoutParams.WRAP_CONTENT
     );
     layoutParams.addRule(RelativeLayout.BELOW, textId);
     layoutParams.addRule(RelativeLayout.LEFT_OF, grantId);

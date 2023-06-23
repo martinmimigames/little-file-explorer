@@ -42,9 +42,9 @@ public class FileProvider extends ContentProvider {
         data.file = file;
         database.put(key, data);
         return Uri.parse(SCHEME
-          + AUTHORITY + "/"
-          + key + "/"
-          + data.name);
+            + AUTHORITY + "/"
+            + key + "/"
+            + data.name);
       }
     }
   }
@@ -54,8 +54,8 @@ public class FileProvider extends ContentProvider {
     if (lastDot >= 0) {
       final String extension = file.getName().substring(lastDot + 1);
       final String mime = MimeTypeMap
-        .getSingleton()
-        .getMimeTypeFromExtension(extension);
+          .getSingleton()
+          .getMimeTypeFromExtension(extension);
       if (mime != null) return mime;
     }
     return "application/octet-stream";
