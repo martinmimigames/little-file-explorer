@@ -189,6 +189,8 @@ public class MainActivity extends Activity {
         case AppState.Sorters.DESCENDING_NAME_SORTER_TAG -> AppState.Sorters.DESCENDING_NAME;
         case AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.ASCENDING_MODIFIED_TIME;
         case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.DESCENDING_MODIFIED_TIME;
+        case AppState.Sorters.ASCENDING_FILE_SIZE_TAG -> AppState.Sorters.ASCENDING_FILE_SIZE;
+        case AppState.Sorters.DESCENDING_FILE_SIZE_TAG -> AppState.Sorters.DESCENDING_FILE_SIZE;
         //case AppState.Sorters.ASCENDING_NAME_SORTER_TAG -> AppState.Sorters.ASCENDING_NAME;
         default -> AppState.Sorters.ASCENDING_NAME;
       });
@@ -414,25 +416,17 @@ public class MainActivity extends Activity {
 
     findViewById(R.id.menu_sorter)
         .setOnClickListener(v -> {
-          switch (currentState.sorterName) {
-            case AppState.Sorters.ASCENDING_NAME_SORTER_TAG -> {
-              currentState.sorterName = AppState.Sorters.DESCENDING_NAME_SORTER_TAG;
-              listItem(currentState.filePath);
-            }
-            case AppState.Sorters.DESCENDING_NAME_SORTER_TAG -> {
-              currentState.sorterName = AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG;
-              listItem(currentState.filePath);
-            }
-            case AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG -> {
-              currentState.sorterName = AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG;
-              listItem(currentState.filePath);
-            }
-            case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG -> {
-              currentState.sorterName = AppState.Sorters.ASCENDING_NAME_SORTER_TAG;
-              listItem(currentState.filePath);
-            }
-          }
+          currentState.sorterName = switch (currentState.sorterName) {
+            case AppState.Sorters.ASCENDING_NAME_SORTER_TAG -> AppState.Sorters.DESCENDING_NAME_SORTER_TAG;
+            case AppState.Sorters.DESCENDING_NAME_SORTER_TAG -> AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG;
+            case AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG;
+            case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.ASCENDING_FILE_SIZE_TAG;
+            case AppState.Sorters.ASCENDING_FILE_SIZE_TAG -> AppState.Sorters.DESCENDING_FILE_SIZE_TAG;
+            // case AppState.Sorters.DESCENDING_FILE_SIZE_TAG -> AppState.Sorters.ASCENDING_NAME_SORTER_TAG;
+            default -> AppState.Sorters.ASCENDING_NAME_SORTER_TAG;
+          };
           ((TextView) v).setText(currentState.sorterName);
+          listItem(currentState.filePath);
         });
     ((TextView) findViewById(R.id.menu_sorter)).setText(currentState.sorterName);
 
@@ -719,6 +713,11 @@ public class MainActivity extends Activity {
       static final String DESCENDING_MODIFIED_TIME_SORTER_TAG = "By oldest";
       static final Comparator<File> ASCENDING_MODIFIED_TIME = (f1, f2) -> DESCENDING_MODIFIED_TIME.compare(f2, f1);
       static final String ASCENDING_MODIFIED_TIME_SORTER_TAG = "By earliest";
+
+      static final Comparator<File> DESCENDING_FILE_SIZE = (f1, f2) -> Math.toIntExact(Math.max(Math.min(f2.length() - f1.length(), 1), -1));
+      static final String DESCENDING_FILE_SIZE_TAG = "By largest";
+      static final Comparator<File> ASCENDING_FILE_SIZE = (f1, f2) -> DESCENDING_FILE_SIZE.compare(f2, f1);
+      static final String ASCENDING_FILE_SIZE_TAG = "By smallest";
     }
 
     static final class Mode {
