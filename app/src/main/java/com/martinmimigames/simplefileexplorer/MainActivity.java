@@ -112,7 +112,7 @@ public class MainActivity extends Activity {
     super.onStart();
 
     executor.execute(() -> {
-      if (currentState.filePath != null) {
+      if (currentState.filePath != null && new File(currentState.filePath).exists()) {
         if (checkPermission())
           listItem(currentState.filePath);
       } else {
