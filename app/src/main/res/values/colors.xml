@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="background">#2C2C2C</color>
+  <color name="foreground">#EDEDED</color>
+  <color name="buttonBackground">#5F5F5F</color>
+  <color name="topbarbg">#3c3c3c</color>
+</resources>

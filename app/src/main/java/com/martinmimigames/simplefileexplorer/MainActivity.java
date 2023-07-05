@@ -292,7 +292,6 @@ public class MainActivity extends Activity {
     final TextView tv = new TextView(this);
     tv.setText(dialog);
     tv.setBackgroundColor(Color.TRANSPARENT);
-    tv.setTextColor(Color.WHITE);
     tv.setTextSize(textSize);
     tv.setId(id);
 

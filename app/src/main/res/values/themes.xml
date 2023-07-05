@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
   <style name="app_theme" parent="@android:style/Theme.Light.NoTitleBar">
     <item name="android:background">@android:color/transparent</item>
@@ -6,7 +6,6 @@
     <item name="android:textColor">@color/foreground</item>
     <item name="android:buttonStyle">@style/buttonStyle</item>
     <item name="android:textSize">16sp</item>
-    <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
   </style>
 
   <style name="buttonStyle" parent="@android:style/Widget.Button">
@@ -16,13 +15,17 @@
     <item name="android:background">@color/buttonBackground</item>
   </style>
 
+  <style name="editTextStyle" parent="@android:style/Widget.EditText">
+    <item name="android:textColor">@color/background</item>
+    <item name="android:background">@color/foreground</item>
+    <item name="android:padding">7dp</item>
+    <item name="android:textColorHint">@color/background</item>
+    <item name="android:layout_margin">2dp</item>
+  </style>
+
   <style name="app_theme.dialog" parent="@android:style/Theme.Dialog">
     <item name="android:background">@color/background</item>
     <item name="android:colorForeground">@color/foreground</item>
     <item name="android:textColor">@color/foreground</item>
   </style>
-
-  <color name="background">#2C2C2C</color>
-  <color name="foreground">#EDEDED</color>
-  <color name="buttonBackground">#5F5F5F</color>
 </resources>

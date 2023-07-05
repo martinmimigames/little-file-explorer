@@ -14,7 +14,7 @@
     a:layout_alignParentLeft="true"
     a:layout_alignParentTop="true"
     a:layout_gravity="start"
-    a:background="#3c3c3c"
+    a:background="@color/topbarbg"
     a:orientation="horizontal"
     tools:ignore="RtlHardcoded">
 
@@ -49,16 +49,18 @@
       a:paddingRight="5dp"
       a:layout_toLeftOf="@id/menu_button"
       a:layout_toRightOf="@id/back_button"
-      a:background="#3c3c3c"
+      a:background="@android:color/transparent"
       a:ellipsize="start"
       a:singleLine="true"
       a:textSize="20sp"/>
 
     <EditText
       a:id="@+id/filter"
+      style="@style/editTextStyle"
       a:layout_width="match_parent"
       a:layout_height="wrap_content"
       a:singleLine="true"
+      a:padding="0dp"
       a:layout_below="@id/title"
       a:layout_toLeftOf="@id/menu_button"
       a:layout_toRightOf="@id/back_button"

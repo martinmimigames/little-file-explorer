@@ -15,6 +15,7 @@
     a:hint="Enter new name"
     tools:ignore="HardcodedText"
     a:inputType="text"
+    style="@style/editTextStyle"
     tools:targetApi="cupcake" />
 
   <Button

@@ -3,11 +3,13 @@ package com.martinmimigames.simplefileexplorer.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.martinmimigames.simplefileexplorer.R;
 import mg.utils.helper.MainThread;
 
 import java.io.File;
@@ -26,7 +28,6 @@ public class ItemView extends LinearLayout {
 
     final TextView textView = new TextView(context);
     textView.setText(file.getName());
-    textView.setTextColor(Color.WHITE);
     textView.setBackgroundColor(Color.TRANSPARENT);
     textView.setWidth(itemWidth - (itemWidth / 8));
     textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16); //material list title
