@@ -162,24 +162,9 @@ public class MainActivity extends Activity {
    */
   private void updateDirectoryView(File folder) {
 
-    // retrieve folder and driver information
-    String info = "Name: " + folder.getName() + "\n";
-    if (Build.VERSION.SDK_INT >= 9) {
-      StatFs stat = new StatFs(folder.getPath());
-      long bytesAvailable = Build.VERSION.SDK_INT >= 18 ?
-          stat.getBlockSizeLong() * stat.getAvailableBlocksLong() :
-          (long) stat.getBlockSize() * stat.getAvailableBlocks();
-      info += "Available size: " + FileOperation.getReadableMemorySize(bytesAvailable) + "\n";
-      if (Build.VERSION.SDK_INT >= 18) {
-        bytesAvailable = stat.getTotalBytes();
-        info += "Capacity size: " + FileOperation.getReadableMemorySize(bytesAvailable) + "\n";
-      }
-    }
-    final String finalInfo = info;
     runOnUiThread(() -> {
       mainListView.removeAllViews();
       ((TextView) findViewById(R.id.title)).setText(currentState.filePath);
-      addDialog(finalInfo, 16);
 
       // create process indicator
       addIdDialog("Loading...", 16, LOADING_VIEW_ID);
@@ -255,8 +240,24 @@ public class MainActivity extends Activity {
               default -> addItem(getImageView(R.drawable.unknown), item);
             }
           }
+        // retrieve folder and driver information
+        String info = "Name: " + folder.getName() + "\n";
+        if (Build.VERSION.SDK_INT >= 9) {
+          StatFs stat = new StatFs(folder.getPath());
+          long bytesAvailable = Build.VERSION.SDK_INT >= 18 ?
+              stat.getBlockSizeLong() * stat.getAvailableBlocksLong() :
+              (long) stat.getBlockSize() * stat.getAvailableBlocks();
+          info += "Available size: " + FileOperation.getReadableMemorySize(bytesAvailable);
+          if (Build.VERSION.SDK_INT >= 18) {
+            bytesAvailable = stat.getTotalBytes();
+            info += "\nCapacity size: " + FileOperation.getReadableMemorySize(bytesAvailable);
+          }
+        }
+        final String finalInfo = info;
+        addDialog(finalInfo, 16);
 
         filter();
+
       }
 
 
