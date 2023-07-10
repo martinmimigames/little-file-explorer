@@ -7,7 +7,8 @@
   a:orientation="vertical"
   a:layout_gravity="bottom"
   a:theme="@style/app_theme"
-  a:background="@color/background">
+  a:background="@color/background"
+  a:padding="5dp">
 
   <!-- to make ScrollView not fill up dialog when empty-ish -->
   <LinearLayout
@@ -37,7 +38,7 @@
     a:layout_height="wrap_content"
     a:text="Delete"
     style="@style/buttonStyle"
-    tools:ignore="HardcodedText" />
+    tools:ignore="HardcodedText"/>
 
   <Button
     a:id="@+id/delete_cancel"
@@ -45,6 +46,6 @@
     a:layout_height="wrap_content"
     a:text="Cancel"
     style="@style/buttonStyle"
-    tools:ignore="HardcodedText" />
+    tools:ignore="HardcodedText"/>
 
 </LinearLayout>

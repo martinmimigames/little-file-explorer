@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:a="http://schemas.android.com/apk/res/android"
+<LinearLayout
+  xmlns:a="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   a:layout_width="match_parent"
   a:layout_height="match_parent"
   a:background="@color/background"
   a:orientation="vertical"
-  a:theme="@style/app_theme">
+  a:theme="@style/app_theme"
+  a:padding="5dp">
 
   <Button
     a:id="@+id/open_list_open"
@@ -14,7 +16,7 @@
     a:layout_height="wrap_content"
     a:text="Open"
     a:textSize="18sp"
-    tools:ignore="HardcodedText" />
+    tools:ignore="HardcodedText"/>
 
   <Button
     a:id="@+id/open_list_details"
@@ -23,7 +25,7 @@
     a:layout_height="wrap_content"
     a:text="Details"
     a:textSize="18sp"
-    tools:ignore="HardcodedText" />
+    tools:ignore="HardcodedText"/>
 
   <Button
     a:id="@+id/open_list_share"
@@ -32,7 +34,7 @@
     a:layout_height="wrap_content"
     a:text="Share"
     a:textSize="18sp"
-    tools:ignore="HardcodedText" />
+    tools:ignore="HardcodedText"/>
 
   <Button
     a:id="@+id/open_list_cancel"
@@ -41,6 +43,6 @@
     a:layout_height="wrap_content"
     a:text="Cancel"
     a:textSize="18sp"
-    tools:ignore="HardcodedText" />
+    tools:ignore="HardcodedText"/>
 
 </LinearLayout>
