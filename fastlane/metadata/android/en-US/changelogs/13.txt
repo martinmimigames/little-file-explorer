@@ -1,0 +1,7 @@
+- Fix crashing if last exited on a non-existing folder
+- Fix unable to exit folders with access denied
+- Added details page for files
+- Added light mode (follows system settings)
+- Added sorting by file size
+- Moved storage info to the bottom
+- Added slight padding to dialogs

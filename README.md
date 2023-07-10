@@ -41,6 +41,15 @@ Location of website:
 
 ## Latest Versions
 
+- v4.11
+  - Fix crashing if last exited on a non-existing folder
+  - Fix unable to exit folders with access denied
+  - Added details page for files
+  - Added light mode (follows system settings)
+  - Added sorting by file size
+  - Moved storage info to the bottom
+  - Added slight padding to dialogs
+
 - v4.10
   - Added "toggle hidden" option (available in menu button)
   - Added File/Folder name filtering (available on top bar)
@@ -113,7 +122,7 @@ Official Website at [https://martinmimigames.github.io](https://martinmimigames.
 
 ### Last update of README
 
-Date : 23-06-2023 dd-mm-yyyy
+Date : 10-07-2023 dd-mm-yyyy
 
 ### Important
 

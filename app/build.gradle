@@ -33,7 +33,7 @@ android {
     release {
       minifyEnabled true
       shrinkResources true
-      crunchPngs true
+      crunchPngs false
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
       signingConfig signingConfigs.basic
     }
