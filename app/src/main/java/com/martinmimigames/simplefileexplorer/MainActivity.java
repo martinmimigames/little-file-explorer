@@ -268,6 +268,7 @@ public class MainActivity extends Activity {
         addDialog("For android 11 or higher, Android/data and Android/obb is refused access.\n", 16);
       } else addDialog("Access Denied", 16);
     }
+    needDirectoryUpdate = false;
     runOnUiThread(() -> mainListView.removeView(findViewById(LOADING_VIEW_ID)));
   }
 
