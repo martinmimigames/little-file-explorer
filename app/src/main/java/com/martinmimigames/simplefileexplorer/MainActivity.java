@@ -18,6 +18,9 @@ import mg.utils.helper.MainThread;
 import mg.utils.notify.ToastHelper;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -48,6 +51,7 @@ public class MainActivity extends Activity {
   private Dialog deleteConfirmationDialog;
   private Dialog createDirectoryDialog;
   private Dialog renameDialog;
+  private Dialog detailsDialog;
   private final Preferences preferences;
 
   public MainActivity() {
@@ -583,6 +587,21 @@ public class MainActivity extends Activity {
       openListDialog.dismiss();
       fopen.open(currentSelectedFiles.get(0));
       currentState.changeTo(AppState.Mode.IDLE);
+    });
+
+    detailsDialog = new Dialog(this, R.style.app_theme_dialog);
+    detailsDialog.setContentView(R.layout.details);
+    detailsDialog.setOnCancelListener(d -> detailsDialog.dismiss());
+
+    openListDialog.findViewById(R.id.open_list_details).setOnClickListener(v -> {
+      openListDialog.dismiss();
+      currentState.changeTo(AppState.Mode.IDLE);
+      detailsDialog.show();
+      var file = currentSelectedFiles.get(0);
+      detailsDialog.setTitle("Details: " + file.getName());
+      ((TextView) detailsDialog.findViewById(R.id.details_size)).setText("Size: " + FileOperation.getReadableMemorySize(file.length()) + " (" + file.length() + "B)");
+      ((TextView) detailsDialog.findViewById(R.id.details_lastmod)).setText("Last modified: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(file.lastModified()));
+      ((TextView) detailsDialog.findViewById(R.id.details_mime)).setText("MIME type: " + FileProvider.getFileType(file));
     });
 
     openListDialog.findViewById(R.id.open_list_share).setOnClickListener(v -> {
