@@ -195,7 +195,6 @@ public class MainActivity extends Activity {
         default -> AppState.Sorters.ASCENDING_NAME;
       });
 
-      //sort(items);
       if (items.length == 0) {
         addDialog("Empty folder!", 16);
       } else {
@@ -419,7 +418,8 @@ public class MainActivity extends Activity {
           currentState.sorterName = switch (currentState.sorterName) {
             case AppState.Sorters.ASCENDING_NAME_SORTER_TAG -> AppState.Sorters.DESCENDING_NAME_SORTER_TAG;
             case AppState.Sorters.DESCENDING_NAME_SORTER_TAG -> AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG;
-            case AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG;
+            case AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG ->
+                AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG;
             case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.ASCENDING_FILE_SIZE_TAG;
             case AppState.Sorters.ASCENDING_FILE_SIZE_TAG -> AppState.Sorters.DESCENDING_FILE_SIZE_TAG;
             // case AppState.Sorters.DESCENDING_FILE_SIZE_TAG -> AppState.Sorters.ASCENDING_NAME_SORTER_TAG;
@@ -449,9 +449,9 @@ public class MainActivity extends Activity {
 
           storageList.removeAllViews();
           var storages = FileOperation.getAllStorages(this);
-          for (var file : storages) {
+          for (var storage : storages) {
             // skip unreadable folders
-            if (!file.canRead()) continue;
+            if (!storage.canRead()) continue;
 
             var entry = new Button(this);
             entry.setLayoutParams(
@@ -460,9 +460,9 @@ public class MainActivity extends Activity {
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
             );
-            entry.setText(file.getPath());
+            entry.setText(storage.getPath());
             entry.setOnClickListener(v2 -> {
-              listItem(file);
+              listItem(storage);
               setViewVisibility(R.id.drive_list, View.GONE);
             });
             storageList.addView(entry);
@@ -780,26 +780,18 @@ public class MainActivity extends Activity {
       if (!checkPermission())
         return;
 
-      if (file.isDirectory()) {
-        if (currentState.mode == AppState.Mode.SELECT) {
-          selectFiles(file, view);
-        } else {
+      if (currentState.mode == AppState.Mode.SELECT) {
+        selectFiles(file, view);
+      } else /*if (currentState.mode == AppState.Mode.IDLE)*/ {
+        if (file.isDirectory()) {
           listItem(file);
-        }
-      }
-
-      if (file.isFile()) {
-        if (currentState.mode == AppState.Mode.IDLE) {
+        } else /*if (file.isFile())*/ {
           currentState.changeTo(AppState.Mode.OPEN_FILE);
-
           currentSelectedFiles.clear();
           currentSelectedFiles.add(file);
 
           openListDialog.setTitle(file.getName());
           openListDialog.show();
-
-        } else if (currentState.mode == AppState.Mode.SELECT) {
-          selectFiles(file, view);
         }
       }
     }
