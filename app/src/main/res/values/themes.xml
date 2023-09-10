@@ -1,9 +1,19 @@
 <resources>
 
-  <style name="app_theme" parent="@android:style/Theme.Light.NoTitleBar">
+  <attr name="background"/>
+  <attr name="foreground"/>
+  <attr name="buttonBackground"/>
+  <attr name="topbarbg"/>
+
+  <style name="app_theme.default" parent="@android:style/Theme.Light.NoTitleBar">
+    <item name="background">#2C2C2C</item>
+    <item name="foreground">#EDEDED</item>
+    <item name="buttonBackground">#5F5F5F</item>
+    <item name="topbarbg">#3c3c3c</item>
+
     <item name="android:background">@android:color/transparent</item>
-    <item name="android:colorForeground">@color/foreground</item>
-    <item name="android:textColor">@color/foreground</item>
+    <item name="android:colorForeground">?attr/foreground</item>
+    <item name="android:textColor">?attr/foreground</item>
     <item name="android:buttonStyle">@style/buttonStyle</item>
     <item name="android:textSize">16sp</item>
   </style>
@@ -11,21 +21,36 @@
   <style name="buttonStyle" parent="@android:style/Widget.Button">
     <item name="android:padding">10dp</item>
     <item name="android:layout_margin">2dp</item>
-    <item name="android:textColor">@color/foreground</item>
-    <item name="android:background">@color/buttonBackground</item>
+    <item name="android:textColor">?attr/foreground</item>
+    <item name="android:background">?attr/buttonBackground</item>
   </style>
 
   <style name="editTextStyle" parent="@android:style/Widget.EditText">
-    <item name="android:textColor">@color/background</item>
-    <item name="android:background">@color/foreground</item>
+    <item name="android:textColor">?attr/background</item>
+    <item name="android:background">?attr/foreground</item>
     <item name="android:padding">7dp</item>
-    <item name="android:textColorHint">@color/background</item>
+    <item name="android:textColorHint">?attr/background</item>
     <item name="android:layout_margin">2dp</item>
   </style>
 
   <style name="app_theme.dialog" parent="@android:style/Theme.Dialog">
-    <item name="android:background">@color/background</item>
-    <item name="android:colorForeground">@color/foreground</item>
-    <item name="android:textColor">@color/foreground</item>
+    <item name="background">#2C2C2C</item>
+    <item name="foreground">#EDEDED</item>
+    <item name="android:background">?attr/background</item>
+    <item name="android:colorForeground">?attr/foreground</item>
+    <item name="android:textColor">?attr/foreground</item>
   </style>
+
+  <style name="app_theme.dialog.light" parent="app_theme.dialog">
+    <item name="background">#F0F0F0</item>
+    <item name="foreground">#313131</item>
+  </style>
+
+  <style name="app_theme.light" parent="app_theme.default">
+    <item name="background">#F0F0F0</item>
+    <item name="foreground">#313131</item>
+    <item name="buttonBackground">#D2D2D2</item>
+    <item name="topbarbg">#EcEcEc</item>
+  </style>
+
 </resources>

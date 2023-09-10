@@ -4,7 +4,6 @@
     a:orientation="vertical"
     a:layout_width="match_parent"
     a:layout_height="match_parent"
-    a:theme="@style/app_theme"
     a:padding="10dp">
 
     <TextView
@@ -35,12 +34,14 @@
             a:layout_width="wrap_content"
             a:layout_height="wrap_content"
             a:text="copy"
+            style="@style/buttonStyle"
             a:id="@+id/details_md5_copy"/>
 
         <Button
             a:layout_width="wrap_content"
             a:layout_height="wrap_content"
             a:id="@+id/details_md5_check"
+            style="@style/buttonStyle"
             a:text="check clipboard"/>
 
     </LinearLayout>

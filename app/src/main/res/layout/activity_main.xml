@@ -5,7 +5,7 @@
   a:layout_width="match_parent"
   a:layout_height="match_parent"
   a:orientation="vertical"
-  a:background="@color/background">
+  a:background="?attr/background">
 
   <RelativeLayout
     a:id="@+id/header"
@@ -14,7 +14,7 @@
     a:layout_alignParentLeft="true"
     a:layout_alignParentTop="true"
     a:layout_gravity="start"
-    a:background="@color/topbarbg"
+    a:background="?attr/topbarbg"
     a:orientation="horizontal"
     tools:ignore="RtlHardcoded">
 

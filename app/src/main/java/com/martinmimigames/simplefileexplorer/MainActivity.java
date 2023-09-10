@@ -3,6 +3,7 @@ package com.martinmimigames.simplefileexplorer;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
@@ -18,13 +19,10 @@ import mg.utils.helper.MainThread;
 import mg.utils.notify.ToastHelper;
 
 import java.io.File;
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -54,6 +52,7 @@ public class MainActivity extends Activity {
     private Dialog renameDialog;
     private Dialog detailsDialog;
     private final Preferences preferences;
+    private boolean darkMode;
 
     public MainActivity() {
         shortTabOnButton = new ShortTabOnButton();
@@ -66,6 +65,7 @@ public class MainActivity extends Activity {
         preferences = new Preferences();
 
         hasOperations = 0;
+        darkMode = true;
     }
 
     private void setupUI() {
@@ -83,7 +83,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         if (savedInstanceState != null) {
             currentState.filePath = savedInstanceState.getString(Preferences.FILE_PATH_KEY);
@@ -94,6 +93,18 @@ public class MainActivity extends Activity {
         var save = preferences.getSharedPreferences();
         allowHiddenFileDisplay = save.getBoolean(Preferences.TOGGLE_HIDDEN_KEY, false);
         currentState.sorterName = save.getString(Preferences.SORTER_KEY, AppState.Sorters.ASCENDING_NAME_SORTER_TAG);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+            darkMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) != Configuration.UI_MODE_NIGHT_NO;
+        }
+
+        if (darkMode) {
+            setTheme(R.style.app_theme_default);
+        } else {
+            setTheme(R.style.app_theme_light);
+        }
+
+        setContentView(R.layout.activity_main);
 
         permissionManager = new PermissionManager(this);
 
@@ -593,7 +604,7 @@ public class MainActivity extends Activity {
     }
 
     private void setupOpenListDialogue() {
-        openListDialog = new Dialog(this, R.style.app_theme_dialog);
+        openListDialog = new Dialog(this, getCurrentDialogTheme());
         openListDialog.setContentView(R.layout.open_list);
         openListDialog.findViewById(R.id.open_list_open).setOnClickListener(v -> {
             openListDialog.dismiss();
@@ -601,7 +612,7 @@ public class MainActivity extends Activity {
             currentState.changeTo(AppState.Mode.IDLE);
         });
 
-        detailsDialog = new Dialog(this, R.style.app_theme_dialog);
+        detailsDialog = new Dialog(this, getCurrentDialogTheme());
         detailsDialog.setContentView(R.layout.details);
         detailsDialog.setOnCancelListener(d -> detailsDialog.dismiss());
 
@@ -647,7 +658,7 @@ public class MainActivity extends Activity {
     }
 
     private void setupRenameDialog() {
-        renameDialog = new Dialog(this, R.style.app_theme_dialog);
+        renameDialog = new Dialog(this, getCurrentDialogTheme());
         renameDialog.setTitle("Rename File/Folder");
         renameDialog.setContentView(R.layout.rename_confirmation);
         renameDialog.findViewById(R.id.rename_rename)
@@ -672,7 +683,7 @@ public class MainActivity extends Activity {
     }
 
     private void setupDeleteDialog() {
-        deleteConfirmationDialog = new Dialog(this, R.style.app_theme_dialog);
+        deleteConfirmationDialog = new Dialog(this, getCurrentDialogTheme());
         deleteConfirmationDialog.setCancelable(false);
         deleteConfirmationDialog.setTitle("Confirm delete:");
         deleteConfirmationDialog.setContentView(R.layout.delete_comfirmation);
@@ -701,7 +712,7 @@ public class MainActivity extends Activity {
     }
 
     private void setupCreateDirectoryDialog() {
-        createDirectoryDialog = new Dialog(this, R.style.app_theme_dialog);
+        createDirectoryDialog = new Dialog(this, getCurrentDialogTheme());
         createDirectoryDialog.setTitle("Create new folder");
         createDirectoryDialog.setContentView(R.layout.new_directory);
         createDirectoryDialog.findViewById(R.id.new_directory_cancel).setOnClickListener(v -> createDirectoryDialog.dismiss());
@@ -853,5 +864,9 @@ public class MainActivity extends Activity {
             }
             return true;
         }
+    }
+
+    private int getCurrentDialogTheme() {
+        return (darkMode) ? R.style.app_theme_dialog : R.style.app_theme_dialog_light;
     }
 }

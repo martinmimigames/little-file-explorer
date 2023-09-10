@@ -6,8 +6,7 @@
   a:layout_height="wrap_content"
   a:orientation="vertical"
   a:layout_gravity="bottom"
-  a:theme="@style/app_theme"
-  a:background="@color/background"
+  a:background="?attr/background"
   a:padding="5dp">
 
   <!-- to make ScrollView not fill up dialog when empty-ish -->
