@@ -93,16 +93,9 @@ public class MainActivity extends Activity {
         var save = preferences.getSharedPreferences();
         allowHiddenFileDisplay = save.getBoolean(Preferences.TOGGLE_HIDDEN_KEY, false);
         currentState.sorterName = save.getString(Preferences.SORTER_KEY, AppState.Sorters.ASCENDING_NAME_SORTER_TAG);
+        darkMode = save.getBoolean(Preferences.THEME_KEY, true);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-            darkMode = (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) != Configuration.UI_MODE_NIGHT_NO;
-        }
-
-        if (darkMode) {
-            setTheme(R.style.app_theme_default);
-        } else {
-            setTheme(R.style.app_theme_light);
-        }
+        setTheme((darkMode)? R.style.app_theme_default : R.style.app_theme_light);
 
         setContentView(R.layout.activity_main);
 
@@ -159,6 +152,7 @@ public class MainActivity extends Activity {
         saveEditor.putString(Preferences.FILE_PATH_KEY, currentState.filePath);
 
         saveEditor.putString(Preferences.SORTER_KEY, currentState.sorterName);
+        saveEditor.putBoolean(Preferences.THEME_KEY, darkMode);
 
         saveEditor.commit();
     }
@@ -431,6 +425,19 @@ public class MainActivity extends Activity {
 
     private void setupMenu() {
         setViewVisibility(R.id.menu_list, View.GONE);
+
+        ((TextView) findViewById(R.id.menu_toggle_theme)).setText("Theme: " + (darkMode ? "Dark" : "Light"));
+        findViewById(R.id.menu_toggle_theme)
+                .setOnClickListener(v -> {
+                    darkMode = !darkMode;
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        setTheme(darkMode ? R.style.app_theme_dialog : R.style.app_theme_dialog_light);
+                        recreate();
+                    } else {
+                        ToastHelper.showLong(this, "relaunch app to apply");
+                    }
+                });
 
         findViewById(R.id.menu_toggle_hidden)
                 .setOnClickListener(v -> {

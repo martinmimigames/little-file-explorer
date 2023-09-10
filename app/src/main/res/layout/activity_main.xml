@@ -102,6 +102,12 @@
     tools:ignore="RtlHardcoded">
 
     <Button
+        a:id="@+id/menu_toggle_theme"
+        a:layout_width="match_parent"
+        a:layout_height="wrap_content"
+        tools:ignore="HardcodedText"/>
+
+    <Button
       a:id="@+id/menu_toggle_hidden"
       a:layout_width="match_parent"
       a:layout_height="wrap_content"
