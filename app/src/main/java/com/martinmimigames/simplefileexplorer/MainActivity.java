@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -602,6 +603,19 @@ public class MainActivity extends Activity {
       ((TextView) detailsDialog.findViewById(R.id.details_size)).setText("Size: " + FileOperation.getReadableMemorySize(file.length()) + " (" + file.length() + "B)");
       ((TextView) detailsDialog.findViewById(R.id.details_lastmod)).setText("Last modified: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(file.lastModified()));
       ((TextView) detailsDialog.findViewById(R.id.details_mime)).setText("MIME type: " + FileProvider.getFileType(file));
+      var md5hash = FileOperation.getMD5(this, file);
+      ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: " + md5hash);
+      detailsDialog.findViewById(R.id.details_md5_copy).setOnClickListener((b) -> {
+        ClipBoard.copyText(this, md5hash);
+        ToastHelper.showShort(this, "copied MD5");
+      });
+      detailsDialog.findViewById(R.id.details_md5_check).setOnClickListener((b) -> {
+          if (ClipBoard.getClipboardText(this).equalsIgnoreCase(md5hash)) {
+            ToastHelper.showLong(this, "MD5 matches");
+          } else {
+            ToastHelper.showLong(this, "MD5 does not match");
+          }
+      });
     });
 
     openListDialog.findViewById(R.id.open_list_share).setOnClickListener(v -> {
