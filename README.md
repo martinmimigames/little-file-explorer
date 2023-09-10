@@ -38,9 +38,16 @@ Location of website:
 - Multi-share function
 - File/folder path copying
 - Minimum permissions
+- Dark/light theme toggle
+- md5 checksum generation and verification
 
 ## Latest Versions
 
+- v4.12
+  - added md5 checksum calculation and verification (details page)
+  - theme is now toggle-based (burger menu)
+  - app now forget last path (feature reverted)
+  
 - v4.11
   - Fix crashing if last exited on a non-existing folder
   - Fix unable to exit folders with access denied

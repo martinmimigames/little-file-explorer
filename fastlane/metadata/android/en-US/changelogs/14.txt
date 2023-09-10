@@ -1,0 +1,3 @@
+- added md5 checksum calculation and verification (details page)
+- theme is now toggle-based (burger menu)
+- app now forget last path (feature reverted)

@@ -23,6 +23,8 @@ Features
 - Multi-share function
 - File/folder path copying
 - Minimum permissions
+- Dark/light theme toggle
+- md5 checksum generation and verification
 
 Issues
 
