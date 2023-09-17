@@ -671,11 +671,14 @@ public class MainActivity extends Activity {
         renameDialog.findViewById(R.id.rename_rename)
                 .setOnClickListener(
                         v -> {
-                            renameDialog.dismiss();
                             String name = ((EditText) renameDialog.findViewById(R.id.new_name)).getText().toString();
                             File src = currentSelectedFiles.get(0);
                             File dst = new File(src.getParent(), name);
-                            FileOperation.move(src, dst);
+                            if (!FileOperation.move(src, dst)) {
+                                ToastHelper.showShort(this, "invalid name");
+                                return;
+                            }
+                            renameDialog.dismiss();
                             currentState.changeTo(AppState.Mode.IDLE);
                             listItem(currentState.filePath);
                         }
@@ -727,7 +730,10 @@ public class MainActivity extends Activity {
             var name = ((EditText) createDirectoryDialog.findViewById(R.id.new_directory_name)).getText().toString();
             var folder = new File(currentState.filePath, name);
             if (!folder.exists()) {
-                folder.mkdirs();
+                if(folder.mkdirs()) {
+                    ToastHelper.showShort(this, "invalid name");
+                    return;
+                }
                 listItem(currentState.filePath);
             } else {
                 ToastHelper.showShort(this, "Folder already exists");
