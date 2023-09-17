@@ -10,7 +10,6 @@ import android.webkit.MimeTypeMap;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
@@ -41,7 +40,7 @@ public class FileProvider extends ContentProvider {
             if (database.get(key) == null) {
                 final FileNameRecord data = new FileNameRecord();
                 // encode as url due to Uri being based on url
-                data.name = URLEncoder.encode(file.getName());
+                data.name = Uri.encode(file.getName());
                 data.file = file;
                 database.put(key, data);
                 return Uri.parse(SCHEME
