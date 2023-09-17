@@ -9,7 +9,6 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -157,7 +156,7 @@ public class FileOperation {
     }
 
     public static String getMD5(Context context, File file) {
-        try (var inputStream = new FileInputStream(file)){
+        try (var inputStream = new FileInputStream(file)) {
             var digest = MessageDigest.getInstance("MD5");
             var buffer = new byte[1024];
             int readSize;

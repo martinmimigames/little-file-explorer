@@ -3,7 +3,6 @@ package com.martinmimigames.simplefileexplorer;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
@@ -95,7 +94,7 @@ public class MainActivity extends Activity {
         currentState.sorterName = save.getString(Preferences.SORTER_KEY, AppState.Sorters.ASCENDING_NAME_SORTER_TAG);
         darkMode = save.getBoolean(Preferences.THEME_KEY, true);
 
-        setTheme((darkMode)? R.style.app_theme_default : R.style.app_theme_light);
+        setTheme((darkMode) ? R.style.app_theme_default : R.style.app_theme_light);
 
         setContentView(R.layout.activity_main);
 
@@ -730,7 +729,7 @@ public class MainActivity extends Activity {
             var name = ((EditText) createDirectoryDialog.findViewById(R.id.new_directory_name)).getText().toString();
             var folder = new File(currentState.filePath, name);
             if (!folder.exists()) {
-                if(folder.mkdirs()) {
+                if (folder.mkdirs()) {
                     ToastHelper.showShort(this, "invalid name");
                     return;
                 }
