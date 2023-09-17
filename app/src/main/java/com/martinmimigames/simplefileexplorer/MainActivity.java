@@ -1,8 +1,12 @@
 package com.martinmimigames.simplefileexplorer;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.UiModeManager;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
@@ -51,7 +55,6 @@ public class MainActivity extends Activity {
     private Dialog renameDialog;
     private Dialog detailsDialog;
     private final Preferences preferences;
-    private boolean darkMode;
 
     public MainActivity() {
         shortTabOnButton = new ShortTabOnButton();
@@ -64,7 +67,6 @@ public class MainActivity extends Activity {
         preferences = new Preferences();
 
         hasOperations = 0;
-        darkMode = true;
     }
 
     private void setupUI() {
@@ -92,9 +94,9 @@ public class MainActivity extends Activity {
         var save = preferences.getSharedPreferences();
         allowHiddenFileDisplay = save.getBoolean(Preferences.TOGGLE_HIDDEN_KEY, false);
         currentState.sorterName = save.getString(Preferences.SORTER_KEY, AppState.Sorters.ASCENDING_NAME_SORTER_TAG);
-        darkMode = save.getBoolean(Preferences.THEME_KEY, true);
+        currentState.theme = save.getInt(Preferences.THEME_KEY, (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) ? AppState.Theme.SYSTEM_THEME : AppState.Theme.DARK_THEME);
 
-        setTheme((darkMode) ? R.style.app_theme_default : R.style.app_theme_light);
+        setTheme(getCurrentTheme());
 
         setContentView(R.layout.activity_main);
 
@@ -116,6 +118,22 @@ public class MainActivity extends Activity {
 
         // default app state is idle state
         currentState.changeTo(AppState.Mode.IDLE);
+    }
+
+    private int getCurrentTheme() {
+        int theme = currentState.theme;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO && currentState.theme == AppState.Theme.SYSTEM_THEME) {
+            theme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        }
+        return (theme == AppState.Theme.LIGHT_THEME) ? R.style.app_theme_light : R.style.app_theme_default;
+    }
+
+    private int getCurrentDialogTheme() {
+        int theme = currentState.theme;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO && currentState.theme == AppState.Theme.SYSTEM_THEME) {
+            theme = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        }
+        return (theme == AppState.Theme.LIGHT_THEME) ? R.style.app_theme_dialog_light : R.style.app_theme_dialog;
     }
 
     @Override
@@ -151,7 +169,7 @@ public class MainActivity extends Activity {
         saveEditor.putString(Preferences.FILE_PATH_KEY, currentState.filePath);
 
         saveEditor.putString(Preferences.SORTER_KEY, currentState.sorterName);
-        saveEditor.putBoolean(Preferences.THEME_KEY, darkMode);
+        saveEditor.putInt(Preferences.THEME_KEY, currentState.theme);
 
         saveEditor.commit();
     }
@@ -425,13 +443,21 @@ public class MainActivity extends Activity {
     private void setupMenu() {
         setViewVisibility(R.id.menu_list, View.GONE);
 
-        ((TextView) findViewById(R.id.menu_toggle_theme)).setText("Theme: " + (darkMode ? "Dark" : "Light"));
+        ((TextView) findViewById(R.id.menu_toggle_theme)).setText("Theme: " + switch (currentState.theme) {
+            case AppState.Theme.LIGHT_THEME -> "Light";
+            case AppState.Theme.SYSTEM_THEME -> "System";
+            default -> "Dark";
+        });
         findViewById(R.id.menu_toggle_theme)
                 .setOnClickListener(v -> {
-                    darkMode = !darkMode;
+                    currentState.theme = switch (currentState.theme) {
+                        case AppState.Theme.LIGHT_THEME -> AppState.Theme.DARK_THEME;
+                        case AppState.Theme.DARK_THEME -> (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) ? AppState.Theme.SYSTEM_THEME : AppState.Theme.LIGHT_THEME;
+                        default -> AppState.Theme.LIGHT_THEME;
+                    };
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        setTheme(darkMode ? R.style.app_theme_dialog : R.style.app_theme_dialog_light);
+                        setTheme(currentState.theme == AppState.Theme.LIGHT_THEME ? R.style.app_theme_light : R.style.app_theme_default);
                         recreate();
                     } else {
                         ToastHelper.showLong(this, "relaunch app to apply");
@@ -769,7 +795,20 @@ public class MainActivity extends Activity {
 
         private String filePath;
         private File parent;
+        private int theme;
         byte mode;
+
+        @TargetApi(Build.VERSION_CODES.FROYO)
+        static final class Theme {
+
+            @SuppressLint("InlinedApi")
+            static final int LIGHT_THEME = Configuration.UI_MODE_NIGHT_NO;
+            @SuppressLint("InlinedApi")
+            static final int DARK_THEME = Configuration.UI_MODE_NIGHT_YES;
+            @TargetApi(Build.VERSION_CODES.FROYO)
+            static final int SYSTEM_THEME = -1;
+
+        }
 
         static final class Sorters {
             static final Comparator<File> ASCENDING_NAME = (f1, f2) -> f1.getName().compareToIgnoreCase(f2.getName());
@@ -876,9 +915,5 @@ public class MainActivity extends Activity {
             }
             return true;
         }
-    }
-
-    private int getCurrentDialogTheme() {
-        return (darkMode) ? R.style.app_theme_dialog : R.style.app_theme_dialog_light;
     }
 }
