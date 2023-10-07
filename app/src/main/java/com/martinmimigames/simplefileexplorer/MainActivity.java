@@ -318,6 +318,9 @@ public class MainActivity extends Activity {
     }
 
     private void listItem(final File folder) {
+        if (!folder.getPath().equals(currentState.filePath)) {
+            ((TextView) findViewById(R.id.filter)).setText("");
+        }
         // update flag, helps avoid concurrent list update
         if (!needDirectoryUpdate) {
             needDirectoryUpdate = true;
