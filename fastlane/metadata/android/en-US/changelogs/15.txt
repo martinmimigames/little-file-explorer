@@ -1,0 +1,6 @@
+- Fixed # in file name error
+- Added follow system dark mode
+- Fixed crash when open details of large files
+- Fixed error when empty clipboard
+- Now clear filter when entering/exiting folder
+- Added invalid name warning when creating/renaming files

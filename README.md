@@ -43,6 +43,14 @@ Location of website:
 
 ## Latest Versions
 
+- v4.13
+  - Fixed # in file name error
+  - Added follow system dark mode
+  - Fixed crash when open details of large files
+  - Fixed error when empty clipboard
+  - Now clear filter when entering/exiting folder
+  - Added invalid name warning when creating/renaming files
+
 - v4.12
   - added md5 checksum calculation and verification (details page)
   - theme is now toggle-based (burger menu)
