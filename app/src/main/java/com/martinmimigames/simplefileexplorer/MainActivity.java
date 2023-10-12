@@ -151,7 +151,7 @@ public class MainActivity extends Activity {
                     listItem(currentState.filePath);
             } else {
                 for (File folder : FileOperation.getAllStorages(this)) {
-                    if (checkPermission()) listItem(folder);
+                    if (checkPermission()) runOnUiThread(() -> listItem(folder));
                     break;
                 }
             }
