@@ -764,7 +764,9 @@ public class MainActivity extends Activity {
         createDirectoryDialog.setContentView(R.layout.new_directory);
         createDirectoryDialog.findViewById(R.id.new_directory_cancel).setOnClickListener(v -> createDirectoryDialog.dismiss());
         createDirectoryDialog.findViewById(R.id.new_directory_create).setOnClickListener(v -> {
-            var name = ((EditText) createDirectoryDialog.findViewById(R.id.new_directory_name)).getText().toString();
+            EditText namer = createDirectoryDialog.findViewById(R.id.new_directory_name);
+            var name = namer.getText().toString();
+            namer.setText("");
             var folder = new File(currentState.filePath, name);
             if (!folder.exists()) {
                 if (folder.mkdirs()) {

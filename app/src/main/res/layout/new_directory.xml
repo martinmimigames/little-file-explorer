@@ -14,7 +14,6 @@
     a:layout_height="wrap_content"
     a:layout_alignParentTop="true"
     a:hint="Enter folder name"
-    a:text="New folder"
     style="@style/editTextStyle"
     tools:ignore="HardcodedText"
     a:inputType="text"
