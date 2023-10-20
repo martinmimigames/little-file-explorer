@@ -26,13 +26,6 @@
         a:layout_height="wrap_content"
         a:id="@+id/details_md5"/>
 
-    <Button
-        a:layout_width="wrap_content"
-        a:layout_height="wrap_content"
-        a:id="@+id/details_md5_calculate"
-        a:text="calculate md5"
-        style="@style/buttonStyle"/>
-
     <LinearLayout
         a:layout_width="wrap_content"
         a:layout_height="wrap_content">

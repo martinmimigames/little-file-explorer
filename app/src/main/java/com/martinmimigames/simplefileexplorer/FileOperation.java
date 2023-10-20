@@ -155,13 +155,14 @@ public class FileOperation {
         return sizeWithPoint + unit;
     }
 
-    public static String getMD5(Context context, File file) {
+    public static String getMD5(Context context, File file) throws InterruptedException{
         try (var inputStream = new FileInputStream(file)) {
             var digest = MessageDigest.getInstance("MD5");
             var buffer = new byte[1024];
             int readSize;
             while ((readSize = inputStream.read(buffer)) != -1) {
                 digest.update(buffer, 0, readSize);
+                if (Thread.currentThread().isInterrupted()) throw new InterruptedException();
             }
             return new BigInteger(1, digest.digest()).toString(16);
         } catch (NoSuchAlgorithmException e) {

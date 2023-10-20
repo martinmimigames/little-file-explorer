@@ -25,8 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -54,8 +53,10 @@ public class MainActivity extends Activity {
     private Dialog renameDialog;
     private Dialog detailsDialog;
     private final Preferences preferences;
+    private ConcurrentManager concurrentManager;
 
     public MainActivity() {
+        concurrentManager = new ConcurrentManager();
         shortTabOnButton = new ShortTabOnButton();
         longPressOnButton = new LongPressOnButton();
         currentSelectedFiles = new ArrayList<>(3);
@@ -66,6 +67,14 @@ public class MainActivity extends Activity {
         preferences = new Preferences();
 
         hasOperations = 0;
+    }
+
+    // For easier concurrent processes cancelling
+    // no need for custom implementation
+    private final class ConcurrentManager {
+        FutureTask<Boolean> listFiles;
+        FutureTask<Void> listFilesAwaitTermination;
+        Future<?> md5Calculator;
     }
 
     private void setupUI() {
@@ -195,7 +204,7 @@ public class MainActivity extends Activity {
      *
      * @param folder the folder to display contents of
      */
-    private void updateDirectoryView(File folder) {
+    private boolean updateDirectoryView(File folder) {
 
         runOnUiThread(() -> {
             mainListView.removeAllViews();
@@ -214,9 +223,6 @@ public class MainActivity extends Activity {
 
         if (folderAccessible(folder)) {
             final File[] items = folder.listFiles((file) -> allowHiddenFileDisplay || !file.isHidden());
-
-            // directory updated
-            needDirectoryUpdate = false;
 
             assert items != null;
 
@@ -243,9 +249,8 @@ public class MainActivity extends Activity {
                             hasFolders = true;
                         }
                         // if need to update, immediate return to avoid unwanted writing the list from concurrency
-                        if (needDirectoryUpdate) {
-                            return;
-                        }
+                        if (Thread.currentThread().isInterrupted()) return false;
+
                         addDirectory(item);
                     }
                 }
@@ -259,9 +264,8 @@ public class MainActivity extends Activity {
                             hasFiles = true;
                         }
                         // if need to update, immediate return to avoid unwanted writing the list from concurrency
-                        if (needDirectoryUpdate) {
-                            return;
-                        }
+                        if (Thread.currentThread().isInterrupted()) return false;
+
                         switch (FileProvider.getFileType(item).split("/")[0]) {
                             case "image" -> addItem(getImageView(R.drawable.picture), item);
                             case "video" -> addItem(getImageView(R.drawable.video), item);
@@ -306,8 +310,9 @@ public class MainActivity extends Activity {
                 addDialog("For android 11 or higher, Android/data and Android/obb is refused access.\n", 16);
             } else addDialog("Access Denied", 16);
         }
-        needDirectoryUpdate = false;
+
         runOnUiThread(() -> mainListView.removeView(findViewById(LOADING_VIEW_ID)));
+        return true;
     }
 
     /**
@@ -325,10 +330,18 @@ public class MainActivity extends Activity {
             ((TextView) findViewById(R.id.filter)).setText("");
         }
         // update flag, helps avoid concurrent list update
-        if (!needDirectoryUpdate) {
-            needDirectoryUpdate = true;
-            executor.execute(() -> updateDirectoryView(folder));
+        if (concurrentManager.listFiles != null && concurrentManager.listFilesAwaitTermination != null) {
+            concurrentManager.listFiles.cancel(true);
+            try {
+                concurrentManager.listFilesAwaitTermination.get();
+            } catch (ExecutionException | InterruptedException ignored) {
+            }
         }
+
+        // wrapped to allow awaiting termination
+        concurrentManager.listFiles = new FutureTask<>(() -> updateDirectoryView(folder));
+        concurrentManager.listFilesAwaitTermination = new FutureTask<>(concurrentManager.listFiles, null);
+        executor.execute(concurrentManager.listFilesAwaitTermination);
     }
 
     private void addIdDialog(final String dialog, final int textSize, final int id) {
@@ -652,7 +665,10 @@ public class MainActivity extends Activity {
 
         detailsDialog = new Dialog(this, getCurrentDialogTheme());
         detailsDialog.setContentView(R.layout.details);
-        detailsDialog.setOnCancelListener(d -> detailsDialog.dismiss());
+        detailsDialog.setOnCancelListener(d -> {
+            detailsDialog.dismiss();
+            concurrentManager.md5Calculator.cancel(true);
+        });
 
         openListDialog.findViewById(R.id.open_list_details).setOnClickListener(v -> {
             openListDialog.dismiss();
@@ -664,24 +680,26 @@ public class MainActivity extends Activity {
             ((TextView) detailsDialog.findViewById(R.id.details_lastmod)).setText("Last modified: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(file.lastModified()));
             ((TextView) detailsDialog.findViewById(R.id.details_mime)).setText("MIME type: " + FileProvider.getFileType(file));
             ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: n/a");
-            detailsDialog.findViewById(R.id.details_md5_calculate).setOnClickListener((b) -> {
-                b.setOnClickListener(null);
-                ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: calculating...");
-                executor.submit(() -> {
-                    var md5hash = FileOperation.getMD5(this, file);
-                    runOnUiThread(() -> {
-                        ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: " + md5hash);
-                        detailsDialog.findViewById(R.id.details_md5_copy).setOnClickListener((b2) -> {
-                            ClipBoard.copyText(this, md5hash);
-                            ToastHelper.showShort(this, "copied MD5");
-                        });
-                        detailsDialog.findViewById(R.id.details_md5_check).setOnClickListener((b2) -> {
-                            if (ClipBoard.getClipboardText(this).equalsIgnoreCase(md5hash)) {
-                                ToastHelper.showLong(this, "MD5 matches");
-                            } else {
-                                ToastHelper.showLong(this, "MD5 does not match");
-                            }
-                        });
+            ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: calculating...");
+            concurrentManager.md5Calculator = executor.submit(() -> {
+                String md5hash;
+                try {
+                    md5hash = FileOperation.getMD5(this, file);
+                } catch (InterruptedException e) {
+                    return;
+                }
+                runOnUiThread(() -> {
+                    ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: " + md5hash);
+                    detailsDialog.findViewById(R.id.details_md5_copy).setOnClickListener((b2) -> {
+                        ClipBoard.copyText(this, md5hash);
+                        ToastHelper.showShort(this, "copied MD5");
+                    });
+                    detailsDialog.findViewById(R.id.details_md5_check).setOnClickListener((b2) -> {
+                        if (ClipBoard.getClipboardText(this).equalsIgnoreCase(md5hash)) {
+                            ToastHelper.showLong(this, "MD5 matches");
+                        } else {
+                            ToastHelper.showLong(this, "MD5 does not match");
+                        }
                     });
                 });
             });
