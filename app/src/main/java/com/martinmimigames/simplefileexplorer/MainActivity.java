@@ -276,21 +276,22 @@ public class MainActivity extends Activity {
                             default -> addItem(getImageView(R.drawable.unknown), item);
                         }
                     }
+
                 // retrieve folder and driver information
-                String info = "Name: " + folder.getName() + "\n";
                 if (Build.VERSION.SDK_INT >= 9) {
                     StatFs stat = new StatFs(folder.getPath());
                     long bytesAvailable = Build.VERSION.SDK_INT >= 18 ?
                             stat.getBlockSizeLong() * stat.getAvailableBlocksLong() :
                             (long) stat.getBlockSize() * stat.getAvailableBlocks();
-                    info += "Available size: " + FileOperation.getReadableMemorySize(bytesAvailable);
+                    String info = "Available size: " + FileOperation.getReadableMemorySize(bytesAvailable);
                     if (Build.VERSION.SDK_INT >= 18) {
                         bytesAvailable = stat.getTotalBytes();
                         info += "\nCapacity size: " + FileOperation.getReadableMemorySize(bytesAvailable);
                     }
+                    // add slight padding
+                    final String finalInfo = info + "\n";
+                    addDialog(finalInfo, 16);
                 }
-                final String finalInfo = info;
-                addDialog(finalInfo, 16);
 
                 filter();
 
