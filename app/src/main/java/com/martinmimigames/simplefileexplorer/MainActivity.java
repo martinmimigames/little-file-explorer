@@ -239,7 +239,7 @@ public class MainActivity extends Activity {
                 for (File item : items) {
                     if (item.isDirectory()) {
                         if (!hasFolders) {
-                            addDialog("Folders:", 18);
+                            addDialog("", 10);
                             hasFolders = true;
                         }
                         // if need to update, immediate return to avoid unwanted writing the list from concurrency
@@ -255,7 +255,7 @@ public class MainActivity extends Activity {
                 for (File item : items)
                     if (item.isFile()) {
                         if (!hasFiles) {
-                            addDialog("Files:", 18);
+                            addDialog("", 10);
                             hasFiles = true;
                         }
                         // if need to update, immediate return to avoid unwanted writing the list from concurrency
@@ -276,6 +276,8 @@ public class MainActivity extends Activity {
                             default -> addItem(getImageView(R.drawable.unknown), item);
                         }
                     }
+
+                addDialog("", 10);
 
                 // retrieve folder and driver information
                 if (Build.VERSION.SDK_INT >= 9) {
