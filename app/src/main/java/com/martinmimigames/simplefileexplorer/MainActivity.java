@@ -769,10 +769,8 @@ public class MainActivity extends Activity {
             namer.setText("");
             var folder = new File(currentState.filePath, name);
             if (!folder.exists()) {
-                if (folder.mkdirs()) {
-                    ToastHelper.showShort(this, "invalid name");
-                    return;
-                }
+                // no invalid name for folders
+                folder.mkdirs();
                 listItem(currentState.filePath);
             } else {
                 ToastHelper.showShort(this, "Folder already exists");
