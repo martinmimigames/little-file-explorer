@@ -142,13 +142,13 @@ public class FileOperation {
 
     public static String getReadableMemorySize(long size) {
         String unit = "B";
-        if (size <= 1024L) {
+        if (size <= 1000L) {
             return size + unit;
         }
         final String[] units = {"KB", "MB", "GB", "TB", "PB"};
         size = size * 100;
-        for (int unitJump = 0; size >= 102400 && unitJump < units.length; unitJump++) {
-            size = size / 1024L;
+        for (int unitJump = 0; size >= 100000 && unitJump < units.length; unitJump++) {
+            size = size / 1000L;
             unit = units[unitJump];
         }
         float sizeWithPoint = size / 100f;
