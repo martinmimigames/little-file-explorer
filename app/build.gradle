@@ -18,7 +18,7 @@ android {
   }
 
   signingConfigs {
-    def keystorePropertiesFiles = rootProject.file("keystore.properties")
+    def keystorePropertiesFiles = rootProject.file("../keystore.properties")
     def keystoreProperties = new Properties()
     keystoreProperties.load(new FileInputStream(keystorePropertiesFiles))
     basic {
