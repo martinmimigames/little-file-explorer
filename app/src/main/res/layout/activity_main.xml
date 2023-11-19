@@ -25,7 +25,7 @@
       a:layout_alignParentLeft="true"
       a:layout_alignParentTop="true"
       a:padding="10dp"
-      a:text=" &#60;- "
+      a:text=" ↩ "
       a:textSize="30sp"
       tools:ignore="HardcodedText"/>
 
