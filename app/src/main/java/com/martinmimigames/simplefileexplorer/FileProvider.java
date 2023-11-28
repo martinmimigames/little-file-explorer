@@ -81,13 +81,16 @@ public class FileProvider extends ContentProvider {
         var columns = new String[] {
                 MediaStore.MediaColumns.DISPLAY_NAME,
                 MediaStore.MediaColumns.SIZE,
-                MediaStore.MediaColumns.DATA
+                MediaStore.MediaColumns.DATA,
+                MediaStore.MediaColumns.DATE_MODIFIED,
         };
         var row = new String[] {
                 file.getName(),
                 String.valueOf(file.length()),
-                file.getAbsolutePath()
+                file.getAbsolutePath(),
+                String.valueOf(file.lastModified()),
         };
+
         final MatrixCursor cursor = new MatrixCursor(columns, 1);
         cursor.addRow(row);
         return cursor;
