@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.provider.OpenableColumns;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
@@ -75,10 +77,10 @@ public class FileProvider extends ContentProvider {
         if (file == null)
             return new MatrixCursor(new String[0], 0);
 
-        final String[] fileNameList = new String[]{file.getName()};
-        final File[] fileList = new File[]{file};
-        final MatrixCursor cursor = new MatrixCursor(fileNameList, 1);
-        cursor.addRow(fileList);
+        var columns = new String[] {OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE, "__data" };
+        var row = new String[] { file.getName(), String.valueOf(file.length()), file.getAbsolutePath() };
+        final MatrixCursor cursor = new MatrixCursor(columns, 1);
+        cursor.addRow(row);
         return cursor;
     }
 
