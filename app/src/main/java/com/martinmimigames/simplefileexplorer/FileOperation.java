@@ -155,7 +155,7 @@ public class FileOperation {
         return sizeWithPoint + unit;
     }
 
-    public static String getMD5(Context context, File file) throws InterruptedException{
+    public static String getMD5(Context context, File file) throws InterruptedException {
         try (var inputStream = new FileInputStream(file)) {
             var digest = MessageDigest.getInstance("MD5");
             var buffer = new byte[1024];

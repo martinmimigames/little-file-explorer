@@ -7,8 +7,6 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
-import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
@@ -78,13 +76,13 @@ public class FileProvider extends ContentProvider {
         if (file == null)
             return new MatrixCursor(new String[0], 0);
 
-        var columns = new String[] {
+        var columns = new String[]{
                 MediaStore.MediaColumns.DISPLAY_NAME,
                 MediaStore.MediaColumns.SIZE,
                 MediaStore.MediaColumns.DATA,
                 MediaStore.MediaColumns.DATE_MODIFIED,
         };
-        var row = new String[] {
+        var row = new String[]{
                 file.getName(),
                 String.valueOf(file.length()),
                 file.getAbsolutePath(),

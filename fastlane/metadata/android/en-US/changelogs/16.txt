@@ -1,0 +1,7 @@
+- Fixed filter bug causing crash on startup
+- Fixed file not opening on some apps (missing metadata)
+- Fixed file size calculation incorrect
+- Now clear text input when create new folder
+- More natural-looking back button
+- Removed unused notification about invalid folder name
+- Now uses Future for concurrency management (less race condition)
