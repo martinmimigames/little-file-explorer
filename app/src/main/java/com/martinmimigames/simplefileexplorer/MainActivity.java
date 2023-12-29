@@ -574,7 +574,7 @@ public class MainActivity extends Activity {
         });
 
         findViewById(R.id.select_delete).setOnClickListener(v -> {
-            StringBuilder list = new StringBuilder("Delete the following files/folders?\n");
+            StringBuilder list = new StringBuilder("Proceed with delete?\n");
             for (int i = 0; i < currentSelectedFiles.size(); i++) {
                 list.append(currentSelectedFiles.get(i).getName());
                 if (i < currentSelectedFiles.size() - 1) {
@@ -650,7 +650,7 @@ public class MainActivity extends Activity {
      */
     private void copyFilePath() {
         ClipBoard.copyText(this, currentSelectedFiles.get(0).getAbsolutePath());
-        ToastHelper.showShort(this, "copied path");
+        ToastHelper.showShort(this, "copied");
         currentState.changeTo(AppState.Mode.IDLE);
     }
 
