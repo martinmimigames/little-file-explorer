@@ -479,7 +479,7 @@ public class MainActivity extends Activity {
                         setTheme(currentState.theme == AppState.Theme.LIGHT_THEME ? R.style.app_theme_light : R.style.app_theme_default);
                         recreate();
                     } else {
-                        ToastHelper.showLong(this, "relaunch app to apply");
+                        ToastHelper.showShort(this, "relaunch app to apply");
                     }
                 });
 
@@ -689,13 +689,13 @@ public class MainActivity extends Activity {
                     ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: " + md5hash);
                     detailsDialog.findViewById(R.id.details_md5_copy).setOnClickListener((b2) -> {
                         ClipBoard.copyText(this, md5hash);
-                        ToastHelper.showShort(this, "copied MD5");
+                        ToastHelper.showShort(this, "copied");
                     });
                     detailsDialog.findViewById(R.id.details_md5_check).setOnClickListener((b2) -> {
                         if (ClipBoard.getClipboardText(this).equalsIgnoreCase(md5hash)) {
-                            ToastHelper.showLong(this, "MD5 matches");
+                            ToastHelper.showShort(this, "MD5 match");
                         } else {
-                            ToastHelper.showLong(this, "MD5 does not match");
+                            ToastHelper.showShort(this, "MD5 don't match");
                         }
                     });
                 });
