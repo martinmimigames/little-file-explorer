@@ -155,14 +155,20 @@ public class FileOperation {
         return sizeWithPoint + unit;
     }
 
-    public static String getMD5(Context context, File file) throws InterruptedException {
+    /**
+     * Calculates the MD5 of a file.
+     * @param context the activity context
+     * @param file the file to calculate the md5 for
+     * @return a String containing the md5 or null if interrupted/error
+     */
+    public static String getMD5(Context context, File file) {
         try (var inputStream = new FileInputStream(file)) {
             var digest = MessageDigest.getInstance("MD5");
             var buffer = new byte[1024];
             int readSize;
             while ((readSize = inputStream.read(buffer)) != -1) {
                 digest.update(buffer, 0, readSize);
-                if (Thread.currentThread().isInterrupted()) throw new InterruptedException();
+                if (Thread.currentThread().isInterrupted()) return null;
             }
             return new BigInteger(1, digest.digest()).toString(16);
         } catch (NoSuchAlgorithmException e) {

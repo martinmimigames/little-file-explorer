@@ -682,12 +682,9 @@ public class MainActivity extends Activity {
             ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: n/a");
             ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: calculating...");
             concurrentManager.md5Calculator = executor.submit(() -> {
-                String md5hash;
-                try {
-                    md5hash = FileOperation.getMD5(this, file);
-                } catch (InterruptedException e) {
-                    return;
-                }
+                String md5hash = FileOperation.getMD5(this, file);
+                // returns null if some error happened or interruption
+                if (md5hash == null) return;
                 runOnUiThread(() -> {
                     ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: " + md5hash);
                     detailsDialog.findViewById(R.id.details_md5_copy).setOnClickListener((b2) -> {
