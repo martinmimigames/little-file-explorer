@@ -36,7 +36,7 @@
   <style name="app_theme.dialog" parent="@android:style/Theme.Dialog">
     <item name="background">#2C2C2C</item>
     <item name="foreground">#EDEDED</item>
-    <item name="android:background">?attr/background</item>
+    <item name="android:windowBackground">?attr/background</item>
     <item name="android:colorForeground">?attr/foreground</item>
     <item name="android:textColor">?attr/foreground</item>
   </style>

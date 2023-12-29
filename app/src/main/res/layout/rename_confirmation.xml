@@ -5,7 +5,6 @@
   a:layout_width="match_parent"
   a:layout_height="match_parent"
   a:orientation="vertical"
-  a:background="?attr/background"
   a:padding="5dp">
 
   <EditText
@@ -14,9 +13,9 @@
     a:layout_height="wrap_content"
     a:layout_alignParentTop="true"
     a:hint="Enter new name"
+    style="@style/editTextStyle"
     tools:ignore="HardcodedText"
     a:inputType="text"
-    style="@style/editTextStyle"
     tools:targetApi="cupcake"/>
 
   <Button

@@ -5,7 +5,6 @@
   a:layout_width="match_parent"
   a:layout_height="match_parent"
   a:orientation="vertical"
-  a:background="?attr/background"
   a:padding="5dp">
 
   <EditText
