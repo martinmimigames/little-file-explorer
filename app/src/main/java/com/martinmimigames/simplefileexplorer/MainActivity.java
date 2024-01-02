@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
     private int hasOperations;
     private LinearLayout mainListView;
     private int width;
-    private boolean isCut, isCopy;
+    private boolean isCutElseCopy;
     private PermissionManager permissionManager;
     private Dialog openListDialog;
     private Dialog deleteConfirmationDialog;
@@ -565,11 +565,11 @@ public class MainActivity extends Activity {
 
     private void setupSelectMenu() {
         findViewById(R.id.select_cut).setOnClickListener(v -> {
-            isCut = true;
+            isCutElseCopy = true;
             currentState.changeTo(AppState.Mode.PASTE);
         });
         findViewById(R.id.select_copy).setOnClickListener(v -> {
-            isCopy = true;
+            isCutElseCopy = false;
             currentState.changeTo(AppState.Mode.PASTE);
         });
 
@@ -621,11 +621,11 @@ public class MainActivity extends Activity {
 
                     currentState.changeTo(AppState.Mode.IDLE);
 
-                    if (isCut) {
+                    if (isCutElseCopy) {
                         for (var file : selectedFiles) {
                             FileOperation.move(file, new File(dst, file.getName()));
                         }
-                    } else if (isCopy) {
+                    } else {
                         for (var file : selectedFiles) {
                             FileOperation.copy(file, new File(dst, file.getName()));
                         }
