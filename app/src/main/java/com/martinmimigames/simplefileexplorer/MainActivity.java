@@ -15,6 +15,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.*;
+import com.martinmimigames.simplefileexplorer.layout.DeleteConfirmationDialogContainer;
 import com.martinmimigames.simplefileexplorer.layout.DetailsDialogContainer;
 import com.martinmimigames.simplefileexplorer.view.ItemView;
 import mg.utils.clipboard.v1.ClipBoard;
@@ -50,6 +51,7 @@ public class MainActivity extends Activity {
     private PermissionManager permissionManager;
     private Dialog openListDialog;
     private Dialog deleteConfirmationDialog;
+    private DeleteConfirmationDialogContainer deleteConfirmationDialogContainer;
     private Dialog createDirectoryDialog;
     private Dialog renameDialog;
     private Dialog detailsDialog;
@@ -582,7 +584,7 @@ public class MainActivity extends Activity {
                     list.append(",\n");
                 }
             }
-            ((TextView) deleteConfirmationDialog.findViewById(R.id.delete_list)).setText(list.toString());
+            deleteConfirmationDialogContainer.deleteList.setText(list.toString());
             deleteConfirmationDialog.show();
         });
         findViewById(R.id.select_cancel).setOnClickListener(v -> currentState.changeTo(AppState.Mode.IDLE));
@@ -752,8 +754,9 @@ public class MainActivity extends Activity {
         deleteConfirmationDialog = new Dialog(this, getCurrentDialogTheme());
         deleteConfirmationDialog.setCancelable(false);
         deleteConfirmationDialog.setTitle("Confirm delete:");
-        deleteConfirmationDialog.setContentView(R.layout.delete_comfirmation);
-        deleteConfirmationDialog.findViewById(R.id.delete_delete).setOnClickListener(v -> {
+        deleteConfirmationDialogContainer = new DeleteConfirmationDialogContainer(this);
+        deleteConfirmationDialog.setContentView(deleteConfirmationDialogContainer.base);
+        deleteConfirmationDialogContainer.delete.setOnClickListener(v -> {
             deleteConfirmationDialog.dismiss();
             executor.execute(() -> {
                 if (findViewById(ONGOING_OPERATION_ID) != null)
@@ -771,7 +774,7 @@ public class MainActivity extends Activity {
                 listItem(currentState.filePath);
             });
         });
-        deleteConfirmationDialog.findViewById(R.id.delete_cancel).setOnClickListener(v -> {
+        deleteConfirmationDialogContainer.cancel.setOnClickListener(v -> {
             deleteConfirmationDialog.dismiss();
             currentState.changeTo(AppState.Mode.IDLE);
         });
