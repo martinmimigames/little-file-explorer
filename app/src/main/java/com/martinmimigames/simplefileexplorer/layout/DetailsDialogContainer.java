@@ -19,8 +19,6 @@ public final class DetailsDialogContainer {
 
     public final TextView md5;
 
-    private final LinearLayout buttonContainer;
-
     public final TextView copyMd5;
 
     public final TextView checkMd5;
@@ -40,6 +38,11 @@ public final class DetailsDialogContainer {
         );
         wrapContent.setMargins(10, 10, 10, 10);
 
+        // puts inside the base layout vertically
+        // size
+        // last modified
+        // mime
+        // md5
         size = new TextView(activity);
         size.setLayoutParams(wrapContent);
         base.addView(size);
@@ -53,10 +56,12 @@ public final class DetailsDialogContainer {
         md5.setLayoutParams(wrapContent);
         base.addView(md5);
 
-        buttonContainer = new LinearLayout(activity);
-        buttonContainer.setOrientation(LinearLayout.HORIZONTAL);
+        // creates a horizontal container for buttons
+        LinearLayout buttonContainer = new LinearLayout(activity);
+        // buttonContainer.setOrientation(LinearLayout.HORIZONTAL); // horizontal by default
         buttonContainer.setLayoutParams(wrapContent);
 
+        // creates buttons to put inside container
         copyMd5 = new TextView(new ContextThemeWrapper(activity, R.style.buttonStyle));
         copyMd5.setText("copy");
         copyMd5.setLayoutParams(wrapContent);
@@ -66,6 +71,7 @@ public final class DetailsDialogContainer {
         checkMd5.setLayoutParams(wrapContent);
         buttonContainer.addView(checkMd5);
 
+        // adds container to base layout
         base.addView(buttonContainer);
     }
 }
