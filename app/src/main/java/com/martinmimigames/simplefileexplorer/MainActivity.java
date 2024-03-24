@@ -15,6 +15,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.*;
+import com.martinmimigames.simplefileexplorer.layout.DetailsDialogContainer;
 import com.martinmimigames.simplefileexplorer.view.ItemView;
 import mg.utils.clipboard.v1.ClipBoard;
 import mg.utils.helper.MainThread;
@@ -664,7 +665,8 @@ public class MainActivity extends Activity {
         });
 
         detailsDialog = new Dialog(this, getCurrentDialogTheme());
-        detailsDialog.setContentView(R.layout.details);
+        var detailsDialogContainer = new DetailsDialogContainer(this);
+        detailsDialog.setContentView(detailsDialogContainer.base);
         detailsDialog.setOnCancelListener(d -> {
             detailsDialog.dismiss();
             concurrentManager.md5Calculator.cancel(true);
@@ -676,22 +678,21 @@ public class MainActivity extends Activity {
             detailsDialog.show();
             var file = currentSelectedFiles.get(0);
             detailsDialog.setTitle("Details: " + file.getName());
-            ((TextView) detailsDialog.findViewById(R.id.details_size)).setText("Size: " + FileOperation.getReadableMemorySize(file.length()) + " (" + file.length() + "B)");
-            ((TextView) detailsDialog.findViewById(R.id.details_lastmod)).setText("Last modified: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(file.lastModified()));
-            ((TextView) detailsDialog.findViewById(R.id.details_mime)).setText("MIME type: " + FileProvider.getFileType(file));
-            ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: n/a");
-            ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: calculating...");
+            detailsDialogContainer.size.setText("Size: " + FileOperation.getReadableMemorySize(file.length()) + " (" + file.length() + "B)");
+            detailsDialogContainer.lastModified.setText("Last modified: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(file.lastModified()));
+            detailsDialogContainer.mime.setText("MIME type: " + FileProvider.getFileType(file));
+            detailsDialogContainer.md5.setText("MD5: calculating...");
             concurrentManager.md5Calculator = executor.submit(() -> {
                 String md5hash = FileOperation.getMD5(this, file);
                 // returns null if some error happened or interruption
                 if (md5hash == null) return;
                 runOnUiThread(() -> {
-                    ((TextView) detailsDialog.findViewById(R.id.details_md5)).setText("MD5: " + md5hash);
-                    detailsDialog.findViewById(R.id.details_md5_copy).setOnClickListener((b2) -> {
+                    detailsDialogContainer.md5.setText("MD5: " + md5hash);
+                    detailsDialogContainer.copyMd5.setOnClickListener((b2) -> {
                         ClipBoard.copyText(this, md5hash);
                         ToastHelper.showShort(this, "copied");
                     });
-                    detailsDialog.findViewById(R.id.details_md5_check).setOnClickListener((b2) -> {
+                    detailsDialogContainer.checkMd5.setOnClickListener((b2) -> {
                         if (ClipBoard.getClipboardText(this).equalsIgnoreCase(md5hash)) {
                             ToastHelper.showShort(this, "MD5 match");
                         } else {
