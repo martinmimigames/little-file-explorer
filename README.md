@@ -43,6 +43,12 @@ Location of website:
 
 ## Latest Versions
 
+- v4.15
+  - Fixed copying pasting not working properly in some cases
+  - Fixed having grey area in cursors on some text inputs
+  - Shrunk size
+  - Reworded notification
+
 - v4.14
   - Fixed filter bug causing crash on startup
   - Fixed file not opening on some apps (missing metadata)
@@ -146,7 +152,7 @@ Official Website at [https://martinmimigames.github.io](https://martinmimigames.
 
 ### Last update of README
 
-Date : 28-11-2023 dd-mm-yyyy
+Date : 2024-03-25 yyyy-mm-dd
 
 ### Important
 

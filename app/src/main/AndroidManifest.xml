@@ -2,8 +2,8 @@
 <manifest xmlns:a="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   package="com.martinmimigames.simplefileexplorer"
-  a:versionCode="16"
-  a:versionName="4.14">
+  a:versionCode="17"
+  a:versionName="4.15">
 
   <uses-permission a:name="android.permission.WRITE_EXTERNAL_STORAGE" />
   <uses-permission a:name="android.permission.READ_EXTERNAL_STORAGE" />

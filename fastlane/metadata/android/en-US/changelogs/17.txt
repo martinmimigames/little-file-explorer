@@ -1,0 +1,4 @@
+- Fixed copying pasting not working properly in some cases
+- Fixed having grey area in cursors on some text inputs
+- Shrunk size
+- Reworded notification
