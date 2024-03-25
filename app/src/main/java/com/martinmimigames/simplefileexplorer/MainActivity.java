@@ -700,7 +700,7 @@ public class MainActivity extends Activity {
                         if (ClipBoard.getClipboardText(this).equalsIgnoreCase(md5hash)) {
                             ToastHelper.showShort(this, "MD5 match");
                         } else {
-                            ToastHelper.showShort(this, "MD5 don't match");
+                            ToastHelper.showShort(this, "MD5 mismatch");
                         }
                     });
                 });
