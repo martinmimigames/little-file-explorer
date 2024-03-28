@@ -136,6 +136,10 @@ You can submit issues the following ways:
 
 ## Installation
 
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+     alt="Get it on IzzyOnDroid"
+     height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.martinmimigames.simplefileexplorer/)
+
 [<img src="https://martinmimigames.github.io/res/get-it-on/f-droid.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/com.martinmimigames.simplefileexplorer/)
@@ -152,7 +156,7 @@ Official Website at [https://martinmimigames.github.io](https://martinmimigames.
 
 ### Last update of README
 
-Date : 2024-03-25 yyyy-mm-dd
+Date : 2024-03-28 yyyy-mm-dd
 
 ### Important
 
