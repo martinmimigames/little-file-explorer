@@ -7,6 +7,7 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.util.SparseArray;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
@@ -20,7 +21,7 @@ public class FileProvider extends ContentProvider {
     private static final String SCHEME = "content://";
     private static final String AUTHORITY = "com.martinmimigames.simplefileexplorer.FileProvider";
 
-    private static HashMap<Integer, FileNameRecord> database;
+    private static SparseArray<FileNameRecord> database;
 
     public static File uriToFile(Uri uri) {
         // Example: content://com.martinmimigames.simplefileexplorer.FileProvider/1322120057/%23empty.txt
@@ -66,7 +67,7 @@ public class FileProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        database = new HashMap<>();
+        database = new SparseArray<>(1);
         return true;
     }
 
