@@ -23,6 +23,22 @@ Previous known as *Simple File Explorer* (but from martinmimigames).
 Location of website:
 [https://martinmimigames.github.io/projects/little-file-explorer](https://martinmimigames.github.io/projects/little-file-explorer/index.html).
 
+## Installation
+
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+     alt="Get it on IzzyOnDroid"
+     height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.martinmimigames.simplefileexplorer/)
+
+[<img src="https://martinmimigames.github.io/res/get-it-on/f-droid.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/com.martinmimigames.simplefileexplorer/)
+
+[<img src="https://martinmimigames.github.io/res/get-it-on/github.png"
+     alt="Get it on Github"
+     height="80">](https://github.com/martinmimigames/little-file-explorer/releases/latest)
+
+[Get it from the official website](https://martinmimigames.github.io/projects/little-file-explorer)
+
 ## Screenshots
 
 ![Screenshot 1](docs/images/example1.jpg)
@@ -125,6 +141,39 @@ Location of website:
 
 - main: latest source-code
 
+## Development
+
+Project Requirements:
+- openjdk-17
+- android sdk
+
+To clone project:
+
+```sh
+# clone the source code
+git clone https://github.com/martinmimigames/little-file-explorer
+
+cd little-file-explorer
+
+# cloning the mg.util library (it is included as a git submodule)
+git submodule update --init
+
+```
+
+To build apk, you need a keystore file and a keystore.properties file:
+
+- `keystore.properties`:
+  Place on the root directory of the project.
+
+- `keystore file`:
+  To sign the apk when building.
+
+Run `./gradlew assembleDebug` to build a debug apk.
+
+For complete steps if above is not enough, see [Dockerfile](/Dockerfile).
+
+Alternatively, a [GitHub action](/.github/workflows/build.yml) have already been created that uses the above Dockerfile.
+
 ## Issues
 
 Issues and pull requests are always welcome!
@@ -134,29 +183,13 @@ You can submit issues the following ways:
 - via [Github Issues](https://github.com/martinmimigames/little-file-explorer/issues)
 - via email: <martinmimigames@gmail.com>
 
-## Installation
-
-[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
-     alt="Get it on IzzyOnDroid"
-     height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.martinmimigames.simplefileexplorer/)
-
-[<img src="https://martinmimigames.github.io/res/get-it-on/f-droid.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/com.martinmimigames.simplefileexplorer/)
-
-[<img src="https://martinmimigames.github.io/res/get-it-on/github.png"
-     alt="Get it on Github"
-     height="80">](https://github.com/martinmimigames/little-file-explorer/releases/latest)
-
-[Get it from the official website](https://martinmimigames.github.io/projects/little-file-explorer)
-
 ## Made by Martinmimigames
 
 Official Website at [https://martinmimigames.github.io](https://martinmimigames.github.io)
 
 ### Last update of README
 
-Date : 2024-03-28 yyyy-mm-dd
+Date : 2025-04-09 yyyy-mm-dd
 
 ### Important
 

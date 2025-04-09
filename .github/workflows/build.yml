@@ -1,0 +1,23 @@
+name: build
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: clone repo for Dockerfile
+        uses: actions/checkout@v4
+
+      - name: initalise submodules
+        run: git submodule update --init
+
+      - name: build debug apk
+        run: docker build . --output .
+
+      - name: attach debug apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug.apk
+          path: app-debug.apk
