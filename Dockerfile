@@ -20,13 +20,13 @@ COPY . /home/little-file-explorer
 # enter project folder
 WORKDIR /home/little-file-explorer
 
-# create a keystore.properties file in the PARENT DIRECTORY of little-file-explorer
+# create a keystore.properties file in the ROOT DIRECTORY of little-file-explorer
 RUN echo "\
 storePassword=android\n\
 keyPassword=android\n\
 keyAlias=androiddebugkey\n\
 storeFile=/home/debug.keystore\
-" > ../keystore.properties
+" > keystore.properties
 
 # run the gradlew wrapper to build apk
 RUN chmod 700 ./gradlew

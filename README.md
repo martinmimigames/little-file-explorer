@@ -163,7 +163,7 @@ git submodule update --init
 To build apk, you need a keystore file and a keystore.properties file:
 
 - `keystore.properties`:
-  Place on the parent folder of the project.
+  Place on the root directory of the project.
 
 - `keystore file`:
   To sign the apk when building.
