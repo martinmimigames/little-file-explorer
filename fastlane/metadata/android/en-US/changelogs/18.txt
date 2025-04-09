@@ -1,0 +1,4 @@
+- fix read / write grant issues on file:// uri
+- lower android version to 4.4 for giving out content:// uri
+- revert back button to ascii code for consistency
+- switch to sparse array to reduce memory usage

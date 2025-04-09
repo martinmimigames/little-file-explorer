@@ -59,6 +59,12 @@ Location of website:
 
 ## Latest Versions
 
+- v4.16
+  - fix read / write grant issues on file:// uri
+  - lower android version to 4.4 for giving out content:// uri
+  - revert back button to ascii code for consistency
+  - switch to sparse array to reduce memory usage
+
 - v4.15
   - Fixed copying pasting not working properly in some cases
   - Fixed having grey area in cursors on some text inputs
