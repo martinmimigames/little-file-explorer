@@ -28,8 +28,11 @@ class FileOpener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             intent.setClipData(ClipData.newRawUri("", uri));
         }
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        // read write permission can be granted if Android 7.0+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (isRequestDocument) {
             activity.setResult(RESULT_OK, intent);
@@ -78,7 +81,7 @@ class FileOpener {
     }
 
     private Uri getUriFromFile(File file) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
             return FileProvider.fileToUri(file);
         else
             return Uri.fromFile(file);
