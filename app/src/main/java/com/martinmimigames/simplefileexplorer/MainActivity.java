@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
 
     // For easier concurrent processes cancelling
     // no need for custom implementation
-    private final class ConcurrentManager {
+    private static final class ConcurrentManager {
         FutureTask<Boolean> listFiles;
         FutureTask<Void> listFilesAwaitTermination;
         Future<?> md5Calculator;
@@ -860,7 +860,7 @@ public class MainActivity extends Activity {
             static final Comparator<File> DESCENDING_CHARACTER = (f1, f2) -> f2.getName().compareToIgnoreCase(f1.getName());
             static final String DESCENDING_CHARACTER_SORTER_TAG = "character";
 
-            static final Comparator<File> DESCENDING_MODIFIED_TIME = (f1, f2) -> LONG_COMPARATOR.compare(f1.lastModified(), f2.lastModified());
+            static final Comparator<File> DESCENDING_MODIFIED_TIME = (f1, f2) -> LONG_COMPARATOR.compare(f2.lastModified(), f1.lastModified());
             static final String DESCENDING_MODIFIED_TIME_SORTER_TAG = "modified";
 
             static final Comparator<File> DESCENDING_FILE_SIZE = (f1, f2) -> LONG_COMPARATOR.compare(f2.length(), f1.length());

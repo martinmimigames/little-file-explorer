@@ -5,12 +5,10 @@ import android.content.SharedPreferences;
 
 final class Preferences {
 
-    private static final String PACKAGE_NAME = "com.martinmimigames.simplefileexplorer";
-
     static final String FILE_PATH_KEY = "file_path";
     static final String TOGGLE_HIDDEN_KEY = "toggle_hidden";
 
-    static final String SORTER_KEY = "sorter";
+    static final String SORTER_KEY = "sorter2";
     static final String SORTER_FLIP = "sorterf";
     static final String THEME_KEY = "theme2";
 
@@ -18,7 +16,7 @@ final class Preferences {
 
 
     void onCreate(Context context) {
-        sharedPreferences = context.getSharedPreferences(Preferences.PACKAGE_NAME, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
     }
 
     SharedPreferences getSharedPreferences() {
