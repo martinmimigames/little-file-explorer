@@ -236,6 +236,7 @@ public class MainActivity extends Activity {
                 case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.DESCENDING_MODIFIED_TIME;
                 case AppState.Sorters.ASCENDING_FILE_SIZE_TAG -> AppState.Sorters.ASCENDING_FILE_SIZE;
                 case AppState.Sorters.DESCENDING_FILE_SIZE_TAG -> AppState.Sorters.DESCENDING_FILE_SIZE;
+                case AppState.Sorters.ASCENDING_EXTENSION_TAG -> AppState.Sorters.ASCENDING_EXTENSION;
                 //case AppState.Sorters.ASCENDING_NAME_SORTER_TAG -> AppState.Sorters.ASCENDING_NAME;
                 default -> AppState.Sorters.ASCENDING_NAME;
             });
@@ -505,7 +506,8 @@ public class MainActivity extends Activity {
                         case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG ->
                                 AppState.Sorters.ASCENDING_FILE_SIZE_TAG;
                         case AppState.Sorters.ASCENDING_FILE_SIZE_TAG -> AppState.Sorters.DESCENDING_FILE_SIZE_TAG;
-                        // case AppState.Sorters.DESCENDING_FILE_SIZE_TAG -> AppState.Sorters.ASCENDING_NAME_SORTER_TAG;
+                        case AppState.Sorters.DESCENDING_FILE_SIZE_TAG -> AppState.Sorters.ASCENDING_EXTENSION_TAG;
+                        // case AppState.Sorters.EXTENSION_SORTER_TAG -> AppState.Sorters.ASCENDING_NAME_SORTER_TAG;
                         default -> AppState.Sorters.ASCENDING_NAME_SORTER_TAG;
                     };
                     ((TextView) v).setText(currentState.sorterName);
@@ -850,17 +852,19 @@ public class MainActivity extends Activity {
         }
 
         static final class Sorters {
+            private static final Comparator<Long> LONG_COMPARATOR = (i1, i2) -> Math.toIntExact(Math.max(Math.min(i1 - i2, 1), -1));
+
             static final Comparator<File> ASCENDING_NAME = (f1, f2) -> f1.getName().compareToIgnoreCase(f2.getName());
             static final String ASCENDING_NAME_SORTER_TAG = "A-z";
             static final Comparator<File> DESCENDING_NAME = (f1, f2) -> ASCENDING_NAME.compare(f2, f1);
             static final String DESCENDING_NAME_SORTER_TAG = "z-A";
 
-            static final Comparator<File> DESCENDING_MODIFIED_TIME = (f1, f2) -> Math.toIntExact(Math.max(Math.min(f1.lastModified() - f2.lastModified(), 1), -1));
+            static final Comparator<File> DESCENDING_MODIFIED_TIME = (f1, f2) -> LONG_COMPARATOR.compare(f1.lastModified(), f2.lastModified());
             static final String DESCENDING_MODIFIED_TIME_SORTER_TAG = "By oldest";
             static final Comparator<File> ASCENDING_MODIFIED_TIME = (f1, f2) -> DESCENDING_MODIFIED_TIME.compare(f2, f1);
             static final String ASCENDING_MODIFIED_TIME_SORTER_TAG = "By earliest";
 
-            static final Comparator<File> DESCENDING_FILE_SIZE = (f1, f2) -> Math.toIntExact(Math.max(Math.min(f2.length() - f1.length(), 1), -1));
+            static final Comparator<File> DESCENDING_FILE_SIZE = (f1, f2) -> LONG_COMPARATOR.compare(f2.length(), f1.length());
             static final String DESCENDING_FILE_SIZE_TAG = "By largest";
             static final Comparator<File> ASCENDING_FILE_SIZE = (f1, f2) -> DESCENDING_FILE_SIZE.compare(f2, f1);
             static final String ASCENDING_FILE_SIZE_TAG = "By smallest";
