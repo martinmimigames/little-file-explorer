@@ -59,6 +59,10 @@ Location of website:
 
 ## Latest Versions
 
+- v4.17
+  - Fix file cannot open when external app checks Uri permissions
+  - Add toast notification for when file cannot be deleted
+
 - v4.16
   - fix read / write grant issues on file:// uri
   - lower android version to 4.4 for giving out content:// uri
@@ -195,7 +199,7 @@ Official Website at [https://martinmimigames.github.io](https://martinmimigames.
 
 ### Last update of README
 
-Date : 2025-04-09 yyyy-mm-dd
+Date : 2025-04-10 yyyy-mm-dd
 
 ### Important
 

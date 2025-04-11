@@ -1,0 +1,2 @@
+- Fix file cannot open when external app checks Uri permissions
+- Add toast notification for when file cannot be deleted
