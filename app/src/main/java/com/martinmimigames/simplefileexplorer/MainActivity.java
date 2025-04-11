@@ -105,7 +105,8 @@ public class MainActivity extends Activity {
 
         var save = preferences.getSharedPreferences();
         allowHiddenFileDisplay = save.getBoolean(Preferences.TOGGLE_HIDDEN_KEY, false);
-        currentState.sorterName = save.getString(Preferences.SORTER_KEY, AppState.Sorters.ASCENDING_NAME_SORTER_TAG);
+        currentState.sorterName = save.getString(Preferences.SORTER_KEY, AppState.Sorters.DESCENDING_CHARACTER_SORTER_TAG);
+        currentState.sorterAscending = save.getBoolean(Preferences.SORTER_FLIP, true);
         currentState.theme = save.getInt(Preferences.THEME_KEY, (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) ? AppState.Theme.SYSTEM_THEME : AppState.Theme.DARK_THEME);
 
         setTheme(getCurrentTheme());
@@ -230,16 +231,17 @@ public class MainActivity extends Activity {
 
             assert items != null;
 
-            Arrays.sort(items, switch (currentState.sorterName) {
-                case AppState.Sorters.DESCENDING_NAME_SORTER_TAG -> AppState.Sorters.DESCENDING_NAME;
-                case AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.ASCENDING_MODIFIED_TIME;
+            var sorter = switch (currentState.sorterName) {
                 case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG -> AppState.Sorters.DESCENDING_MODIFIED_TIME;
-                case AppState.Sorters.ASCENDING_FILE_SIZE_TAG -> AppState.Sorters.ASCENDING_FILE_SIZE;
                 case AppState.Sorters.DESCENDING_FILE_SIZE_TAG -> AppState.Sorters.DESCENDING_FILE_SIZE;
-                case AppState.Sorters.ASCENDING_EXTENSION_TAG -> AppState.Sorters.ASCENDING_EXTENSION;
-                //case AppState.Sorters.ASCENDING_NAME_SORTER_TAG -> AppState.Sorters.ASCENDING_NAME;
-                default -> AppState.Sorters.ASCENDING_NAME;
-            });
+                //case AppState.Sorters.DESCENDING_NAME_SORTER_TAG -> AppState.Sorters.DESCENDING_NAME;
+                default -> AppState.Sorters.DESCENDING_CHARACTER;
+            };
+            if (currentState.sorterAscending) {
+                Arrays.sort(items, (f1, f2) -> sorter.compare(f2, f1));
+            } else {
+                Arrays.sort(items, sorter);
+            }
 
             if (items.length == 0) {
                 addDialog("Empty folder!", 16);
@@ -463,6 +465,7 @@ public class MainActivity extends Activity {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void setupMenu() {
         setViewVisibility(R.id.menu_list, View.GONE);
 
@@ -495,25 +498,24 @@ public class MainActivity extends Activity {
                     setViewVisibility(R.id.menu_list, View.GONE);
                 });
 
-        findViewById(R.id.menu_sorter)
-                .setOnClickListener(v -> {
-                    currentState.sorterName = switch (currentState.sorterName) {
-                        case AppState.Sorters.ASCENDING_NAME_SORTER_TAG -> AppState.Sorters.DESCENDING_NAME_SORTER_TAG;
-                        case AppState.Sorters.DESCENDING_NAME_SORTER_TAG ->
-                                AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG;
-                        case AppState.Sorters.ASCENDING_MODIFIED_TIME_SORTER_TAG ->
-                                AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG;
-                        case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG ->
-                                AppState.Sorters.ASCENDING_FILE_SIZE_TAG;
-                        case AppState.Sorters.ASCENDING_FILE_SIZE_TAG -> AppState.Sorters.DESCENDING_FILE_SIZE_TAG;
-                        case AppState.Sorters.DESCENDING_FILE_SIZE_TAG -> AppState.Sorters.ASCENDING_EXTENSION_TAG;
-                        // case AppState.Sorters.EXTENSION_SORTER_TAG -> AppState.Sorters.ASCENDING_NAME_SORTER_TAG;
-                        default -> AppState.Sorters.ASCENDING_NAME_SORTER_TAG;
-                    };
-                    ((TextView) v).setText(currentState.sorterName);
-                    listItem(currentState.filePath);
-                });
-        ((TextView) findViewById(R.id.menu_sorter)).setText(currentState.sorterName);
+        View.OnClickListener onSorterClickedListener = v -> {
+            currentState.sorterAscending = !currentState.sorterAscending;
+            if (!currentState.sorterAscending) {
+                currentState.sorterName = switch (currentState.sorterName) {
+                    case AppState.Sorters.DESCENDING_CHARACTER_SORTER_TAG ->
+                            AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG;
+                    case AppState.Sorters.DESCENDING_MODIFIED_TIME_SORTER_TAG ->
+                            AppState.Sorters.DESCENDING_FILE_SIZE_TAG;
+                    // case AppState.Sorters.DESCENDING_FILE_SIZE_TAG -> AppState.Sorters.DESCENDING_NAME_SORTER_TAG;
+                    default -> AppState.Sorters.DESCENDING_CHARACTER_SORTER_TAG;
+                };
+            }
+            ((TextView) findViewById(R.id.menu_sorter)).setText("By " + currentState.sorterName + " " + (currentState.sorterAscending ? "ASC" : "DESC"));
+            listItem(currentState.filePath);
+        };
+
+        findViewById(R.id.menu_sorter).setOnClickListener(onSorterClickedListener);
+        ((TextView) findViewById(R.id.menu_sorter)).setText("By " + currentState.sorterName + " " + (currentState.sorterAscending ? "ASC" : "DESC"));
 
         findViewById(R.id.menu_create_new_directory)
                 .setOnClickListener(v -> {
@@ -833,6 +835,7 @@ public class MainActivity extends Activity {
     private class AppState {
 
         private String sorterName;
+        private boolean sorterAscending;
 
         private String filePath;
         private File parent;
@@ -854,20 +857,14 @@ public class MainActivity extends Activity {
         static final class Sorters {
             private static final Comparator<Long> LONG_COMPARATOR = (i1, i2) -> Math.toIntExact(Math.max(Math.min(i1 - i2, 1), -1));
 
-            static final Comparator<File> ASCENDING_NAME = (f1, f2) -> f1.getName().compareToIgnoreCase(f2.getName());
-            static final String ASCENDING_NAME_SORTER_TAG = "A-z";
-            static final Comparator<File> DESCENDING_NAME = (f1, f2) -> ASCENDING_NAME.compare(f2, f1);
-            static final String DESCENDING_NAME_SORTER_TAG = "z-A";
+            static final Comparator<File> DESCENDING_CHARACTER = (f1, f2) -> f2.getName().compareToIgnoreCase(f1.getName());
+            static final String DESCENDING_CHARACTER_SORTER_TAG = "character";
 
             static final Comparator<File> DESCENDING_MODIFIED_TIME = (f1, f2) -> LONG_COMPARATOR.compare(f1.lastModified(), f2.lastModified());
-            static final String DESCENDING_MODIFIED_TIME_SORTER_TAG = "By oldest";
-            static final Comparator<File> ASCENDING_MODIFIED_TIME = (f1, f2) -> DESCENDING_MODIFIED_TIME.compare(f2, f1);
-            static final String ASCENDING_MODIFIED_TIME_SORTER_TAG = "By earliest";
+            static final String DESCENDING_MODIFIED_TIME_SORTER_TAG = "modified";
 
             static final Comparator<File> DESCENDING_FILE_SIZE = (f1, f2) -> LONG_COMPARATOR.compare(f2.length(), f1.length());
-            static final String DESCENDING_FILE_SIZE_TAG = "By largest";
-            static final Comparator<File> ASCENDING_FILE_SIZE = (f1, f2) -> DESCENDING_FILE_SIZE.compare(f2, f1);
-            static final String ASCENDING_FILE_SIZE_TAG = "By smallest";
+            static final String DESCENDING_FILE_SIZE_TAG = "size";
         }
 
         static final class Mode {

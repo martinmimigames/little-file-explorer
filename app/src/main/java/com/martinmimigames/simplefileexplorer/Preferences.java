@@ -11,6 +11,7 @@ final class Preferences {
     static final String TOGGLE_HIDDEN_KEY = "toggle_hidden";
 
     static final String SORTER_KEY = "sorter";
+    static final String SORTER_FLIP = "sorterf";
     static final String THEME_KEY = "theme2";
 
     SharedPreferences sharedPreferences;
