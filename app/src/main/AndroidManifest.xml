@@ -23,7 +23,7 @@
     <provider
       a:name=".FileProvider"
       a:authorities="com.martinmimigames.simplefileexplorer.FileProvider"
-      a:exported="true"
+      a:exported="false"
       a:grantUriPermissions="true" />
 
     <activity
