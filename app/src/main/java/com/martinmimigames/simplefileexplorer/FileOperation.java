@@ -128,14 +128,18 @@ public class FileOperation {
     }
 
     public static boolean delete(final File file) {
-        if (file.isFile()) {
-            return file.delete();
-        } else if (file.isDirectory()) {
-            for (File subFile : Objects.requireNonNull(file.listFiles())) {
-                if (!delete(subFile))
-                    return false;
+        try {
+            if (file.isFile()) {
+                return file.delete();
+            } else if (file.isDirectory()) {
+                for (File subFile : Objects.requireNonNull(file.listFiles())) {
+                    if (!delete(subFile))
+                        return false;
+                }
+                return file.delete();
             }
-            return file.delete();
+        } catch (SecurityException ignored) {
+            // cannot be deleted
         }
         return false;
     }

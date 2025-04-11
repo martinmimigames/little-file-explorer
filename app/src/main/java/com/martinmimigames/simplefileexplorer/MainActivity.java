@@ -767,8 +767,11 @@ public class MainActivity extends Activity {
                 hasOperations = currentOperation;
                 var selectedFiles = getSelectedFiles();
                 currentState.changeTo(AppState.Mode.IDLE);
-                for (var file : selectedFiles)
-                    FileOperation.delete(file);
+                for (var file : selectedFiles) {
+                    if (!FileOperation.delete(file)) {
+                        ToastHelper.showShort(this, "Failed to delete " + file.getName());
+                    }
+                }
                 if (hasOperations == currentOperation)
                     hasOperations = 0;
                 if (findViewById(ONGOING_OPERATION_ID) != null)
